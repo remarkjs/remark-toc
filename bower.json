@@ -1,0 +1,45 @@
+{
+  "name": "mdast-toc",
+  "main": "mdast-toc.js",
+  "description": "Generate a Table of Contents (TOC) for Markdown files",
+  "license": "MIT",
+  "keywords": [
+    "text",
+    "markdown",
+    "plain",
+    "text",
+    "table",
+    "of",
+    "contents",
+    "content",
+    "toc",
+    "generation",
+    "mdast"
+  ],
+  "dependencies": {
+    "slug": "^0.8.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wooorm/mdast-toc.git"
+  },
+  "authors": [
+    "Titus Wormer <tituswormer@gmail.com>"
+  ],
+  "ignore": [
+    ".*",
+    "*.log",
+    "*.md",
+    "build/",
+    "components/",
+    "coverage/",
+    "node_modules/",
+    "test/",
+    "build.js",
+    "cli.js",
+    "example.js",
+    "index.js",
+    "component.json",
+    "package.json"
+  ]
+}

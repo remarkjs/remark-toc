@@ -1,0 +1,68 @@
+{
+  "name": "mdast-toc",
+  "version": "0.1.0",
+  "description": "Generate a Table of Contents (TOC) for Markdown files",
+  "license": "MIT",
+  "keywords": [
+    "text",
+    "markdown",
+    "plain",
+    "text",
+    "table",
+    "of",
+    "contents",
+    "content",
+    "toc",
+    "generation",
+    "mdast"
+  ],
+  "dependencies": {
+    "slug": "^0.8.0",
+    "win-fork": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wooorm/mdast-toc.git"
+  },
+  "author": "Titus Wormer <tituswormer@gmail.com>",
+  "bin": {
+    "mdast-toc": "cli.js"
+  },
+  "peerDependencies": {
+    "mdast": ">=0.1.10"
+  },
+  "devDependencies": {
+    "browserify": "^8.0.0",
+    "chalk": "^0.5.1",
+    "diff": "^1.2.2",
+    "eslint": "^0.13.0",
+    "esmangle": "^1.0.0",
+    "istanbul": "^0.3.0",
+    "jscs": "^1.0.0",
+    "jscs-jsdoc": "^0.4.0",
+    "mdast": "^0.2.0",
+    "mdast-usage": "^0.1.0",
+    "mocha": "^2.0.0",
+    "summarize-markdown": "^0.3.0"
+  },
+  "scripts": {
+    "test-api": "_mocha --check-leaks test/index.js",
+    "test-cli": "bash test/cli.sh",
+    "test-coveralls": "istanbul cover _mocha --report lcovonly -- --check-leaks test/index.js",
+    "test-coverage": "istanbul cover _mocha -- test/index.js",
+    "test-travis": "npm run test-coveralls && npm run test-cli",
+    "test": "npm run test-api && npm run test-cli",
+    "lint-api": "eslint index.js",
+    "lint-cli": "eslint --rule no-process-exit:false cli.js",
+    "lint-test": "eslint --env mocha test/index.js",
+    "lint-script": "eslint example.js",
+    "lint-style": "jscs --reporter inline index.js cli.js example.js test/index.js",
+    "lint": "npm run lint-api && npm run lint-cli && npm run lint-test && npm run lint-script && npm run lint-style",
+    "make": "npm run lint && npm run test-coverage",
+    "bundle": "browserify index.js --ignore unicode/category/So -s mdastTOC > mdast-toc.js",
+    "postbundle": "esmangle mdast-toc.js > mdast-toc.min.js",
+    "build-readme": "mdast --use mdast-usage --use index.js -o Readme.md Readme.md",
+    "build": "npm run bundle && npm run build-readme",
+    "prepublish": "npm run build"
+  }
+}

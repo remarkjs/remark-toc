@@ -1,0 +1,23 @@
+{
+  "name": "mdast-toc",
+  "version": "0.1.0",
+  "description": "Generate a Table of Contents (TOC) for Markdown files",
+  "license": "MIT",
+  "keywords": [
+    "text",
+    "markdown",
+    "plain",
+    "text",
+    "table",
+    "of",
+    "contents",
+    "content",
+    "toc",
+    "generation",
+    "mdast"
+  ],
+  "repository": "wooorm/mdast-toc",
+  "scripts": [
+    "mdast-toc.js"
+  ]
+}

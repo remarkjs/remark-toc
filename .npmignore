@@ -1,0 +1,15 @@
+.*
+*.log
+bower_components/
+build/
+components/
+coverage/
+node_modules/
+test/
+build.js
+example.js
+mdast-toc.js
+mdast-toc.min.js
+bower.json
+component.json
+History.md
