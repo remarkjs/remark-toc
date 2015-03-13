@@ -5,53 +5,35 @@
  * Dependencies.
  */
 
-var spawn,
-    pack;
-
-spawn = require('win-fork');
-pack = require('./package.json');
+var spawn = require('win-fork');
+var pack = require('./package.json');
 
 /*
  * Resolve.
  */
 
-var mdast,
-    toc;
-
-mdast = require.resolve('mdast/cli.js');
-toc = require.resolve('./index.js');
+var mdast = require.resolve('mdast/cli.js');
+var toc = require.resolve('./index.js');
 
 /*
  * Arguments.
  */
 
-var argv;
-
-argv = process.argv.slice(2);
+var argv = process.argv.slice(2);
 
 /*
  * Command.
  */
 
-var command;
-
-command = Object.keys(pack.bin)[0];
+var command = Object.keys(pack.bin)[0];
 
 /*
  * Program.
  */
 
 if (argv[0] === '--version' || argv[0] === '-v') {
-    /*
-     * Version.
-     */
-
     console.log(pack.version);
 } else if (argv[0] === '--help' || argv[0] === '-h') {
-    /*
-     * Help.
-     */
-
     console.log([
         '',
         'Usage: ' + command + ' [mdast options]',
@@ -83,13 +65,7 @@ if (argv[0] === '--version' || argv[0] === '-v') {
         '$ ' + command + ' --use mdast-usage Readme.md'
     ].join('\n  ') + '\n');
 } else {
-    /*
-     * Spawn.
-     */
-
-    var proc;
-
-    proc = spawn(mdast, ['--use', toc].concat(argv), {
+    var proc = spawn(mdast, ['--use', toc].concat(argv), {
         'stdio': 'inherit'
     });
 
