@@ -58,7 +58,7 @@ if (argv[0] === '--version' || argv[0] === '-v') {
         '',
         '# Pass stdin through ' + command + ', with mdast options, ' +
             'and write to stdout',
-        '$ cat Docs.md | ' + command + ' --option setext > Docs-new.md',
+        '$ cat Docs.md | ' + command + ' --setting setext > Docs-new.md',
         '',
         '# Use other plugins',
         '$ npm install mdast-usage',

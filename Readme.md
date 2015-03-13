@@ -105,7 +105,7 @@ Use:
 ```text
 Usage: mdast-toc [mdast options]
 
-Remove markdown formatting
+Generate a Table of Contents (TOC) for Markdown files
 
 Options:
 
@@ -124,7 +124,7 @@ Usage:
 $ mdast-toc Readme.md -o Readme.md
 
 # Pass stdin through mdast-toc, with mdast options, and write to stdout
-$ cat Docs.md | mdast-toc --option setext > Docs-new.md
+$ cat Docs.md | mdast-toc --setting setext > Docs-new.md
 
 # Use other plugins
 $ npm install mdast-usage
