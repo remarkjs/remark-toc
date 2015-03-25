@@ -55,8 +55,9 @@
     "make": "npm run lint && npm run test-coverage",
     "bundle": "browserify index.js --ignore unicode/category/So -s mdastTOC > mdast-toc.js",
     "postbundle": "esmangle mdast-toc.js > mdast-toc.min.js",
-    "build-readme": "mdast --use mdast-usage --use index.js -o Readme.md Readme.md",
-    "build": "npm run bundle && npm run build-readme",
+    "build-md": "mdast . --output",
+    "build-history": "mdast History.md --no-ignore --setting setext --output",
+    "build": "npm run bundle && npm run build-md && npm run build-history",
     "prepublish": "npm run build"
   }
 }
