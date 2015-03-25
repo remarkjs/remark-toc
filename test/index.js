@@ -49,9 +49,9 @@ describe('mdast-toc()', function () {
         assert(typeof mdastTOC === 'function');
     });
 
-    it('should throw if not passed a node', function () {
-        assert.throws(function () {
-            mdastTOC(true);
+    it('should not throw if not passed options', function () {
+        assert.doesNotThrow(function () {
+            mdastTOC(mdast);
         });
     });
 });

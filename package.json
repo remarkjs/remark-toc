@@ -25,7 +25,7 @@
   },
   "author": "Titus Wormer <tituswormer@gmail.com>",
   "peerDependencies": {
-    "mdast": ">=0.1.10"
+    "mdast": ">=0.14.0-rc.1"
   },
   "devDependencies": {
     "browserify": "^9.0.0",
@@ -36,7 +36,7 @@
     "istanbul": "^0.3.0",
     "jscs": "^1.0.0",
     "jscs-jsdoc": "^0.4.0",
-    "mdast": "^0.11.0",
+    "mdast": "^0.14.0-rc.1",
     "mdast-usage": "^0.2.0",
     "mocha": "^2.0.0",
     "summarize-markdown": "^0.3.0"

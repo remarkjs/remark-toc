@@ -255,7 +255,7 @@ function contents(map) {
  *
  * @param {Node} node
  */
-function toc(node) {
+function transformer(node) {
     var result = search(node);
 
     if (result.index === null || !result.map.length) {
@@ -273,8 +273,17 @@ function toc(node) {
     );
 }
 
+/**
+ * Attacher.
+ *
+ * @return {function(node)}
+ */
+function attacher() {
+    return transformer;
+}
+
 /*
- * Expose `toc`.
+ * Expose.
  */
 
-module.exports = toc;
+module.exports = attacher;
