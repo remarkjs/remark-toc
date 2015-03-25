@@ -43,7 +43,6 @@ UMD (globals/AMD/CommonJS) ([uncompressed](mdast-toc.js) and [compressed](mdast-
 -   [Usage](#usage)
 -   [API](#api)
     -   [mdast.use(toc)](#mdastusetoc)
--   [CLI](#cli)
 -   [License](#license)
 
 ## Usage
@@ -75,7 +74,6 @@ Yields:
 -   [Usage](#usage)
 -   [API](#api)
     -   [mdast.use(toc)](#mdastusetoc)
--   [CLI](#cli)
 -   [License](#license)
 ```
 
@@ -89,47 +87,6 @@ Adds a [Table of Contents](#table-of-contents) to a Markdown document.
 -   Removes all following contents until an equal or higher heading is found;
 -   Inserts a list representation of the hierarchy of following headings;
 -   Adds links to following headings, using the same slugs as GitHub.
-
-## CLI
-
-A simple wrapper around `mdast --use mdast-toc`.
-
-Install:
-
-```bash
-$ npm install --global mdast-toc
-```
-
-Use:
-
-```text
-Usage: mdast-toc [mdast options]
-
-Generate a Table of Contents (TOC) for Markdown files
-
-Options:
-
-  -h, --help            output usage information
-  -v, --version         output version number
-
-A wrapper around `mdast --use mdast-toc`
-
-Help for mdast:
-
-  https://github.com/wooorm/mdast
-
-Usage:
-
-# Pass `Readme.md` through mdast-toc
-$ mdast-toc Readme.md -o Readme.md
-
-# Pass stdin through mdast-toc, with mdast options, and write to stdout
-$ cat Docs.md | mdast-toc --setting setext > Docs-new.md
-
-# Use other plugins
-$ npm install mdast-usage
-$ mdast-toc --use mdast-usage Readme.md
-```
 
 ## License
 

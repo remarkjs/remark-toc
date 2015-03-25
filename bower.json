@@ -36,7 +36,6 @@
     "node_modules/",
     "test/",
     "build.js",
-    "cli.js",
     "example.js",
     "index.js",
     "component.json",
