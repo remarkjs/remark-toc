@@ -1,6 +1,8 @@
 {
   "plugins": [
-    "mdast-usage",
+    "github",
+    "usage",
+    "yaml-config",
     "./"
   ],
   "settings": {
