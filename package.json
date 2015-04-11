@@ -1,6 +1,6 @@
 {
   "name": "mdast-toc",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Generate a Table of Contents (TOC) for Markdown files",
   "license": "MIT",
   "keywords": [

@@ -3,6 +3,14 @@ mdast:
   setext: true
 ---
 
+0.3.0 / 2015-04-11
+==================
+
+*   Add mdast-github, mdst-yaml-config as dev-dependencies ([2adaf3a](https://github.com/wooorm/mdast-toc/commit/2adaf3a))
+*   Add support for custom libraries, headings ([0409c42](https://github.com/wooorm/mdast-toc/commit/0409c42))
+*   Update eslint ([fbf1829](https://github.com/wooorm/mdast-toc/commit/fbf1829))
+*   Update mdast ([c9e114e](https://github.com/wooorm/mdast-toc/commit/c9e114e))
+
 0.2.0 / 2015-03-25
 ==================
 
