@@ -17,7 +17,8 @@
     "mdast"
   ],
   "dependencies": {
-    "slug": "^0.8.0"
+    "repeat-string": "^1.5.0",
+    "slugg": "^0.1.0"
   },
   "repository": {
     "type": "git",
@@ -39,7 +40,8 @@
     "mdast": "^0.17.0",
     "mdast-usage": "^0.2.0",
     "mocha": "^2.0.0",
-    "summarize-markdown": "^0.3.0"
+    "slug": "^0.8.0",
+    "to-slug-case": "^0.1.0"
   },
   "scripts": {
     "test-api": "mocha --check-leaks test/index.js",
@@ -53,7 +55,7 @@
     "lint-style": "jscs --reporter inline index.js example.js test/index.js",
     "lint": "npm run lint-api && npm run lint-test && npm run lint-script && npm run lint-style",
     "make": "npm run lint && npm run test-coverage",
-    "bundle": "browserify index.js --ignore unicode/category/So -s mdastTOC > mdast-toc.js",
+    "bundle": "browserify index.js --no-builtins -s mdastTOC > mdast-toc.js",
     "postbundle": "esmangle mdast-toc.js > mdast-toc.min.js",
     "build-md": "mdast . --output",
     "build-history": "mdast History.md --no-ignore --setting setext --output",

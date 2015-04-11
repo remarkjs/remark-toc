@@ -16,8 +16,12 @@
     "generation",
     "mdast"
   ],
+  "dependencies": {
+    "bengourley/slugg": "master",
+    "jonschlinkert/repeat-string": "^1.5.2"
+  },
   "repository": "wooorm/mdast-toc",
   "scripts": [
-    "mdast-toc.js"
+    "index.js"
   ]
 }

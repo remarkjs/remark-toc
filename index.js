@@ -4,7 +4,71 @@
  * Dependencies.
  */
 
-var slug = require('slug');
+var repeat = require('repeat-string');
+
+var slugg = null;
+var fs = {};
+var path = {};
+var proc = {};
+
+try {
+    slugg = require('slugg');
+} catch (exception) {/* empty */}
+
+try {
+    fs = require('fs');
+} catch (exception) {/* empty */}
+
+try {
+    path = require('path');
+} catch (exception) {/* empty */}
+
+/*
+ * Hide process use from browserify and component.
+ */
+
+/* istanbul ignore else */
+if (typeof global !== 'undefined' && global.process) {
+    proc = global.process;
+}
+
+/*
+ * Methods.
+ */
+
+var exists = fs.existsSync;
+var resolve = path.resolve;
+
+/*
+ * Constants.
+ */
+
+var MODULES = 'node_modules';
+var EMPTY = '';
+var HEADING = 'heading';
+var LIST = 'list';
+var LIST_ITEM = 'listItem';
+var PARAGRAPH = 'paragraph';
+var LINK = 'link';
+var TEXT = 'text';
+var EXTENSION = '.js';
+var NPM = 'npm';
+var GITHUB = 'github';
+var SLUGG = 'slugg';
+var DASH = '-';
+
+var DEFAULT_HEADING = 'toc|table[ -]of[ -]contents?';
+var DEFAULT_LIBRARY = GITHUB;
+
+/**
+ * Transform a string into an applicable expression.
+ *
+ * @param {string} value
+ * @return {RegExp}
+ */
+function toExpression(value) {
+    return new RegExp('^(' + value + ')$', 'i');
+}
 
 /**
  * Get the value of `node`.
@@ -15,7 +79,7 @@ var slug = require('slug');
 function getValue(node) {
     return node &&
         (node.value ? node.value :
-        (node.alt ? node.alt : node.title)) || '';
+        (node.alt ? node.alt : node.title)) || EMPTY;
 }
 
 /**
@@ -28,8 +92,8 @@ function getValue(node) {
  */
 function toString(node) {
     return getValue(node) ||
-        (node.children && node.children.map(toString).join('')) ||
-        '';
+        (node.children && node.children.map(toString).join(EMPTY)) ||
+        EMPTY;
 }
 
 /**
@@ -38,9 +102,9 @@ function toString(node) {
  * @param {Node} node
  * @return {boolean}
  */
-function isOpeningHeading(node, depth) {
-    return depth === null && node && node.type === 'heading' &&
-        /^(toc|table[ -]of[ -]contents?)$/i.test(toString(node));
+function isOpeningHeading(node, depth, expression) {
+    return depth === null && node && node.type === HEADING &&
+        expression.test(toString(node));
 }
 
 /**
@@ -51,7 +115,7 @@ function isOpeningHeading(node, depth) {
  * @return {boolean}
  */
 function isClosingHeading(node, depth) {
-    return depth && node && node.type === 'heading' && node.depth <= depth;
+    return depth && node && node.type === HEADING && node.depth <= depth;
 }
 
 /**
@@ -60,7 +124,7 @@ function isClosingHeading(node, depth) {
  * @param {Node} root
  * @return {Object}
  */
-function search(root) {
+function search(root, expression) {
     var index = -1;
     var length = root.children.length;
     var depth = null;
@@ -80,13 +144,13 @@ function search(root) {
                 lookingForToc = false;
             }
 
-            if (isOpeningHeading(child, depth)) {
+            if (isOpeningHeading(child, depth, expression)) {
                 headingIndex = index + 1;
                 depth = child.depth;
             }
         }
 
-        if (!lookingForToc && child.type === 'heading') {
+        if (!lookingForToc && child.type === HEADING) {
             value = toString(child);
 
             if (value) {
@@ -123,7 +187,7 @@ function search(root) {
  */
 function list() {
     return {
-        'type': 'list',
+        'type': LIST,
         'ordered': false,
         'children': []
     };
@@ -136,7 +200,7 @@ function list() {
  */
 function listItem() {
     return {
-        'type': 'listItem',
+        'type': LIST_ITEM,
         'loose': false,
         'children': []
     };
@@ -148,7 +212,7 @@ function listItem() {
  * @param {Object} node
  * @param {Object} parent
  */
-function insert(node, parent) {
+function insert(node, parent, library) {
     var children = parent.children;
     var last = children[children.length - 1];
     var item;
@@ -157,15 +221,15 @@ function insert(node, parent) {
         item = listItem();
 
         item.children.push({
-            'type': 'paragraph',
+            'type': PARAGRAPH,
             'children': [
                 {
-                    'type': 'link',
+                    'type': LINK,
                     'title': null,
-                    'href': '#' + slug(node.value.toLowerCase()),
+                    'href': '#' + library(node.value),
                     'children': [
                         {
-                            'type': 'text',
+                            'type': TEXT,
                             'value': node.value
                         }
                     ]
@@ -174,25 +238,25 @@ function insert(node, parent) {
         });
 
         children.push(item);
-    } else if (last && last.type === 'listItem') {
-        insert(node, last);
-    } else if (last && last.type === 'list') {
+    } else if (last && last.type === LIST_ITEM) {
+        insert(node, last, library);
+    } else if (last && last.type === LIST) {
         node.depth--;
 
-        insert(node, last);
-    } else if (parent.type === 'list') {
+        insert(node, last, library);
+    } else if (parent.type === LIST) {
         item = listItem();
 
         item.loose = true;
 
-        insert(node, item);
+        insert(node, item, library);
 
         children.push(item);
     } else {
         item = list();
         node.depth--;
 
-        insert(node, item);
+        insert(node, item, library);
 
         children.push(item);
     }
@@ -204,7 +268,7 @@ function insert(node, parent) {
  * @param {Array.<Object>} map
  * @return {Object}
  */
-function contents(map) {
+function contents(map, library) {
     var minDepth = Infinity;
     var index = -1;
     var length = map.length;
@@ -243,34 +307,113 @@ function contents(map) {
     index = -1;
 
     while (++index < length) {
-        insert(map[index], table);
+        insert(map[index], table, library);
     }
 
     return table;
 }
 
 /**
- * Adds an example section based on a valid example
- * JavaScript document to a `Usage` section.
+ * Find a library.
  *
- * @param {Node} node
+ * @param {string} pathlike
+ * @return {Object}
  */
-function transformer(node) {
-    var result = search(node);
+function loadLibrary(pathlike) {
+    var cwd;
+    var local;
+    var npm;
+    var plugin;
 
-    if (result.index === null || !result.map.length) {
-        return;
+    if (pathlike === SLUGG && slugg) {
+        return slugg;
     }
 
-    /*
-     * Add markdown.
-     */
+    cwd = proc.cwd && proc.cwd();
 
-    node.children = [].concat(
-        node.children.slice(0, result.index),
-        contents(result.map),
-        node.children.slice(result.index)
-    );
+    /* istanbul ignore if */
+    if (!cwd) {
+        throw new Error('Cannot lazy load library when not in node');
+    }
+
+    local = resolve(cwd, pathlike);
+    npm = resolve(cwd, MODULES, pathlike);
+
+    if (exists(local) || exists(local + EXTENSION)) {
+        plugin = local;
+    } else if (exists(npm)) {
+        plugin = npm;
+    } else {
+        plugin = pathlike;
+    }
+
+    return require(plugin);
+}
+
+/**
+ * Wraps `slugg` to generate slugs just like npm would.
+ *
+ * @see https://github.com/npm/marky-markdown/blob/9761c95/lib/headings.js#L17
+ *
+ * @param {function(string): string} library
+ * @return {function(string): string}
+ */
+function npmFactory(library) {
+    /**
+     * Generate slugs just like npm would.
+     *
+     * @param {string} value
+     * @return {string}
+     */
+    function npm(value) {
+        return library(value).replace(/[<>]/g, '').toLowerCase();
+    }
+
+    return npm;
+}
+
+/**
+ * Wraps `slugg` to generate slugs just like GitHub would.
+ *
+ * @param {function(string): string} library
+ * @return {function(string): string}
+ */
+function githubFactory(library) {
+    /**
+     * Hacky.  Sometimes `slugg` uses `replacement` as an
+     * argument to `String#replace()`, and sometimes as
+     * a literal string.
+     *
+     * @param {string} $0
+     * @return {string}
+     */
+    function separator($0) {
+        var match = $0.match(/\s/g);
+
+        return repeat(DASH, match ? match.length : 0);
+    }
+
+    /**
+     * @see seperator
+     * @return {string}
+     */
+    function dash() {
+        return DASH;
+    }
+
+    separator.toString = dash;
+
+    /**
+     * Generate slugs just like GitHub would.
+     *
+     * @param {string} value
+     * @return {string}
+     */
+    function github(value) {
+        return library(value, separator).toLowerCase();
+    }
+
+    return github;
 }
 
 /**
@@ -278,7 +421,51 @@ function transformer(node) {
  *
  * @return {function(node)}
  */
-function attacher() {
+function attacher(mdast, options) {
+    var settings = options || {};
+    var heading = toExpression(settings.heading || DEFAULT_HEADING);
+    var library = settings.library || DEFAULT_LIBRARY;
+    var isNPM = library === NPM;
+    var isGitHub = library === GITHUB;
+
+    if (isNPM || isGitHub) {
+        library = SLUGG;
+    }
+
+    if (typeof library === 'string') {
+        library = loadLibrary(library);
+    }
+
+    if (isNPM) {
+        library = npmFactory(library);
+    } else if (isGitHub) {
+        library = githubFactory(library);
+    }
+
+    /**
+     * Adds an example section based on a valid example
+     * JavaScript document to a `Usage` section.
+     *
+     * @param {Node} node
+     */
+    function transformer(node) {
+        var result = search(node, heading);
+
+        if (result.index === null || !result.map.length) {
+            return;
+        }
+
+        /*
+         * Add markdown.
+         */
+
+        node.children = [].concat(
+            node.children.slice(0, result.index),
+            contents(result.map, library),
+            node.children.slice(result.index)
+        );
+    }
+
     return transformer;
 }
 

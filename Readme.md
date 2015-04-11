@@ -42,7 +42,7 @@ UMD (globals/AMD/CommonJS) ([uncompressed](mdast-toc.js) and [compressed](mdast-
 
 *   [Usage](#usage)
 *   [API](#api)
-    *   [mdast.use(toc)](#mdastusetoc)
+    *   [mdast.use(toc, options)](#mdastusetoc-options)
 *   [License](#license)
 
 ## Usage
@@ -59,7 +59,7 @@ var readme = fs.readFileSync('Readme.md', 'utf-8');
 Parse markdown (this TOC is the 14th child).
 
 ```javascript
-var contents = mdast.parse(readme).children[14];
+var contents = mdast.run(mdast.parse(readme)).children[14];
 ```
 
 Stringify:
@@ -73,13 +73,13 @@ Yields:
 ```markdown
 -   [Usage](#usage)
 -   [API](#api)
-    -   [mdast.use(toc)](#mdastusetoc)
+    -   [mdast.use(toc, options)](#mdastusetoc-options)
 -   [License](#license)
 ```
 
 ## API
 
-### [mdast](https://github.com/wooorm/mdast#api).[use](https://github.com/wooorm/mdast#mdastuseplugin)(toc)
+### [mdast](https://github.com/wooorm/mdast#api).[use](https://github.com/wooorm/mdast#mdastuseplugin-options)(toc, options)
 
 Adds a [Table of Contents](#table-of-contents) to a Markdown document.
 
@@ -87,6 +87,21 @@ Adds a [Table of Contents](#table-of-contents) to a Markdown document.
 *   Removes all following contents until an equal or higher heading is found;
 *   Inserts a list representation of the hierarchy of following headings;
 *   Adds links to following headings, using the same slugs as GitHub.
+
+**Signatures**
+
+*   `mdast.use(toc, options?)`.
+
+**Parameters**
+
+*   `toc` — This plugin;
+*   `options` (`Object?`) — Settings:
+    *   `library` (`string?` or `Function?`, default: `"github"`):
+        *   `"github"` — Slugs just like GitHub;
+        *   `"npm"` — Slugs just like npm (but npm doesn’t support links in headings, [yet](https://github.com/npm/marky-markdown/pull/38));
+        *   `string` (e.g., `"slug"`, `"slugg"`) — Library to require (not in the browser);
+        *   `Function` (e.g., `require("slugg")"`) — Library to use.
+    *   `heading` (`string?`, default: `"toc|table[ -]of[ -]contents?"`) — heading to look for, wrapped in `new RegExp('^(' + value + ')$', 'i');`.
 
 ## License
 

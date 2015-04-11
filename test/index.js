@@ -4,7 +4,7 @@
  * Dependencies.
  */
 
-var mdastTOC = require('..');
+var toc = require('..');
 var mdast = require('mdast');
 var assert = require('assert');
 var fs = require('fs');
@@ -17,12 +17,15 @@ var chalk = require('chalk');
  */
 
 var read = fs.readFileSync;
+var exists = fs.existsSync;
+var join = path.join;
+var stderr = global.process.stderr;
 
 /*
  * Constants.
  */
 
-var ROOT = path.join(__dirname, 'fixtures');
+var ROOT = join(__dirname, 'fixtures');
 
 /*
  * Fixtures.
@@ -36,8 +39,8 @@ var fixtures = fs.readdirSync(ROOT);
  * @param {string} value
  * @return {string}
  */
-function toc(value) {
-    return mdast.stringify(mdast.use(mdastTOC).parse(value));
+function process(value, config) {
+    return mdast().use(toc, config).process(value);
 }
 
 /*
@@ -46,13 +49,73 @@ function toc(value) {
 
 describe('mdast-toc()', function () {
     it('should be a function', function () {
-        assert(typeof mdastTOC === 'function');
+        assert(typeof toc === 'function');
     });
 
     it('should not throw if not passed options', function () {
         assert.doesNotThrow(function () {
-            mdastTOC(mdast);
+            toc(mdast);
         });
+    });
+
+    it('should accept `library` as a function', function () {
+        var input = [
+            '# Normal',
+            '',
+            '## Table of Contents',
+            '',
+            '# I ♥ unicode',
+            ''
+        ].join('\n');
+
+        var output = [
+            '# Normal',
+            '',
+            '## Table of Contents',
+            '',
+            '-   [I ♥ unicode](#i-unicode)',
+            '',
+            '# I ♥ unicode',
+            ''
+        ].join('\n');
+
+        assert(process(input, {
+            'library': require('to-slug-case')
+        }) === output);
+    });
+
+    it('should accept `library` as a file', function () {
+        var input = [
+            '# Normal',
+            '',
+            '## Table of Contents',
+            '',
+            '# I ♥ unicode',
+            ''
+        ].join('\n');
+
+        var output = [
+            '# Normal',
+            '',
+            '## Table of Contents',
+            '',
+            '-   [I ♥ unicode](#i-unicode)',
+            '',
+            '# I ♥ unicode',
+            ''
+        ].join('\n');
+
+        assert(process(input, {
+            'library': 'node_modules/to-slug-case/index'
+        }) === output);
+    });
+
+    it('should throw when a plugin cannot be found', function () {
+        assert.throws(function () {
+            process('', {
+                'library': 'foo'
+            });
+        }, /Cannot find module 'foo'/);
     });
 });
 
@@ -63,11 +126,15 @@ describe('mdast-toc()', function () {
  */
 function describeFixture(fixture) {
     it('should work on `' + fixture + '`', function () {
-        var filepath = ROOT + '/' + fixture;
-        var output = read(filepath + '/Output.md', 'utf-8');
-        var input = read(filepath + '/Input.md', 'utf-8');
-        var result = toc(input);
+        var filepath = join(ROOT, fixture);
+        var output = read(join(filepath, 'Output.md'), 'utf-8');
+        var input = read(join(filepath, 'Input.md'), 'utf-8');
+        var config = join(filepath, 'config.json');
+        var result;
         var difference;
+
+        config = exists(config) ? JSON.parse(read(config, 'utf-8')) : {};
+        result = process(input, config);
 
         try {
             assert(result === output);
@@ -78,7 +145,7 @@ function describeFixture(fixture) {
                 var colour = change.added ?
                     'green' : change.removed ? 'red' : 'dim';
 
-                process.stderr.write(chalk[colour](change.value));
+                stderr.write(chalk[colour](change.value));
             });
 
             throw exception;
