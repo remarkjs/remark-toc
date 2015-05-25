@@ -3,6 +3,18 @@ mdast:
   setext: true
 ---
 
+0.4.0 / 2015-05-25
+==================
+
+*   Fix style of generated TOCs ([d0eaf12](https://github.com/wooorm/mdast-toc/commit/d0eaf12))
+*   Update slug ([e2a1a00](https://github.com/wooorm/mdast-toc/commit/e2a1a00))
+*   Update mdast ([91c5475](https://github.com/wooorm/mdast-toc/commit/91c5475))
+*   Update mdast-github ([d49a037](https://github.com/wooorm/mdast-toc/commit/d49a037))
+*   Update jscs-jsdoc ([9bc6b8a](https://github.com/wooorm/mdast-toc/commit/9bc6b8a))
+*   Update eslint ([67049ff](https://github.com/wooorm/mdast-toc/commit/67049ff))
+*   Update browserify ([9a3d923](https://github.com/wooorm/mdast-toc/commit/9a3d923))
+*   Fix lock for component ([9ac39bc](https://github.com/wooorm/mdast-toc/commit/9ac39bc))
+
 0.3.0 / 2015-04-11
 ==================
 
