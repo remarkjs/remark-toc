@@ -214,7 +214,10 @@ function listItem() {
  */
 function insert(node, parent, library) {
     var children = parent.children;
-    var last = children[children.length - 1];
+    var index = -1;
+    var length = children.length;
+    var last = children[length - 1];
+    var isLoose = false;
     var item;
 
     if (node.depth === 1) {
@@ -247,8 +250,6 @@ function insert(node, parent, library) {
     } else if (parent.type === LIST) {
         item = listItem();
 
-        item.loose = true;
-
         insert(node, item, library);
 
         children.push(item);
@@ -259,6 +260,28 @@ function insert(node, parent, library) {
         insert(node, item, library);
 
         children.push(item);
+    }
+
+    /*
+     * Properly style list-items with new lines.
+     */
+
+    if (parent.type === LIST_ITEM) {
+        parent.loose = children.length > 1;
+    } else {
+        while (++index < length) {
+            if (children[index].loose) {
+                isLoose = true;
+
+                break;
+            }
+        }
+
+        index = -1;
+
+        while (++index < length) {
+            children[index].loose = isLoose;
+        }
     }
 }
 

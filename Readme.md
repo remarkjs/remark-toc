@@ -41,8 +41,11 @@ UMD (globals/AMD/CommonJS) ([uncompressed](mdast-toc.js) and [compressed](mdast-
 ## Table of Contents
 
 *   [Usage](#usage)
+
 *   [API](#api)
+
     *   [mdast.use(toc, options)](#mdastusetoc-options)
+
 *   [License](#license)
 
 ## Usage
@@ -72,8 +75,11 @@ Yields:
 
 ```markdown
 -   [Usage](#usage)
+
 -   [API](#api)
+
     -   [mdast.use(toc, options)](#mdastusetoc-options)
+
 -   [License](#license)
 ```
 
