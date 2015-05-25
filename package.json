@@ -42,7 +42,7 @@
     "mdast-usage": "^0.2.0",
     "mdast-yaml-config": "^0.1.0",
     "mocha": "^2.0.0",
-    "slug": "^0.8.0",
+    "slug": "^0.9.0",
     "to-slug-case": "^0.1.0"
   },
   "scripts": {
