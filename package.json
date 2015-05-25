@@ -29,7 +29,7 @@
     "mdast": ">=0.17.0"
   },
   "devDependencies": {
-    "browserify": "^9.0.0",
+    "browserify": "^10.0.0",
     "chalk": "^1.0.0",
     "diff": "^1.2.2",
     "eslint": "^0.18.0",
