@@ -57,7 +57,7 @@ Require/read dependencies:
 var toc = require('mdast-toc');
 var fs = require('fs');
 var mdast = require('mdast').use(toc);
-var readme = fs.readFileSync('Readme.md', 'utf-8');
+var readme = fs.readFileSync('readme.md', 'utf-8');
 ```
 
 Parse markdown (this TOC is the 14th child).
