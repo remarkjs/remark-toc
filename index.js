@@ -413,6 +413,10 @@ function githubFactory(library) {
     function separator($0) {
         var match = $0.match(/\s/g);
 
+        if ($0 === DASH) {
+            return $0;
+        }
+
         return repeat(DASH, match ? match.length : 0);
     }
 
