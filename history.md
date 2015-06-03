@@ -3,6 +3,13 @@ mdast:
   setext: true
 ---
 
+0.4.1 / 2015-06-03
+==================
+
+*   Refactor `readme.md` style ([ecdd359](https://github.com/wooorm/mdast-toc/commit/ecdd359))
+*   Rename `History.md`, `Readme.md` to lower-case ([c5d268e](https://github.com/wooorm/mdast-toc/commit/c5d268e))
+*   Fix liter-dash support in GitHub support ([e77ecc7](https://github.com/wooorm/mdast-toc/commit/e77ecc7))
+
 0.4.0 / 2015-05-25
 ==================
 
