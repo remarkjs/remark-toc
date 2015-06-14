@@ -1,4 +1,13 @@
 {
+  "excludeFiles": [
+    "build/",
+    "components/",
+    "coverage/",
+    "node_modules/",
+    "build.js",
+    "mdast-toc.js",
+    "mdast-toc.min.js"
+  ],
   "plugins": [
     "jscs-jsdoc"
   ],
