@@ -26,7 +26,7 @@
   },
   "author": "Titus Wormer <tituswormer@gmail.com>",
   "peerDependencies": {
-    "mdast": ">=0.21.0"
+    "mdast": ">=0.22.0"
   },
   "devDependencies": {
     "browserify": "^10.0.0",
@@ -37,10 +37,10 @@
     "istanbul": "^0.3.0",
     "jscs": "^1.0.0",
     "jscs-jsdoc": "^1.0.0",
-    "mdast": "^0.21.0",
+    "mdast": "^0.22.0",
     "mdast-github": "^0.3.0",
-    "mdast-usage": "^0.2.0",
-    "mdast-yaml-config": "^0.1.0",
+    "mdast-usage": "^0.3.0",
+    "mdast-yaml-config": "^0.2.0",
     "mocha": "^2.0.0",
     "slug": "^0.9.0",
     "to-slug-case": "^0.1.0"
@@ -59,9 +59,8 @@
     "make": "npm run lint && npm run test-coverage",
     "bundle": "browserify index.js --no-builtins -s mdastTOC > mdast-toc.js",
     "postbundle": "esmangle mdast-toc.js > mdast-toc.min.js",
-    "build-md": "mdast . --output",
-    "build-history": "mdast history.md --no-ignore --setting setext --output",
-    "build": "npm run bundle && npm run build-md && npm run build-history",
+    "build-md": "mdast . --output --quiet",
+    "build": "npm run bundle && npm run build-md",
     "prepublish": "npm run build"
   }
 }
