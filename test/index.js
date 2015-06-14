@@ -129,8 +129,8 @@ describe('mdast-toc()', function () {
 function describeFixture(fixture) {
     it('should work on `' + fixture + '`', function () {
         var filepath = join(ROOT, fixture);
-        var output = read(join(filepath, 'Output.md'), 'utf-8');
-        var input = read(join(filepath, 'Input.md'), 'utf-8');
+        var output = read(join(filepath, 'output.md'), 'utf-8');
+        var input = read(join(filepath, 'input.md'), 'utf-8');
         var config = join(filepath, 'config.json');
         var result;
         var difference;

@@ -39,6 +39,7 @@
     "jscs-jsdoc": "^1.0.0",
     "mdast": "^0.22.0",
     "mdast-github": "^0.3.0",
+    "mdast-lint": "^0.2.0",
     "mdast-usage": "^0.3.0",
     "mdast-yaml-config": "^0.2.0",
     "mocha": "^2.0.0",
