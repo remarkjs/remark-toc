@@ -11,8 +11,6 @@ var mdast = require('mdast');
 var assert = require('assert');
 var fs = require('fs');
 var path = require('path');
-var diff = require('diff');
-var chalk = require('chalk');
 
 /*
  * Methods.
@@ -21,7 +19,6 @@ var chalk = require('chalk');
 var read = fs.readFileSync;
 var exists = fs.existsSync;
 var join = path.join;
-var stderr = global.process.stderr;
 
 /*
  * Constants.
@@ -43,6 +40,24 @@ var fixtures = fs.readdirSync(ROOT);
  */
 function process(value, config) {
     return mdast().use(toc, config).process(value);
+}
+
+/**
+ * Assert two strings.
+ *
+ * @param {string} actual
+ * @param {string} expected
+ * @throws {Error} - When not equal.
+ */
+function assertion(actual, expected) {
+    try {
+        assert(actual === expected);
+    } catch (exception) {
+        exception.expected = expected;
+        exception.actual = actual;
+
+        throw exception;
+    }
 }
 
 /*
@@ -81,9 +96,9 @@ describe('mdast-toc()', function () {
             ''
         ].join('\n');
 
-        assert(process(input, {
+        assertion(process(input, {
             'library': require('to-slug-case')
-        }) === output);
+        }), output);
     });
 
     it('should accept `library` as a file', function () {
@@ -107,9 +122,9 @@ describe('mdast-toc()', function () {
             ''
         ].join('\n');
 
-        assert(process(input, {
+        assertion(process(input, {
             'library': 'node_modules/to-slug-case/index'
-        }) === output);
+        }), output);
     });
 
     it('should add `attributes.id` to headings', function () {
@@ -169,25 +184,11 @@ function describeFixture(fixture) {
         var input = read(join(filepath, 'input.md'), 'utf-8');
         var config = join(filepath, 'config.json');
         var result;
-        var difference;
 
         config = exists(config) ? JSON.parse(read(config, 'utf-8')) : {};
         result = process(input, config);
 
-        try {
-            assert(result === output);
-        } catch (exception) {
-            difference = diff.diffLines(output, result);
-
-            difference.forEach(function (change) {
-                var colour = change.added ?
-                    'green' : change.removed ? 'red' : 'dim';
-
-                stderr.write(chalk[colour](change.value));
-            });
-
-            throw exception;
-        }
+        assertion(result, output);
     });
 }
 
