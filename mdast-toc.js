@@ -126,9 +126,10 @@ function isClosingHeading(node, depth) {
  * @param {Node} root
  * @param {RegExp} expression
  * @param {function(string): string} library
+ * @param {number} maxDepth
  * @return {Object}
  */
-function search(root, expression, library) {
+function search(root, expression, library, maxDepth) {
     var index = -1;
     var length = root.children.length;
     var depth = null;
@@ -166,7 +167,7 @@ function search(root, expression, library) {
             }
         }
 
-        if (!lookingForToc && value) {
+        if (!lookingForToc && value && child.depth <= maxDepth) {
             map.push({
                 'depth': child.depth,
                 'value': value
@@ -466,6 +467,7 @@ function attacher(mdast, options) {
     var library = settings.library || DEFAULT_LIBRARY;
     var isNPM = library === NPM;
     var isGitHub = library === GITHUB;
+    var depth = settings.maxDepth || 6;
 
     if (isNPM || isGitHub) {
         library = SLUGG;
@@ -488,7 +490,7 @@ function attacher(mdast, options) {
      * @param {Node} node
      */
     function transformer(node) {
-        var result = search(node, heading, library);
+        var result = search(node, heading, library, depth);
 
         if (result.index === null || !result.map.length) {
             return;

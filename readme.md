@@ -125,8 +125,13 @@ Adds a [Table of Contents](#table-of-contents) to a Markdown document.
             — Library to use.
 
     *   `heading` (`string?`, default: `"toc|table[ -]of[ -]contents?"`)
-        — heading to look for, wrapped in
+        — Heading to look for, wrapped in
         `new RegExp('^(' + value + ')$', 'i');`.
+
+    *   `maxDepth` (`number?`, default: `6`)
+        — Maximum heading depth to include in the table of contents,
+        This is inclusive, thus, when set to `3`, level three headings,
+        are included (those with three hashes, `###`).
 
 ## License
 
