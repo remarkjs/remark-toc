@@ -112,6 +112,42 @@ describe('mdast-toc()', function () {
         }) === output);
     });
 
+    it('should add `attributes.id` to headings', function () {
+        var ast = mdast.parse([
+            '# Normal',
+            '',
+            '## Table of Contents',
+            '',
+            '# Baz',
+            ''
+        ].join('\n'));
+
+        mdast().use(toc).run(ast);
+
+        assert(ast.children[0].attributes.id === 'normal');
+        assert(ast.children[1].attributes.id === 'table-of-contents');
+        assert(ast.children[3].attributes.id === 'baz');
+    });
+
+    it('should not overwrite `attributes` on headings', function () {
+        var ast = mdast.parse([
+            '# Normal',
+            '',
+            '## Table of Contents',
+            '',
+            '# Baz',
+            ''
+        ].join('\n'));
+
+        ast.children[0].attributes = {
+            'class': 'bar'
+        };
+
+        mdast().use(toc).run(ast);
+
+        assert(ast.children[0].attributes.class === 'bar');
+    });
+
     it('should throw when a plugin cannot be found', function () {
         assert.throws(function () {
             process('', {

@@ -122,9 +122,11 @@ function isClosingHeading(node, depth) {
  * Search a node for a location.
  *
  * @param {Node} root
+ * @param {RegExp} expression
+ * @param {function(string): string} library
  * @return {Object}
  */
-function search(root, expression) {
+function search(root, expression, library) {
     var index = -1;
     var length = root.children.length;
     var depth = null;
@@ -138,6 +140,18 @@ function search(root, expression) {
     while (++index < length) {
         child = root.children[index];
 
+        if (child.type !== HEADING) {
+            continue;
+        }
+
+        value = toString(child);
+
+        if (!child.attributes) {
+            child.attributes = {};
+        }
+
+        child.attributes.id = library(value);
+
         if (lookingForToc) {
             if (isClosingHeading(child, depth)) {
                 closingIndex = index;
@@ -150,15 +164,11 @@ function search(root, expression) {
             }
         }
 
-        if (!lookingForToc && child.type === HEADING) {
-            value = toString(child);
-
-            if (value) {
-                map.push({
-                    'depth': child.depth,
-                    'value': value
-                });
-            }
+        if (!lookingForToc && value) {
+            map.push({
+                'depth': child.depth,
+                'value': value
+            });
         }
     }
 
@@ -298,7 +308,7 @@ function contents(map, library) {
     var table;
 
     /*
-     * Fin minimum depth.
+     * Find minimum depth.
      */
 
     while (++index < length) {
@@ -476,7 +486,7 @@ function attacher(mdast, options) {
      * @param {Node} node
      */
     function transformer(node) {
-        var result = search(node, heading);
+        var result = search(node, heading, library);
 
         if (result.index === null || !result.map.length) {
             return;
