@@ -5,6 +5,14 @@ mdast:
 
 <!--lint disable no-multiple-toplevel-headings-->
 
+0.5.0 / 2015-06-21
+==================
+
+*   Add `maxDepth` option to specify which levels are included ([24163f6](https://github.com/wooorm/mdast-toc/commit/24163f6))
+*   Refactor tests to use mochas string diffing ([81a288a](https://github.com/wooorm/mdast-toc/commit/81a288a))
+*   Add slugs to `attributes.id` on headings ([042a7fe](https://github.com/wooorm/mdast-toc/commit/042a7fe))
+*   eslint, mdast, mdast-lint ([e411745](https://github.com/wooorm/mdast-toc/commit/e411745))
+
 0.4.2 / 2015-06-14
 ==================
 
