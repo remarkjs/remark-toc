@@ -30,20 +30,20 @@
     "LICENSE"
   ],
   "peerDependencies": {
-    "mdast": ">=0.22.0"
+    "mdast": ">=0.24.0"
   },
   "devDependencies": {
     "browserify": "^10.0.0",
     "chalk": "^1.0.0",
     "diff": "^1.2.2",
-    "eslint": "^0.22.0",
+    "eslint": "^0.23.0",
     "esmangle": "^1.0.0",
     "istanbul": "^0.3.0",
     "jscs": "^1.0.0",
     "jscs-jsdoc": "^1.0.0",
-    "mdast": "^0.22.0",
+    "mdast": "^0.24.0",
     "mdast-github": "^0.3.0",
-    "mdast-lint": "^0.2.0",
+    "mdast-lint": "^0.3.0",
     "mdast-usage": "^0.3.0",
     "mdast-yaml-config": "^0.2.0",
     "mocha": "^2.0.0",
