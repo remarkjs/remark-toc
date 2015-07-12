@@ -56,7 +56,6 @@
     "bundle": "browserify index.js --no-builtins -s mdastTOC > mdast-toc.js",
     "postbundle": "esmangle mdast-toc.js > mdast-toc.min.js",
     "build-md": "mdast . --output --quiet",
-    "build": "npm run bundle && npm run build-md",
-    "prepublish": "npm run build"
+    "build": "npm run bundle && npm run build-md"
   }
 }
