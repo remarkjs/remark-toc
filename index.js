@@ -4,61 +4,20 @@
  * Dependencies.
  */
 
-var repeat = require('repeat-string');
-
-var slugg = null;
-var fs = {};
-var path = {};
-var proc = {};
-
-try {
-    slugg = require('slugg');
-} catch (exception) {/* empty */}
-
-try {
-    fs = require('fs');
-} catch (exception) {/* empty */}
-
-try {
-    path = require('path');
-} catch (exception) {/* empty */}
-
-/*
- * Hide process use from browserify and component.
- */
-
-/* istanbul ignore else */
-if (typeof global !== 'undefined' && global.process) {
-    proc = global.process;
-}
-
-/*
- * Methods.
- */
-
-var exists = fs.existsSync;
-var resolve = path.resolve;
+var slug = require('mdast-slug');
+var toString = require('mdast-util-to-string');
 
 /*
  * Constants.
  */
 
-var MODULES = 'node_modules';
-var EMPTY = '';
 var HEADING = 'heading';
 var LIST = 'list';
 var LIST_ITEM = 'listItem';
 var PARAGRAPH = 'paragraph';
 var LINK = 'link';
 var TEXT = 'text';
-var EXTENSION = '.js';
-var NPM = 'npm';
-var GITHUB = 'github';
-var SLUGG = 'slugg';
-var DASH = '-';
-
 var DEFAULT_HEADING = 'toc|table[ -]of[ -]contents?';
-var DEFAULT_LIBRARY = GITHUB;
 
 /**
  * Transform a string into an applicable expression.
@@ -68,32 +27,6 @@ var DEFAULT_LIBRARY = GITHUB;
  */
 function toExpression(value) {
     return new RegExp('^(' + value + ')$', 'i');
-}
-
-/**
- * Get the value of `node`.
- *
- * @param {Node} node
- * @return {string}
- */
-function getValue(node) {
-    return node &&
-        (node.value ? node.value :
-        (node.alt ? node.alt : node.title)) || EMPTY;
-}
-
-/**
- * Returns the text content of a node.
- * Checks `alt` or `title` when no value or children
- * exist.
- *
- * @param {Node} node
- * @return {string}
- */
-function toString(node) {
-    return getValue(node) ||
-        (node.children && node.children.map(toString).join(EMPTY)) ||
-        EMPTY;
 }
 
 /**
@@ -123,11 +56,10 @@ function isClosingHeading(node, depth) {
  *
  * @param {Node} root
  * @param {RegExp} expression
- * @param {function(string): string} library
  * @param {number} maxDepth
  * @return {Object}
  */
-function search(root, expression, library, maxDepth) {
+function search(root, expression, maxDepth) {
     var index = -1;
     var length = root.children.length;
     var depth = null;
@@ -147,12 +79,6 @@ function search(root, expression, library, maxDepth) {
 
         value = toString(child);
 
-        if (!child.attributes) {
-            child.attributes = {};
-        }
-
-        child.attributes.id = library(value);
-
         if (lookingForToc) {
             if (isClosingHeading(child, depth)) {
                 closingIndex = index;
@@ -168,7 +94,8 @@ function search(root, expression, library, maxDepth) {
         if (!lookingForToc && value && child.depth <= maxDepth) {
             map.push({
                 'depth': child.depth,
-                'value': value
+                'value': value,
+                'id': child.attributes.id
             });
         }
     }
@@ -223,7 +150,7 @@ function listItem() {
  * @param {Object} node
  * @param {Object} parent
  */
-function insert(node, parent, library) {
+function insert(node, parent) {
     var children = parent.children;
     var index = -1;
     var length = children.length;
@@ -240,7 +167,7 @@ function insert(node, parent, library) {
                 {
                     'type': LINK,
                     'title': null,
-                    'href': '#' + library(node.value),
+                    'href': '#' + node.id,
                     'children': [
                         {
                             'type': TEXT,
@@ -253,22 +180,22 @@ function insert(node, parent, library) {
 
         children.push(item);
     } else if (last && last.type === LIST_ITEM) {
-        insert(node, last, library);
+        insert(node, last);
     } else if (last && last.type === LIST) {
         node.depth--;
 
-        insert(node, last, library);
+        insert(node, last);
     } else if (parent.type === LIST) {
         item = listItem();
 
-        insert(node, item, library);
+        insert(node, item);
 
         children.push(item);
     } else {
         item = list();
         node.depth--;
 
-        insert(node, item, library);
+        insert(node, item);
 
         children.push(item);
     }
@@ -302,7 +229,7 @@ function insert(node, parent, library) {
  * @param {Array.<Object>} map
  * @return {Object}
  */
-function contents(map, library) {
+function contents(map) {
     var minDepth = Infinity;
     var index = -1;
     var length = map.length;
@@ -341,117 +268,10 @@ function contents(map, library) {
     index = -1;
 
     while (++index < length) {
-        insert(map[index], table, library);
+        insert(map[index], table);
     }
 
     return table;
-}
-
-/**
- * Find a library.
- *
- * @param {string} pathlike
- * @return {Object}
- */
-function loadLibrary(pathlike) {
-    var cwd;
-    var local;
-    var npm;
-    var plugin;
-
-    if (pathlike === SLUGG && slugg) {
-        return slugg;
-    }
-
-    cwd = proc.cwd && proc.cwd();
-
-    /* istanbul ignore if */
-    if (!cwd) {
-        throw new Error('Cannot lazy load library when not in node');
-    }
-
-    local = resolve(cwd, pathlike);
-    npm = resolve(cwd, MODULES, pathlike);
-
-    if (exists(local) || exists(local + EXTENSION)) {
-        plugin = local;
-    } else if (exists(npm)) {
-        plugin = npm;
-    } else {
-        plugin = pathlike;
-    }
-
-    return require(plugin);
-}
-
-/**
- * Wraps `slugg` to generate slugs just like npm would.
- *
- * @see https://github.com/npm/marky-markdown/blob/9761c95/lib/headings.js#L17
- *
- * @param {function(string): string} library
- * @return {function(string): string}
- */
-function npmFactory(library) {
-    /**
-     * Generate slugs just like npm would.
-     *
-     * @param {string} value
-     * @return {string}
-     */
-    function npm(value) {
-        return library(value).replace(/[<>]/g, '').toLowerCase();
-    }
-
-    return npm;
-}
-
-/**
- * Wraps `slugg` to generate slugs just like GitHub would.
- *
- * @param {function(string): string} library
- * @return {function(string): string}
- */
-function githubFactory(library) {
-    /**
-     * Hacky.  Sometimes `slugg` uses `replacement` as an
-     * argument to `String#replace()`, and sometimes as
-     * a literal string.
-     *
-     * @param {string} $0
-     * @return {string}
-     */
-    function separator($0) {
-        var match = $0.match(/\s/g);
-
-        if ($0 === DASH) {
-            return $0;
-        }
-
-        return repeat(DASH, match ? match.length : 0);
-    }
-
-    /**
-     * @see seperator
-     * @return {string}
-     */
-    function dash() {
-        return DASH;
-    }
-
-    separator.toString = dash;
-
-    /**
-     * Generate slugs just like GitHub would.
-     *
-     * @param {string} value
-     * @return {string}
-     */
-    function github(value) {
-        return library(value, separator).toLowerCase();
-    }
-
-    return github;
 }
 
 /**
@@ -462,24 +282,9 @@ function githubFactory(library) {
 function attacher(mdast, options) {
     var settings = options || {};
     var heading = toExpression(settings.heading || DEFAULT_HEADING);
-    var library = settings.library || DEFAULT_LIBRARY;
-    var isNPM = library === NPM;
-    var isGitHub = library === GITHUB;
     var depth = settings.maxDepth || 6;
 
-    if (isNPM || isGitHub) {
-        library = SLUGG;
-    }
-
-    if (typeof library === 'string') {
-        library = loadLibrary(library);
-    }
-
-    if (isNPM) {
-        library = npmFactory(library);
-    } else if (isGitHub) {
-        library = githubFactory(library);
-    }
+    mdast.use(slug, settings.slug);
 
     /**
      * Adds an example section based on a valid example
@@ -488,7 +293,7 @@ function attacher(mdast, options) {
      * @param {Node} node
      */
     function transformer(node) {
-        var result = search(node, heading, library, depth);
+        var result = search(node, heading, depth);
 
         if (result.index === null || !result.map.length) {
             return;
@@ -500,7 +305,7 @@ function attacher(mdast, options) {
 
         node.children = [].concat(
             node.children.slice(0, result.index),
-            contents(result.map, library),
+            contents(result.map),
             node.children.slice(result.index)
         );
     }

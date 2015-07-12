@@ -17,8 +17,8 @@
     "mdast"
   ],
   "dependencies": {
-    "bengourley/slugg": "^0.1.3",
-    "jonschlinkert/repeat-string": "^1.5.2"
+    "wooorm/mdast-slug": "^0.1.0",
+    "wooorm/mdast-util-to-string": "^0.1.0"
   },
   "repository": "wooorm/mdast-toc",
   "scripts": [

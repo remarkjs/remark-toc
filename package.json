@@ -17,8 +17,8 @@
     "mdast"
   ],
   "dependencies": {
-    "repeat-string": "^1.5.0",
-    "slugg": "^0.1.0"
+    "mdast-slug": "^0.1.0",
+    "mdast-util-to-string": "^0.1.0"
   },
   "repository": {
     "type": "git",
@@ -29,9 +29,6 @@
     "index.js",
     "LICENSE"
   ],
-  "peerDependencies": {
-    "mdast": ">=0.24.0"
-  },
   "devDependencies": {
     "browserify": "^10.0.0",
     "eslint": "^0.23.0",
@@ -44,9 +41,7 @@
     "mdast-lint": "^0.3.0",
     "mdast-usage": "^0.3.0",
     "mdast-yaml-config": "^0.2.0",
-    "mocha": "^2.0.0",
-    "slug": "^0.9.0",
-    "to-slug-case": "^0.1.0"
+    "mocha": "^2.0.0"
   },
   "scripts": {
     "test-api": "mocha --check-leaks test/index.js",

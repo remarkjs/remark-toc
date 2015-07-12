@@ -1,51 +1,11 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.mdastTOC = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-(function (global){
 'use strict';
 
 /*
  * Dependencies.
  */
 
-var repeat = require('repeat-string');
-
-var slugg = null;
-var fs = {};
-var path = {};
-var proc = {};
-
-try {
-    slugg = require('slugg');
-} catch (exception) {/* empty */}
-
-try {
-    fs = require('fs');
-} catch (exception) {/* empty */}
-
-try {
-    path = require('path');
-} catch (exception) {/* empty */}
-
-/*
- * Hide process use from browserify and component.
- */
-
-/* istanbul ignore else */
-if (typeof global !== 'undefined' && global.process) {
-    proc = global.process;
-}
-
-/*
- * Methods.
- */
-
-var exists = fs.existsSync;
-var resolve = path.resolve;
-
-/*
- * Constants.
- */
-
-var MODULES = 'node_modules';
+var slug = require('mdast-slug');
 var EMPTY = '';
 var HEADING = 'heading';
 var LIST = 'list';
@@ -53,14 +13,8 @@ var LIST_ITEM = 'listItem';
 var PARAGRAPH = 'paragraph';
 var LINK = 'link';
 var TEXT = 'text';
-var EXTENSION = '.js';
-var NPM = 'npm';
-var GITHUB = 'github';
-var SLUGG = 'slugg';
-var DASH = '-';
 
 var DEFAULT_HEADING = 'toc|table[ -]of[ -]contents?';
-var DEFAULT_LIBRARY = GITHUB;
 
 /**
  * Transform a string into an applicable expression.
@@ -125,11 +79,10 @@ function isClosingHeading(node, depth) {
  *
  * @param {Node} root
  * @param {RegExp} expression
- * @param {function(string): string} library
  * @param {number} maxDepth
  * @return {Object}
  */
-function search(root, expression, library, maxDepth) {
+function search(root, expression, maxDepth) {
     var index = -1;
     var length = root.children.length;
     var depth = null;
@@ -149,12 +102,6 @@ function search(root, expression, library, maxDepth) {
 
         value = toString(child);
 
-        if (!child.attributes) {
-            child.attributes = {};
-        }
-
-        child.attributes.id = library(value);
-
         if (lookingForToc) {
             if (isClosingHeading(child, depth)) {
                 closingIndex = index;
@@ -170,7 +117,8 @@ function search(root, expression, library, maxDepth) {
         if (!lookingForToc && value && child.depth <= maxDepth) {
             map.push({
                 'depth': child.depth,
-                'value': value
+                'value': value,
+                'id': child.attributes.id
             });
         }
     }
@@ -225,7 +173,7 @@ function listItem() {
  * @param {Object} node
  * @param {Object} parent
  */
-function insert(node, parent, library) {
+function insert(node, parent) {
     var children = parent.children;
     var index = -1;
     var length = children.length;
@@ -242,7 +190,7 @@ function insert(node, parent, library) {
                 {
                     'type': LINK,
                     'title': null,
-                    'href': '#' + library(node.value),
+                    'href': '#' + node.id,
                     'children': [
                         {
                             'type': TEXT,
@@ -255,22 +203,22 @@ function insert(node, parent, library) {
 
         children.push(item);
     } else if (last && last.type === LIST_ITEM) {
-        insert(node, last, library);
+        insert(node, last);
     } else if (last && last.type === LIST) {
         node.depth--;
 
-        insert(node, last, library);
+        insert(node, last);
     } else if (parent.type === LIST) {
         item = listItem();
 
-        insert(node, item, library);
+        insert(node, item);
 
         children.push(item);
     } else {
         item = list();
         node.depth--;
 
-        insert(node, item, library);
+        insert(node, item);
 
         children.push(item);
     }
@@ -304,7 +252,7 @@ function insert(node, parent, library) {
  * @param {Array.<Object>} map
  * @return {Object}
  */
-function contents(map, library) {
+function contents(map) {
     var minDepth = Infinity;
     var index = -1;
     var length = map.length;
@@ -343,11 +291,114 @@ function contents(map, library) {
     index = -1;
 
     while (++index < length) {
-        insert(map[index], table, library);
+        insert(map[index], table);
     }
 
     return table;
 }
+
+/**
+ * Attacher.
+ *
+ * @return {function(node)}
+ */
+function attacher(mdast, options) {
+    var settings = options || {};
+    var heading = toExpression(settings.heading || DEFAULT_HEADING);
+    var depth = settings.maxDepth || 6;
+
+    mdast.use(slug, settings.slug);
+
+    /**
+     * Adds an example section based on a valid example
+     * JavaScript document to a `Usage` section.
+     *
+     * @param {Node} node
+     */
+    function transformer(node) {
+        var result = search(node, heading, depth);
+
+        if (result.index === null || !result.map.length) {
+            return;
+        }
+
+        /*
+         * Add markdown.
+         */
+
+        node.children = [].concat(
+            node.children.slice(0, result.index),
+            contents(result.map),
+            node.children.slice(result.index)
+        );
+    }
+
+    return transformer;
+}
+
+/*
+ * Expose.
+ */
+
+module.exports = attacher;
+
+},{"mdast-slug":2}],2:[function(require,module,exports){
+(function (global){
+'use strict';
+
+/*
+ * Dependencies.
+ */
+
+var toString = require('mdast-util-to-string');
+var visit = require('mdast-util-visit');
+var repeat = require('repeat-string');
+
+var slugg = null;
+var fs = {};
+var path = {};
+var proc = {};
+
+try {
+    slugg = require('slugg');
+} catch (exception) {/* empty */}
+
+try {
+    fs = require('fs');
+} catch (exception) {/* empty */}
+
+try {
+    path = require('path');
+} catch (exception) {/* empty */}
+
+/*
+ * Hide process use from browserify and component.
+ */
+
+/* istanbul ignore else */
+if (typeof global !== 'undefined' && global.process) {
+    proc = global.process;
+}
+
+/*
+ * Methods.
+ */
+
+var exists = fs.existsSync;
+var resolve = path.resolve;
+
+/*
+ * Constants.
+ */
+
+var MODULES = 'node_modules';
+var EXTENSION = '.js';
+var NPM = 'npm';
+var GITHUB = 'github';
+var SLUGG = 'slugg';
+var DASH = '-';
+
+var DEFAULT_LIBRARY = GITHUB;
 
 /**
  * Find a library.
@@ -463,11 +514,9 @@ function githubFactory(library) {
  */
 function attacher(mdast, options) {
     var settings = options || {};
-    var heading = toExpression(settings.heading || DEFAULT_HEADING);
     var library = settings.library || DEFAULT_LIBRARY;
     var isNPM = library === NPM;
     var isGitHub = library === GITHUB;
-    var depth = settings.maxDepth || 6;
 
     if (isNPM || isGitHub) {
         library = SLUGG;
@@ -487,24 +536,16 @@ function attacher(mdast, options) {
      * Adds an example section based on a valid example
      * JavaScript document to a `Usage` section.
      *
-     * @param {Node} node
+     * @param {Node} ast - Root node.
      */
-    function transformer(node) {
-        var result = search(node, heading, library, depth);
+    function transformer(ast) {
+        visit(ast, 'heading', function (node) {
+            if (!node.attributes) {
+                node.attributes = {};
+            }
 
-        if (result.index === null || !result.map.length) {
-            return;
-        }
-
-        /*
-         * Add markdown.
-         */
-
-        node.children = [].concat(
-            node.children.slice(0, result.index),
-            contents(result.map, library),
-            node.children.slice(result.index)
-        );
+            node.attributes.id = library(toString(node));
+        });
     }
 
     return transformer;
@@ -517,7 +558,165 @@ function attacher(mdast, options) {
 module.exports = attacher;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"fs":undefined,"path":undefined,"repeat-string":2,"slugg":3}],2:[function(require,module,exports){
+},{"fs":undefined,"mdast-util-to-string":3,"mdast-util-visit":4,"path":undefined,"repeat-string":5,"slugg":6}],3:[function(require,module,exports){
+/**
+ * @author Titus Wormer
+ * @copyright 2015 Titus Wormer. All rights reserved.
+ * @module mdast-util-to-string
+ * @fileoverview Utility to get the text value of a node.
+ */
+
+'use strict';
+
+/**
+ * Get the value of `node`.  Checks, `value`,
+ * `alt`, and `title`, in that order.
+ *
+ * @param {Node} node - Node to get the internal value of.
+ * @return {string} - Textual representation.
+ */
+function valueOf(node) {
+    return node &&
+        (node.value ? node.value :
+        (node.alt ? node.alt : node.title)) || '';
+}
+
+/**
+ * Returns the text content of a node.  If the node itself
+ * does not expose plain-text fields, `toString` will
+ * recursivly try its children.
+ *
+ * @param {Node} node - Node to transform to a string.
+ * @return {string} - Textual representation.
+ */
+function toString(node) {
+    return valueOf(node) ||
+        (node.children && node.children.map(toString).join('')) ||
+        '';
+}
+
+/*
+ * Expose.
+ */
+
+module.exports = toString;
+
+},{}],4:[function(require,module,exports){
+/**
+ * @author Titus Wormer
+ * @copyright 2015 Titus Wormer. All rights reserved.
+ * @module mdast-util-visit
+ * @fileoverview Utility to recursively walk over mdast nodes.
+ */
+
+'use strict';
+
+/**
+ * Walk forwards.
+ *
+ * @param {Array.<*>} values - Things to iterate over,
+ *   forwards.
+ * @param {function(*, number): boolean} callback - Function
+ *   to invoke.
+ * @return {boolean} - False if iteration stopped.
+ */
+function forwards(values, callback) {
+    var index = -1;
+    var length = values.length;
+
+    while (++index < length) {
+        if (callback(values[index], index) === false) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
+ * Walk backwards.
+ *
+ * @param {Array.<*>} values - Things to iterate over,
+ *   backwards.
+ * @param {function(*, number): boolean} callback - Function
+ *   to invoke.
+ * @return {boolean} - False if iteration stopped.
+ */
+function backwards(values, callback) {
+    var index = values.length;
+    var length = -1;
+
+    while (--index > length) {
+        if (callback(values[index], index) === false) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
+ * Visit.
+ *
+ * @param {Node} tree - Root node
+ * @param {string} [type] - Node type.
+ * @param {function(node): boolean?} callback - Invoked
+ *   with each found node.  Can return `false` to stop.
+ * @param {boolean} [reverse] - By default, `visit` will
+ *   walk forwards, when `reverse` is `true`, `visit`
+ *   walks backwards.
+ */
+function visit(tree, type, callback, reverse) {
+    var iterate;
+    var one;
+    var all;
+
+    if (typeof type === 'function') {
+        reverse = callback;
+        callback = type;
+        type = null;
+    }
+
+    iterate = reverse ? backwards : forwards;
+
+    /**
+     * Visit `children` in `parent`.
+     */
+    all = function (children, parent) {
+        return iterate(children, function (child, index) {
+            return child && one(child, index, parent);
+        });
+    };
+
+    /**
+     * Visit a single node.
+     */
+    one = function (node, index, parent) {
+        var result;
+
+        index = index || (parent ? 0 : null);
+
+        if (!type || node.type === type) {
+            result = callback(node, index, parent || null);
+        }
+
+        if (node.children && result !== false) {
+            return all(node.children, node);
+        }
+
+        return result;
+    };
+
+    one(tree);
+}
+
+/*
+ * Expose.
+ */
+
+module.exports = visit;
+
+},{}],5:[function(require,module,exports){
 /*!
  * repeat-string <https://github.com/jonschlinkert/repeat-string>
  *
@@ -585,7 +784,7 @@ function repeat(str, num) {
 var res = '';
 var cache;
 
-},{}],3:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 (function (root) {
 
 var defaultSeparator = '-'

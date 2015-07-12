@@ -110,19 +110,8 @@ Adds a [Table of Contents](#table-of-contents) to a Markdown document.
 
 *   `options` (`Object?`) — Settings:
 
-    *   `library` (`string?` or `Function?`, default: `"github"`):
-
-        *   `"github"` — Slugs just like GitHub;
-
-        *   `"npm"`
-            — Slugs just like npm (but npm doesn’t support links in headings,
-            [yet](https://github.com/npm/marky-markdown/pull/38));
-
-        *   `string` (e.g., `"slug"`, `"slugg"`)
-            — Library to require (not in the browser);
-
-        *   `Function` (e.g., `require("slugg")"`)
-            — Library to use.
+    *   `slug` —
+        Passed to [`mdast-slug`](https://github.com/wooorm/mdast-slug)
 
     *   `heading` (`string?`, default: `"toc|table[ -]of[ -]contents?"`)
         — Heading to look for, wrapped in
