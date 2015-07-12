@@ -5,6 +5,14 @@ mdast:
 
 <!--lint disable no-multiple-toplevel-headings-->
 
+0.5.1 / 2015-07-12
+==================
+
+*   Remove travis deploy ([0a28af3](https://github.com/wooorm/mdast-toc/commit/0a28af3))
+*   Update mdast, eslint ([4127163](https://github.com/wooorm/mdast-toc/commit/4127163))
+*   Remove prepublish script ([f8ff46a](https://github.com/wooorm/mdast-toc/commit/f8ff46a))
+*   Refactor to externalise slug, to-string functions ([9468c08](https://github.com/wooorm/mdast-toc/commit/9468c08))
+
 0.5.0 / 2015-06-21
 ==================
 
