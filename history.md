@@ -2,6 +2,11 @@
 
 <!--lint disable no-multiple-toplevel-headings-->
 
+1.0.0 / 2015-08-20
+==================
+
+*   Update dependencies, dev-dependencies ([88694d3](https://github.com/wooorm/mdast-toc/commit/88694d3))
+
 0.5.1 / 2015-07-12
 ==================
 
