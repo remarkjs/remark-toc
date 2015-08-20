@@ -1,4 +1,12 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.mdastTOC = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/**
+ * @author Titus Wormer
+ * @copyright 2015 Titus Wormer
+ * @license MIT
+ * @module mdast:toc
+ * @fileoverview Generate a Table of Contents (TOC) for Markdown files.
+ */
+
 'use strict';
 
 /*
@@ -6,20 +14,24 @@
  */
 
 var slug = require('mdast-slug');
-var EMPTY = '';
+var toString = require('mdast-util-to-string');
+
+/*
+ * Constants.
+ */
+
 var HEADING = 'heading';
 var LIST = 'list';
 var LIST_ITEM = 'listItem';
 var PARAGRAPH = 'paragraph';
 var LINK = 'link';
 var TEXT = 'text';
-
 var DEFAULT_HEADING = 'toc|table[ -]of[ -]contents?';
 
 /**
  * Transform a string into an applicable expression.
  *
- * @param {string} value
+ * @param {string} value - Content to expressionise.
  * @return {RegExp}
  */
 function toExpression(value) {
@@ -27,35 +39,9 @@ function toExpression(value) {
 }
 
 /**
- * Get the value of `node`.
- *
- * @param {Node} node
- * @return {string}
- */
-function getValue(node) {
-    return node &&
-        (node.value ? node.value :
-        (node.alt ? node.alt : node.title)) || EMPTY;
-}
-
-/**
- * Returns the text content of a node.
- * Checks `alt` or `title` when no value or children
- * exist.
- *
- * @param {Node} node
- * @return {string}
- */
-function toString(node) {
-    return getValue(node) ||
-        (node.children && node.children.map(toString).join(EMPTY)) ||
-        EMPTY;
-}
-
-/**
  * Check if `node` is the main heading.
  *
- * @param {Node} node
+ * @param {Node} node - Node to check.
  * @return {boolean}
  */
 function isOpeningHeading(node, depth, expression) {
@@ -66,8 +52,8 @@ function isOpeningHeading(node, depth, expression) {
 /**
  * Check if `node` is the next heading.
  *
- * @param {Node} node
- * @param {number} depth
+ * @param {Node} node - Node to check.
+ * @param {number} depth - Depth of opening heading.
  * @return {boolean}
  */
 function isClosingHeading(node, depth) {
@@ -77,9 +63,10 @@ function isClosingHeading(node, depth) {
 /**
  * Search a node for a location.
  *
- * @param {Node} root
- * @param {RegExp} expression
- * @param {number} maxDepth
+ * @param {Node} root - Parent to search in.
+ * @param {RegExp} expression - Heading-content to search
+ *   for.
+ * @param {number} maxDepth - Maximum-depth to include.
  * @return {Object}
  */
 function search(root, expression, maxDepth) {
@@ -170,8 +157,8 @@ function listItem() {
 /**
  * Insert a `node` into a `parent`.
  *
- * @param {Object} node
- * @param {Object} parent
+ * @param {Object} node - `node` to insert.
+ * @param {Object} parent - Parent of `node`.
  */
 function insert(node, parent) {
     var children = parent.children;
@@ -249,7 +236,7 @@ function insert(node, parent) {
 /**
  * Transform a list of heading objects to a markdown list.
  *
- * @param {Array.<Object>} map
+ * @param {Array.<Object>} map - Heading-map to insert.
  * @return {Object}
  */
 function contents(map) {
@@ -313,7 +300,7 @@ function attacher(mdast, options) {
      * Adds an example section based on a valid example
      * JavaScript document to a `Usage` section.
      *
-     * @param {Node} node
+     * @param {Node} node - Root to search in.
      */
     function transformer(node) {
         var result = search(node, heading, depth);
@@ -342,8 +329,16 @@ function attacher(mdast, options) {
 
 module.exports = attacher;
 
-},{"mdast-slug":2}],2:[function(require,module,exports){
+},{"mdast-slug":2,"mdast-util-to-string":6}],2:[function(require,module,exports){
 (function (global){
+/**
+ * @author Titus Wormer
+ * @copyright 2015 Titus Wormer
+ * @license MIT
+ * @module mdast:slug
+ * @fileoverview Add anchors to mdast heading nodes.
+ */
+
 'use strict';
 
 /*
@@ -351,7 +346,7 @@ module.exports = attacher;
  */
 
 var toString = require('mdast-util-to-string');
-var visit = require('mdast-util-visit');
+var visit = require('unist-util-visit');
 var repeat = require('repeat-string');
 
 var slugg = null;
@@ -403,7 +398,7 @@ var DEFAULT_LIBRARY = GITHUB;
 /**
  * Find a library.
  *
- * @param {string} pathlike
+ * @param {string} pathlike - File-path-like to load.
  * @return {Object}
  */
 function loadLibrary(pathlike) {
@@ -442,14 +437,15 @@ function loadLibrary(pathlike) {
  *
  * @see https://github.com/npm/marky-markdown/blob/9761c95/lib/headings.js#L17
  *
- * @param {function(string): string} library
+ * @param {function(string): string} library - Value to
+ *   slugify.
  * @return {function(string): string}
  */
 function npmFactory(library) {
     /**
      * Generate slugs just like npm would.
      *
-     * @param {string} value
+     * @param {string} value - Value to slugify.
      * @return {string}
      */
     function npm(value) {
@@ -462,7 +458,8 @@ function npmFactory(library) {
 /**
  * Wraps `slugg` to generate slugs just like GitHub would.
  *
- * @param {function(string): string} library
+ * @param {function(string): string} library - Library to
+ *   use.
  * @return {function(string): string}
  */
 function githubFactory(library) {
@@ -471,7 +468,7 @@ function githubFactory(library) {
      * argument to `String#replace()`, and sometimes as
      * a literal string.
      *
-     * @param {string} $0
+     * @param {string} $0 - Value to transform.
      * @return {string}
      */
     function separator($0) {
@@ -497,7 +494,7 @@ function githubFactory(library) {
     /**
      * Generate slugs just like GitHub would.
      *
-     * @param {string} value
+     * @param {string} value - Value to slugify.
      * @return {string}
      */
     function github(value) {
@@ -558,165 +555,7 @@ function attacher(mdast, options) {
 module.exports = attacher;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"fs":undefined,"mdast-util-to-string":3,"mdast-util-visit":4,"path":undefined,"repeat-string":5,"slugg":6}],3:[function(require,module,exports){
-/**
- * @author Titus Wormer
- * @copyright 2015 Titus Wormer. All rights reserved.
- * @module mdast-util-to-string
- * @fileoverview Utility to get the text value of a node.
- */
-
-'use strict';
-
-/**
- * Get the value of `node`.  Checks, `value`,
- * `alt`, and `title`, in that order.
- *
- * @param {Node} node - Node to get the internal value of.
- * @return {string} - Textual representation.
- */
-function valueOf(node) {
-    return node &&
-        (node.value ? node.value :
-        (node.alt ? node.alt : node.title)) || '';
-}
-
-/**
- * Returns the text content of a node.  If the node itself
- * does not expose plain-text fields, `toString` will
- * recursivly try its children.
- *
- * @param {Node} node - Node to transform to a string.
- * @return {string} - Textual representation.
- */
-function toString(node) {
-    return valueOf(node) ||
-        (node.children && node.children.map(toString).join('')) ||
-        '';
-}
-
-/*
- * Expose.
- */
-
-module.exports = toString;
-
-},{}],4:[function(require,module,exports){
-/**
- * @author Titus Wormer
- * @copyright 2015 Titus Wormer. All rights reserved.
- * @module mdast-util-visit
- * @fileoverview Utility to recursively walk over mdast nodes.
- */
-
-'use strict';
-
-/**
- * Walk forwards.
- *
- * @param {Array.<*>} values - Things to iterate over,
- *   forwards.
- * @param {function(*, number): boolean} callback - Function
- *   to invoke.
- * @return {boolean} - False if iteration stopped.
- */
-function forwards(values, callback) {
-    var index = -1;
-    var length = values.length;
-
-    while (++index < length) {
-        if (callback(values[index], index) === false) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-/**
- * Walk backwards.
- *
- * @param {Array.<*>} values - Things to iterate over,
- *   backwards.
- * @param {function(*, number): boolean} callback - Function
- *   to invoke.
- * @return {boolean} - False if iteration stopped.
- */
-function backwards(values, callback) {
-    var index = values.length;
-    var length = -1;
-
-    while (--index > length) {
-        if (callback(values[index], index) === false) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-/**
- * Visit.
- *
- * @param {Node} tree - Root node
- * @param {string} [type] - Node type.
- * @param {function(node): boolean?} callback - Invoked
- *   with each found node.  Can return `false` to stop.
- * @param {boolean} [reverse] - By default, `visit` will
- *   walk forwards, when `reverse` is `true`, `visit`
- *   walks backwards.
- */
-function visit(tree, type, callback, reverse) {
-    var iterate;
-    var one;
-    var all;
-
-    if (typeof type === 'function') {
-        reverse = callback;
-        callback = type;
-        type = null;
-    }
-
-    iterate = reverse ? backwards : forwards;
-
-    /**
-     * Visit `children` in `parent`.
-     */
-    all = function (children, parent) {
-        return iterate(children, function (child, index) {
-            return child && one(child, index, parent);
-        });
-    };
-
-    /**
-     * Visit a single node.
-     */
-    one = function (node, index, parent) {
-        var result;
-
-        index = index || (parent ? 0 : null);
-
-        if (!type || node.type === type) {
-            result = callback(node, index, parent || null);
-        }
-
-        if (node.children && result !== false) {
-            return all(node.children, node);
-        }
-
-        return result;
-    };
-
-    one(tree);
-}
-
-/*
- * Expose.
- */
-
-module.exports = visit;
-
-},{}],5:[function(require,module,exports){
+},{"fs":undefined,"mdast-util-to-string":6,"path":undefined,"repeat-string":3,"slugg":4,"unist-util-visit":5}],3:[function(require,module,exports){
 /*!
  * repeat-string <https://github.com/jonschlinkert/repeat-string>
  *
@@ -784,7 +623,7 @@ function repeat(str, num) {
 var res = '';
 var cache;
 
-},{}],6:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 (function (root) {
 
 var defaultSeparator = '-'
@@ -897,6 +736,164 @@ if (typeof define !== 'undefined' && define.amd) {
 }
 
 }(this))
+
+},{}],5:[function(require,module,exports){
+/**
+ * @author Titus Wormer
+ * @copyright 2015 Titus Wormer. All rights reserved.
+ * @module unist:util:visit
+ * @fileoverview Utility to recursively walk over unist nodes.
+ */
+
+'use strict';
+
+/**
+ * Walk forwards.
+ *
+ * @param {Array.<*>} values - Things to iterate over,
+ *   forwards.
+ * @param {function(*, number): boolean} callback - Function
+ *   to invoke.
+ * @return {boolean} - False if iteration stopped.
+ */
+function forwards(values, callback) {
+    var index = -1;
+    var length = values.length;
+
+    while (++index < length) {
+        if (callback(values[index], index) === false) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
+ * Walk backwards.
+ *
+ * @param {Array.<*>} values - Things to iterate over,
+ *   backwards.
+ * @param {function(*, number): boolean} callback - Function
+ *   to invoke.
+ * @return {boolean} - False if iteration stopped.
+ */
+function backwards(values, callback) {
+    var index = values.length;
+    var length = -1;
+
+    while (--index > length) {
+        if (callback(values[index], index) === false) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
+ * Visit.
+ *
+ * @param {Node} tree - Root node
+ * @param {string} [type] - Node type.
+ * @param {function(node): boolean?} callback - Invoked
+ *   with each found node.  Can return `false` to stop.
+ * @param {boolean} [reverse] - By default, `visit` will
+ *   walk forwards, when `reverse` is `true`, `visit`
+ *   walks backwards.
+ */
+function visit(tree, type, callback, reverse) {
+    var iterate;
+    var one;
+    var all;
+
+    if (typeof type === 'function') {
+        reverse = callback;
+        callback = type;
+        type = null;
+    }
+
+    iterate = reverse ? backwards : forwards;
+
+    /**
+     * Visit `children` in `parent`.
+     */
+    all = function (children, parent) {
+        return iterate(children, function (child, index) {
+            return child && one(child, index, parent);
+        });
+    };
+
+    /**
+     * Visit a single node.
+     */
+    one = function (node, index, parent) {
+        var result;
+
+        index = index || (parent ? 0 : null);
+
+        if (!type || node.type === type) {
+            result = callback(node, index, parent || null);
+        }
+
+        if (node.children && result !== false) {
+            return all(node.children, node);
+        }
+
+        return result;
+    };
+
+    one(tree);
+}
+
+/*
+ * Expose.
+ */
+
+module.exports = visit;
+
+},{}],6:[function(require,module,exports){
+/**
+ * @author Titus Wormer
+ * @copyright 2015 Titus Wormer. All rights reserved.
+ * @module mdast:util:to-string
+ * @fileoverview Utility to get the text value of a node.
+ */
+
+'use strict';
+
+/**
+ * Get the value of `node`.  Checks, `value`,
+ * `alt`, and `title`, in that order.
+ *
+ * @param {Node} node - Node to get the internal value of.
+ * @return {string} - Textual representation.
+ */
+function valueOf(node) {
+    return node &&
+        (node.value ? node.value :
+        (node.alt ? node.alt : node.title)) || '';
+}
+
+/**
+ * Returns the text content of a node.  If the node itself
+ * does not expose plain-text fields, `toString` will
+ * recursivly try its children.
+ *
+ * @param {Node} node - Node to transform to a string.
+ * @return {string} - Textual representation.
+ */
+function toString(node) {
+    return valueOf(node) ||
+        (node.children && node.children.map(toString).join('')) ||
+        '';
+}
+
+/*
+ * Expose.
+ */
+
+module.exports = toString;
 
 },{}]},{},[1])(1)
 });

@@ -1,3 +1,11 @@
+/**
+ * @author Titus Wormer
+ * @copyright 2015 Titus Wormer
+ * @license MIT
+ * @module mdast:toc:test
+ * @fileoverview Test suite for `mdast-toc`.
+ */
+
 'use strict';
 
 /* eslint-env mocha */
@@ -19,6 +27,7 @@ var path = require('path');
 var read = fs.readFileSync;
 var exists = fs.existsSync;
 var join = path.join;
+var equal = assert.strictEqual;
 
 /*
  * Constants.
@@ -35,29 +44,12 @@ var fixtures = fs.readdirSync(ROOT);
 /**
  * Shortcut to process.
  *
- * @param {string} value
+ * @param {string} value - Value to process.
+ * @param {Object} config - Configuration for processor.
  * @return {string}
  */
 function process(value, config) {
     return mdast().use(toc, config).process(value);
-}
-
-/**
- * Assert two strings.
- *
- * @param {string} actual
- * @param {string} expected
- * @throws {Error} - When not equal.
- */
-function assertion(actual, expected) {
-    try {
-        assert(actual === expected);
-    } catch (exception) {
-        exception.expected = expected;
-        exception.actual = actual;
-
-        throw exception;
-    }
 }
 
 /*
@@ -79,7 +71,7 @@ describe('mdast-toc()', function () {
 /**
  * Describe a fixtures.
  *
- * @param {string} fixture
+ * @param {string} fixture - Directory name.
  */
 function describeFixture(fixture) {
     it('should work on `' + fixture + '`', function () {
@@ -92,7 +84,7 @@ function describeFixture(fixture) {
         config = exists(config) ? JSON.parse(read(config, 'utf-8')) : {};
         result = process(input, config);
 
-        assertion(result, output);
+        equal(result, output);
     });
 }
 

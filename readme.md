@@ -1,4 +1,4 @@
-# mdast-toc [![Build Status](https://img.shields.io/travis/wooorm/mdast-toc.svg?style=flat)](https://travis-ci.org/wooorm/mdast-toc) [![Coverage Status](https://img.shields.io/coveralls/wooorm/mdast-toc.svg?style=flat)](https://coveralls.io/r/wooorm/mdast-toc?branch=master)
+# mdast-toc [![Build Status](https://img.shields.io/travis/wooorm/mdast-toc.svg)](https://travis-ci.org/wooorm/mdast-toc) [![Coverage Status](https://img.shields.io/codecov/c/github/wooorm/mdast-toc.svg)](https://codecov.io/github/wooorm/mdast-toc)
 
 Generate a Table of Contents (TOC) for [Markdown](http://daringfireball.net/projects/markdown/syntax)
 files with [mdast](https://github.com/wooorm/mdast).

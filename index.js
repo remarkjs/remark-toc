@@ -1,3 +1,11 @@
+/**
+ * @author Titus Wormer
+ * @copyright 2015 Titus Wormer
+ * @license MIT
+ * @module mdast:toc
+ * @fileoverview Generate a Table of Contents (TOC) for Markdown files.
+ */
+
 'use strict';
 
 /*
@@ -22,7 +30,7 @@ var DEFAULT_HEADING = 'toc|table[ -]of[ -]contents?';
 /**
  * Transform a string into an applicable expression.
  *
- * @param {string} value
+ * @param {string} value - Content to expressionise.
  * @return {RegExp}
  */
 function toExpression(value) {
@@ -32,7 +40,7 @@ function toExpression(value) {
 /**
  * Check if `node` is the main heading.
  *
- * @param {Node} node
+ * @param {Node} node - Node to check.
  * @return {boolean}
  */
 function isOpeningHeading(node, depth, expression) {
@@ -43,8 +51,8 @@ function isOpeningHeading(node, depth, expression) {
 /**
  * Check if `node` is the next heading.
  *
- * @param {Node} node
- * @param {number} depth
+ * @param {Node} node - Node to check.
+ * @param {number} depth - Depth of opening heading.
  * @return {boolean}
  */
 function isClosingHeading(node, depth) {
@@ -54,9 +62,10 @@ function isClosingHeading(node, depth) {
 /**
  * Search a node for a location.
  *
- * @param {Node} root
- * @param {RegExp} expression
- * @param {number} maxDepth
+ * @param {Node} root - Parent to search in.
+ * @param {RegExp} expression - Heading-content to search
+ *   for.
+ * @param {number} maxDepth - Maximum-depth to include.
  * @return {Object}
  */
 function search(root, expression, maxDepth) {
@@ -147,8 +156,8 @@ function listItem() {
 /**
  * Insert a `node` into a `parent`.
  *
- * @param {Object} node
- * @param {Object} parent
+ * @param {Object} node - `node` to insert.
+ * @param {Object} parent - Parent of `node`.
  */
 function insert(node, parent) {
     var children = parent.children;
@@ -226,7 +235,7 @@ function insert(node, parent) {
 /**
  * Transform a list of heading objects to a markdown list.
  *
- * @param {Array.<Object>} map
+ * @param {Array.<Object>} map - Heading-map to insert.
  * @return {Object}
  */
 function contents(map) {
@@ -290,7 +299,7 @@ function attacher(mdast, options) {
      * Adds an example section based on a valid example
      * JavaScript document to a `Usage` section.
      *
-     * @param {Node} node
+     * @param {Node} node - Root to search in.
      */
     function transformer(node) {
         var result = search(node, heading, depth);

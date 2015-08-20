@@ -1,6 +1,2 @@
-# Dependencies.
-bower_components/
 components/
-
-# Make sure the fixtures do not get overwritten.
 test/

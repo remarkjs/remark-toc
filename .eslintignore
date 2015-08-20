@@ -2,5 +2,6 @@ build/
 components/
 coverage/
 build.js
+example.js
 mdast-toc.js
 mdast-toc.min.js

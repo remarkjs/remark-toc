@@ -17,8 +17,8 @@
     "mdast"
   ],
   "dependencies": {
-    "wooorm/mdast-slug": "^0.1.0",
-    "wooorm/mdast-util-to-string": "^0.1.0"
+    "wooorm/mdast-slug": "^1.0.0",
+    "wooorm/mdast-util-to-string": "^1.0.0"
   },
   "repository": "wooorm/mdast-toc",
   "scripts": [
