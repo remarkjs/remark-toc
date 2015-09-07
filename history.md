@@ -2,6 +2,11 @@
 
 <!--lint disable no-multiple-toplevel-headings-->
 
+1.1.0 / 2015-09-07
+==================
+
+*   Update mdast-slug ([a3efb80](https://github.com/wooorm/mdast-toc/commit/a3efb80))
+
 1.0.0 / 2015-08-20
 ==================
 
