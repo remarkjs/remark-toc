@@ -104,7 +104,7 @@ function search(root, expression, maxDepth) {
             map.push({
                 'depth': child.depth,
                 'value': value,
-                'id': child.attributes.id
+                'id': child.data.htmlAttributes.id
             });
         }
     }
