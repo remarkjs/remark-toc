@@ -2,6 +2,11 @@
 
 <!--lint disable no-multiple-toplevel-headings-->
 
+1.2.0 / 2015-11-02
+==================
+
+*   Add support for compiling tight list-items ([777ce71](https://github.com/wooorm/mdast-toc/commit/777ce71))
+
 1.1.0 / 2015-09-07
 ==================
 
