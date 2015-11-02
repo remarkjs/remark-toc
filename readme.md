@@ -122,6 +122,9 @@ Adds a [Table of Contents](#table-of-contents) to a Markdown document.
         This is inclusive, thus, when set to `3`, level three headings,
         are included (those with three hashes, `###`).
 
+    *   `tight` (`boolean?`, default: `false`)
+        — Whether to compile list-items tightly.
+
 ## License
 
 [MIT](LICENSE) © [Titus Wormer](http://wooorm.com)

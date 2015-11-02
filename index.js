@@ -158,13 +158,14 @@ function listItem() {
  *
  * @param {Object} node - `node` to insert.
  * @param {Object} parent - Parent of `node`.
+ * @param {boolean?} [tight] - Prefer tight list-items.
  */
-function insert(node, parent) {
+function insert(node, parent, tight) {
     var children = parent.children;
-    var index = -1;
     var length = children.length;
     var last = children[length - 1];
     var isLoose = false;
+    var index;
     var item;
 
     if (node.depth === 1) {
@@ -189,7 +190,7 @@ function insert(node, parent) {
 
         children.push(item);
     } else if (last && last.type === LIST_ITEM) {
-        insert(node, last);
+        insert(node, last, tight);
     } else if (last && last.type === LIST) {
         node.depth--;
 
@@ -214,13 +215,19 @@ function insert(node, parent) {
      */
 
     if (parent.type === LIST_ITEM) {
-        parent.loose = children.length > 1;
+        parent.loose = tight ? false : children.length > 1;
     } else {
-        while (++index < length) {
-            if (children[index].loose) {
-                isLoose = true;
+        if (tight) {
+            isLoose = false
+        } else {
+            index = -1;
 
-                break;
+            while (++index < length) {
+                if (children[index].loose) {
+                    isLoose = true;
+
+                    break;
+                }
             }
         }
 
@@ -236,9 +243,10 @@ function insert(node, parent) {
  * Transform a list of heading objects to a markdown list.
  *
  * @param {Array.<Object>} map - Heading-map to insert.
+ * @param {boolean?} [tight] - Prefer tight list-items.
  * @return {Object}
  */
-function contents(map) {
+function contents(map, tight) {
     var minDepth = Infinity;
     var index = -1;
     var length = map.length;
@@ -277,7 +285,7 @@ function contents(map) {
     index = -1;
 
     while (++index < length) {
-        insert(map[index], table);
+        insert(map[index], table, tight);
     }
 
     return table;
@@ -292,6 +300,7 @@ function attacher(mdast, options) {
     var settings = options || {};
     var heading = toExpression(settings.heading || DEFAULT_HEADING);
     var depth = settings.maxDepth || 6;
+    var tight = settings.tight;
 
     mdast.use(slug, settings.slug);
 
@@ -314,7 +323,7 @@ function attacher(mdast, options) {
 
         node.children = [].concat(
             node.children.slice(0, result.index),
-            contents(result.map),
+            contents(result.map, tight),
             node.children.slice(result.index)
         );
     }

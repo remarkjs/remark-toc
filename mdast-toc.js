@@ -159,13 +159,14 @@ function listItem() {
  *
  * @param {Object} node - `node` to insert.
  * @param {Object} parent - Parent of `node`.
+ * @param {boolean?} [tight] - Prefer tight list-items.
  */
-function insert(node, parent) {
+function insert(node, parent, tight) {
     var children = parent.children;
-    var index = -1;
     var length = children.length;
     var last = children[length - 1];
     var isLoose = false;
+    var index;
     var item;
 
     if (node.depth === 1) {
@@ -190,7 +191,7 @@ function insert(node, parent) {
 
         children.push(item);
     } else if (last && last.type === LIST_ITEM) {
-        insert(node, last);
+        insert(node, last, tight);
     } else if (last && last.type === LIST) {
         node.depth--;
 
@@ -215,13 +216,19 @@ function insert(node, parent) {
      */
 
     if (parent.type === LIST_ITEM) {
-        parent.loose = children.length > 1;
+        parent.loose = tight ? false : children.length > 1;
     } else {
-        while (++index < length) {
-            if (children[index].loose) {
-                isLoose = true;
+        if (tight) {
+            isLoose = false
+        } else {
+            index = -1;
 
-                break;
+            while (++index < length) {
+                if (children[index].loose) {
+                    isLoose = true;
+
+                    break;
+                }
             }
         }
 
@@ -237,9 +244,10 @@ function insert(node, parent) {
  * Transform a list of heading objects to a markdown list.
  *
  * @param {Array.<Object>} map - Heading-map to insert.
+ * @param {boolean?} [tight] - Prefer tight list-items.
  * @return {Object}
  */
-function contents(map) {
+function contents(map, tight) {
     var minDepth = Infinity;
     var index = -1;
     var length = map.length;
@@ -278,7 +286,7 @@ function contents(map) {
     index = -1;
 
     while (++index < length) {
-        insert(map[index], table);
+        insert(map[index], table, tight);
     }
 
     return table;
@@ -293,6 +301,7 @@ function attacher(mdast, options) {
     var settings = options || {};
     var heading = toExpression(settings.heading || DEFAULT_HEADING);
     var depth = settings.maxDepth || 6;
+    var tight = settings.tight;
 
     mdast.use(slug, settings.slug);
 
@@ -315,7 +324,7 @@ function attacher(mdast, options) {
 
         node.children = [].concat(
             node.children.slice(0, result.index),
-            contents(result.map),
+            contents(result.map, tight),
             node.children.slice(result.index)
         );
     }
@@ -329,7 +338,7 @@ function attacher(mdast, options) {
 
 module.exports = attacher;
 
-},{"mdast-slug":2,"mdast-util-to-string":6}],2:[function(require,module,exports){
+},{"mdast-slug":2,"mdast-util-to-string":3}],2:[function(require,module,exports){
 (function (global){
 /**
  * @author Titus Wormer
@@ -568,7 +577,50 @@ function attacher(mdast, options) {
 module.exports = attacher;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"fs":undefined,"mdast-util-to-string":6,"path":undefined,"repeat-string":3,"slugg":4,"unist-util-visit":5}],3:[function(require,module,exports){
+},{"fs":undefined,"mdast-util-to-string":3,"path":undefined,"repeat-string":4,"slugg":5,"unist-util-visit":6}],3:[function(require,module,exports){
+/**
+ * @author Titus Wormer
+ * @copyright 2015 Titus Wormer. All rights reserved.
+ * @module mdast:util:to-string
+ * @fileoverview Utility to get the text value of a node.
+ */
+
+'use strict';
+
+/**
+ * Get the value of `node`.  Checks, `value`,
+ * `alt`, and `title`, in that order.
+ *
+ * @param {Node} node - Node to get the internal value of.
+ * @return {string} - Textual representation.
+ */
+function valueOf(node) {
+    return node &&
+        (node.value ? node.value :
+        (node.alt ? node.alt : node.title)) || '';
+}
+
+/**
+ * Returns the text content of a node.  If the node itself
+ * does not expose plain-text fields, `toString` will
+ * recursivly try its children.
+ *
+ * @param {Node} node - Node to transform to a string.
+ * @return {string} - Textual representation.
+ */
+function toString(node) {
+    return valueOf(node) ||
+        (node.children && node.children.map(toString).join('')) ||
+        '';
+}
+
+/*
+ * Expose.
+ */
+
+module.exports = toString;
+
+},{}],4:[function(require,module,exports){
 /*!
  * repeat-string <https://github.com/jonschlinkert/repeat-string>
  *
@@ -636,7 +688,7 @@ function repeat(str, num) {
 var res = '';
 var cache;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 (function (root) {
 
 var defaultSeparator = '-'
@@ -750,7 +802,7 @@ if (typeof define !== 'undefined' && define.amd) {
 
 }(this))
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 /**
  * @author Titus Wormer
  * @copyright 2015 Titus Wormer. All rights reserved.
@@ -864,49 +916,6 @@ function visit(tree, type, callback, reverse) {
  */
 
 module.exports = visit;
-
-},{}],6:[function(require,module,exports){
-/**
- * @author Titus Wormer
- * @copyright 2015 Titus Wormer. All rights reserved.
- * @module mdast:util:to-string
- * @fileoverview Utility to get the text value of a node.
- */
-
-'use strict';
-
-/**
- * Get the value of `node`.  Checks, `value`,
- * `alt`, and `title`, in that order.
- *
- * @param {Node} node - Node to get the internal value of.
- * @return {string} - Textual representation.
- */
-function valueOf(node) {
-    return node &&
-        (node.value ? node.value :
-        (node.alt ? node.alt : node.title)) || '';
-}
-
-/**
- * Returns the text content of a node.  If the node itself
- * does not expose plain-text fields, `toString` will
- * recursivly try its children.
- *
- * @param {Node} node - Node to transform to a string.
- * @return {string} - Textual representation.
- */
-function toString(node) {
-    return valueOf(node) ||
-        (node.children && node.children.map(toString).join('')) ||
-        '';
-}
-
-/*
- * Expose.
- */
-
-module.exports = toString;
 
 },{}]},{},[1])(1)
 });
