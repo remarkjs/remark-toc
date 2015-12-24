@@ -1,9 +1,9 @@
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.mdastTOC = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.remarkTOC = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /**
  * @author Titus Wormer
  * @copyright 2015 Titus Wormer
  * @license MIT
- * @module mdast:toc
+ * @module remark:toc
  * @fileoverview Generate a Table of Contents (TOC) for Markdown files.
  */
 
@@ -13,7 +13,7 @@
  * Dependencies.
  */
 
-var slug = require('mdast-slug');
+var slug = require('remark-slug');
 var toString = require('mdast-util-to-string');
 
 /*
@@ -297,13 +297,13 @@ function contents(map, tight) {
  *
  * @return {function(node)}
  */
-function attacher(mdast, options) {
+function attacher(remark, options) {
     var settings = options || {};
     var heading = toExpression(settings.heading || DEFAULT_HEADING);
     var depth = settings.maxDepth || 6;
     var tight = settings.tight;
 
-    mdast.use(slug, settings.slug);
+    remark.use(slug, settings.slug);
 
     /**
      * Adds an example section based on a valid example
@@ -338,14 +338,57 @@ function attacher(mdast, options) {
 
 module.exports = attacher;
 
-},{"mdast-slug":2,"mdast-util-to-string":3}],2:[function(require,module,exports){
+},{"mdast-util-to-string":2,"remark-slug":3}],2:[function(require,module,exports){
+/**
+ * @author Titus Wormer
+ * @copyright 2015 Titus Wormer. All rights reserved.
+ * @module mdast:util:to-string
+ * @fileoverview Utility to get the text value of a node.
+ */
+
+'use strict';
+
+/**
+ * Get the value of `node`.  Checks, `value`,
+ * `alt`, and `title`, in that order.
+ *
+ * @param {Node} node - Node to get the internal value of.
+ * @return {string} - Textual representation.
+ */
+function valueOf(node) {
+    return node &&
+        (node.value ? node.value :
+        (node.alt ? node.alt : node.title)) || '';
+}
+
+/**
+ * Returns the text content of a node.  If the node itself
+ * does not expose plain-text fields, `toString` will
+ * recursivly try its children.
+ *
+ * @param {Node} node - Node to transform to a string.
+ * @return {string} - Textual representation.
+ */
+function toString(node) {
+    return valueOf(node) ||
+        (node.children && node.children.map(toString).join('')) ||
+        '';
+}
+
+/*
+ * Expose.
+ */
+
+module.exports = toString;
+
+},{}],3:[function(require,module,exports){
 (function (global){
 /**
  * @author Titus Wormer
  * @copyright 2015 Titus Wormer
  * @license MIT
- * @module mdast:slug
- * @fileoverview Add anchors to mdast heading nodes.
+ * @module remark:slug
+ * @fileoverview Add anchors to remark heading nodes.
  */
 
 'use strict';
@@ -518,7 +561,7 @@ function githubFactory(library) {
  *
  * @return {function(node)}
  */
-function attacher(mdast, options) {
+function attacher(remark, options) {
     var settings = options || {};
     var library = settings.library || DEFAULT_LIBRARY;
     var isNPM = library === NPM;
@@ -577,50 +620,7 @@ function attacher(mdast, options) {
 module.exports = attacher;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"fs":undefined,"mdast-util-to-string":3,"path":undefined,"repeat-string":4,"slugg":5,"unist-util-visit":6}],3:[function(require,module,exports){
-/**
- * @author Titus Wormer
- * @copyright 2015 Titus Wormer. All rights reserved.
- * @module mdast:util:to-string
- * @fileoverview Utility to get the text value of a node.
- */
-
-'use strict';
-
-/**
- * Get the value of `node`.  Checks, `value`,
- * `alt`, and `title`, in that order.
- *
- * @param {Node} node - Node to get the internal value of.
- * @return {string} - Textual representation.
- */
-function valueOf(node) {
-    return node &&
-        (node.value ? node.value :
-        (node.alt ? node.alt : node.title)) || '';
-}
-
-/**
- * Returns the text content of a node.  If the node itself
- * does not expose plain-text fields, `toString` will
- * recursivly try its children.
- *
- * @param {Node} node - Node to transform to a string.
- * @return {string} - Textual representation.
- */
-function toString(node) {
-    return valueOf(node) ||
-        (node.children && node.children.map(toString).join('')) ||
-        '';
-}
-
-/*
- * Expose.
- */
-
-module.exports = toString;
-
-},{}],4:[function(require,module,exports){
+},{"fs":undefined,"mdast-util-to-string":2,"path":undefined,"repeat-string":4,"slugg":5,"unist-util-visit":6}],4:[function(require,module,exports){
 /*!
  * repeat-string <https://github.com/jonschlinkert/repeat-string>
  *

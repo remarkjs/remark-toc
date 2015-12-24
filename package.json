@@ -1,5 +1,5 @@
 {
-  "name": "mdast-toc",
+  "name": "remark-toc",
   "version": "1.2.0",
   "description": "Generate a Table of Contents (TOC) for Markdown files",
   "license": "MIT",
@@ -14,13 +14,13 @@
     "content",
     "toc",
     "generation",
-    "mdast"
+    "remark"
   ],
   "dependencies": {
-    "mdast-slug": "^2.0.0",
+    "remark-slug": "^3.0.0",
     "mdast-util-to-string": "^1.0.0"
   },
-  "repository": "wooorm/mdast-toc",
+  "repository": "wooorm/remark-toc",
   "author": "Titus Wormer <tituswormer@gmail.com>",
   "files": [
     "index.js"
@@ -32,11 +32,11 @@
     "istanbul": "^0.4.0",
     "jscs": "^2.0.0",
     "jscs-jsdoc": "^1.0.0",
-    "mdast": "^2.0.0",
-    "mdast-comment-config": "^1.0.0",
-    "mdast-github": "^1.0.0",
-    "mdast-lint": "^1.0.0",
-    "mdast-usage": "^1.0.0",
+    "mdast": "^3.0.0-alpha.5",
+    "mdast-comment-config": "^2.0.0-alpha.1",
+    "mdast-github": "^2.0.0-alpha.1",
+    "mdast-lint": "^2.0.0-alpha.1",
+    "mdast-usage": "^2.0.0-alpha.1",
     "mdast-validate-links": "^1.0.0",
     "mocha": "^2.0.0"
   },
@@ -49,8 +49,8 @@
     "lint-style": "jscs --reporter inline .",
     "lint": "npm run lint-api && npm run lint-style",
     "make": "npm run lint && npm run test-coverage",
-    "bundle": "browserify index.js --no-builtins -s mdastTOC > mdast-toc.js",
-    "postbundle": "esmangle mdast-toc.js > mdast-toc.min.js",
+    "bundle": "browserify index.js --no-builtins -s remarkTOC > remark-toc.js",
+    "postbundle": "esmangle remark-toc.js > remark-toc.min.js",
     "build-md": "mdast . --quiet",
     "build": "npm run bundle && npm run build-md"
   }

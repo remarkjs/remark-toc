@@ -1,41 +1,41 @@
-# mdast-toc [![Build Status](https://img.shields.io/travis/wooorm/mdast-toc.svg)](https://travis-ci.org/wooorm/mdast-toc) [![Coverage Status](https://img.shields.io/codecov/c/github/wooorm/mdast-toc.svg)](https://codecov.io/github/wooorm/mdast-toc)
+# remark-toc [![Build Status](https://img.shields.io/travis/wooorm/remark-toc.svg)](https://travis-ci.org/wooorm/remark-toc) [![Coverage Status](https://img.shields.io/codecov/c/github/wooorm/remark-toc.svg)](https://codecov.io/github/wooorm/remark-toc)
 
 Generate a Table of Contents (TOC) for [Markdown](http://daringfireball.net/projects/markdown/syntax)
-files with [mdast](https://github.com/wooorm/mdast).
+files with [remark](https://github.com/wooorm/remark).
 
 ## Installation
 
 [npm](https://docs.npmjs.com/cli/install):
 
 ```bash
-npm install mdast-toc
+npm install remark-toc
 ```
 
 [Component.js](https://github.com/componentjs/component):
 
 ```bash
-component install wooorm/mdast-toc
+component install wooorm/remark-toc
 ```
 
 [Bower](http://bower.io/#install-packages):
 
 ```bash
-bower install mdast-toc
+bower install remark-toc
 ```
 
 [Duo](http://duojs.org/#getting-started):
 
 ```javascript
-var toc = require('wooorm/mdast-toc');
+var toc = require('wooorm/remark-toc');
 ```
 
-UMD (globals/AMD/CommonJS) ([uncompressed](mdast-toc.js) and [compressed](mdast-toc.min.js)):
+UMD (globals/AMD/CommonJS) ([uncompressed](remark-toc.js) and [compressed](remark-toc.min.js)):
 
 ```html
-<script src="path/to/mdast.js"></script>
-<script src="path/to/mdast-toc.js"></script>
+<script src="path/to/remark.js"></script>
+<script src="path/to/remark-toc.js"></script>
 <script>
-  mdast.use(mdastTOC);
+  remark.use(remarkTOC);
 </script>
 ```
 
@@ -45,7 +45,7 @@ UMD (globals/AMD/CommonJS) ([uncompressed](mdast-toc.js) and [compressed](mdast-
 
 *   [API](#api)
 
-    *   [mdast.use(toc, options)](#mdastusetoc-options)
+    *   [remark.use(toc, options)](#remarkusetoc-options)
 
 *   [License](#license)
 
@@ -54,22 +54,22 @@ UMD (globals/AMD/CommonJS) ([uncompressed](mdast-toc.js) and [compressed](mdast-
 Require/read dependencies:
 
 ```javascript
-var toc = require('mdast-toc');
+var toc = require('remark-toc');
 var fs = require('fs');
-var mdast = require('mdast').use(toc);
+var remark = require('remark').use(toc);
 var readme = fs.readFileSync('readme.md', 'utf-8');
 ```
 
 Parse markdown (this TOC is the 14th child).
 
 ```javascript
-var contents = mdast.run(mdast.parse(readme)).children[14];
+var contents = remark.run(remark.parse(readme)).children[14];
 ```
 
 Stringify:
 
 ```javascript
-var doc = mdast.stringify(contents);
+var doc = remark.stringify(contents);
 ```
 
 Yields:
@@ -79,14 +79,14 @@ Yields:
 
 -   [API](#api)
 
-    -   [mdast.use(toc, options)](#mdastusetoc-options)
+    -   [remark.use(toc, options)](#remarkusetoc-options)
 
 -   [License](#license)
 ```
 
 ## API
 
-### [mdast](https://github.com/wooorm/mdast#api).[use](https://github.com/wooorm/mdast#mdastuseplugin-options)(toc, options)
+### [remark](https://github.com/wooorm/remark#api).[use](https://github.com/wooorm/remark#remarkuseplugin-options)(toc, options)
 
 Adds a [Table of Contents](#table-of-contents) to a Markdown document.
 
@@ -102,7 +102,7 @@ Adds a [Table of Contents](#table-of-contents) to a Markdown document.
 
 **Signatures**
 
-*   `mdast.use(toc, options?)`.
+*   `remark.use(toc, options?)`.
 
 **Parameters**
 
@@ -111,7 +111,7 @@ Adds a [Table of Contents](#table-of-contents) to a Markdown document.
 *   `options` (`Object?`) — Settings:
 
     *   `slug` —
-        Passed to [`mdast-slug`](https://github.com/wooorm/mdast-slug)
+        Passed to [`remark-slug`](https://github.com/wooorm/remark-slug)
 
     *   `heading` (`string?`, default: `"toc|table[ -]of[ -]contents?"`)
         — Heading to look for, wrapped in

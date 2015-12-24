@@ -1,6 +1,6 @@
 {
-  "name": "mdast-toc",
-  "main": "mdast-toc.js",
+  "name": "remark-toc",
+  "main": "remark-toc.js",
   "description": "Generate a Table of Contents (TOC) for Markdown files",
   "license": "MIT",
   "keywords": [
@@ -14,11 +14,11 @@
     "content",
     "toc",
     "generation",
-    "mdast"
+    "remark"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/wooorm/mdast-toc.git"
+    "url": "https://github.com/wooorm/remark-toc.git"
   },
   "authors": [
     "Titus Wormer <tituswormer@gmail.com>"

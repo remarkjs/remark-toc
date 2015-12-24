@@ -1,5 +1,5 @@
 {
-  "name": "mdast-toc",
+  "name": "remark-toc",
   "version": "1.2.0",
   "description": "Generate a Table of Contents (TOC) for Markdown files",
   "license": "MIT",
@@ -14,13 +14,13 @@
     "content",
     "toc",
     "generation",
-    "mdast"
+    "remark"
   ],
   "dependencies": {
-    "wooorm/mdast-slug": "^2.0.0",
+    "wooorm/remark-slug": "^2.0.0",
     "wooorm/mdast-util-to-string": "^1.0.0"
   },
-  "repository": "wooorm/mdast-toc",
+  "repository": "wooorm/remark-toc",
   "scripts": [
     "index.js"
   ]

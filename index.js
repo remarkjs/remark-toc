@@ -2,7 +2,7 @@
  * @author Titus Wormer
  * @copyright 2015 Titus Wormer
  * @license MIT
- * @module mdast:toc
+ * @module remark:toc
  * @fileoverview Generate a Table of Contents (TOC) for Markdown files.
  */
 
@@ -12,7 +12,7 @@
  * Dependencies.
  */
 
-var slug = require('mdast-slug');
+var slug = require('remark-slug');
 var toString = require('mdast-util-to-string');
 
 /*
@@ -296,13 +296,13 @@ function contents(map, tight) {
  *
  * @return {function(node)}
  */
-function attacher(mdast, options) {
+function attacher(remark, options) {
     var settings = options || {};
     var heading = toExpression(settings.heading || DEFAULT_HEADING);
     var depth = settings.maxDepth || 6;
     var tight = settings.tight;
 
-    mdast.use(slug, settings.slug);
+    remark.use(slug, settings.slug);
 
     /**
      * Adds an example section based on a valid example

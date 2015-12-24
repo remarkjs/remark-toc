@@ -2,8 +2,8 @@
  * @author Titus Wormer
  * @copyright 2015 Titus Wormer
  * @license MIT
- * @module mdast:toc:test
- * @fileoverview Test suite for `mdast-toc`.
+ * @module remark:toc:test
+ * @fileoverview Test suite for `remark-toc`.
  */
 
 'use strict';
@@ -56,7 +56,7 @@ function process(value, config) {
  * Tests.
  */
 
-describe('mdast-toc()', function () {
+describe('remark-toc()', function () {
     it('should be a function', function () {
         assert(typeof toc === 'function');
     });

@@ -5,8 +5,8 @@
     "coverage/",
     "node_modules/",
     "build.js",
-    "mdast-toc.js",
-    "mdast-toc.min.js"
+    "remark-toc.js",
+    "remark-toc.min.js"
   ],
   "jsDoc": {
     "checkAnnotations": "jsdoc3",
