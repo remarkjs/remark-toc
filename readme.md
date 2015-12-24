@@ -3,6 +3,14 @@
 Generate a Table of Contents (TOC) for [Markdown](http://daringfireball.net/projects/markdown/syntax)
 files with [remark](https://github.com/wooorm/remark).
 
+> :warning: **mdast is currently being renamed to remark** :warning:
+> 
+> This means all plug-ins and relating projects change too, causing many
+> changes across the ecosystem. Expect the dust to settle in roughly a day.
+> 
+> See this project at the previous stable commit
+> [c4a51d1](https://github.com/wooorm/remark-github/commit/c4a51d1).
+
 ## Installation
 
 [npm](https://docs.npmjs.com/cli/install):
