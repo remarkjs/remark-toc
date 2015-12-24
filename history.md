@@ -2,6 +2,12 @@
 
 <!--lint disable no-multiple-toplevel-headings-->
 
+2.0.0 / 2015-12-24
+==================
+
+*   Add temporary warning to `readme.md` ([1399d59](https://github.com/wooorm/remark-toc/commit/1399d59))
+*   Rename `mdast-toc` > `remark-toc` ([a6590c4](https://github.com/wooorm/remark-toc/commit/a6590c4))
+
 1.2.0 / 2015-11-02
 ==================
 
