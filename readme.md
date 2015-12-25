@@ -17,12 +17,6 @@ npm install remark-toc
 component install wooorm/remark-toc
 ```
 
-[Bower](http://bower.io/#install-packages):
-
-```bash
-bower install remark-toc
-```
-
 [Duo](http://duojs.org/#getting-started):
 
 ```javascript
