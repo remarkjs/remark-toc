@@ -45,7 +45,7 @@ var fixtures = fs.readdirSync(ROOT);
  *
  * @param {string} value - Value to process.
  * @param {Object} config - Configuration for processor.
- * @return {string}
+ * @return {string} - Processed `value`.
  */
 function process(value, config) {
     return remark().use(toc, config).process(value);

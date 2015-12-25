@@ -9,6 +9,8 @@
 
 'use strict';
 
+/* eslint-env commonjs */
+
 /*
  * Dependencies.
  */
@@ -32,7 +34,7 @@ var DEFAULT_HEADING = 'toc|table[ -]of[ -]contents?';
  * Transform a string into an applicable expression.
  *
  * @param {string} value - Content to expressionise.
- * @return {RegExp}
+ * @return {RegExp} - Expression from `value`.
  */
 function toExpression(value) {
     return new RegExp('^(' + value + ')$', 'i');
@@ -42,7 +44,9 @@ function toExpression(value) {
  * Check if `node` is the main heading.
  *
  * @param {Node} node - Node to check.
- * @return {boolean}
+ * @param {number} depth - Depth to check.
+ * @param {RegExp} expression - Expression to check.
+ * @return {boolean} - Whether `node` is a main heading.
  */
 function isOpeningHeading(node, depth, expression) {
     return depth === null && node && node.type === HEADING &&
@@ -54,7 +58,7 @@ function isOpeningHeading(node, depth, expression) {
  *
  * @param {Node} node - Node to check.
  * @param {number} depth - Depth of opening heading.
- * @return {boolean}
+ * @return {boolean} - Whether znode is a closing heading.
  */
 function isClosingHeading(node, depth) {
     return depth && node && node.type === HEADING && node.depth <= depth;
@@ -67,7 +71,7 @@ function isClosingHeading(node, depth) {
  * @param {RegExp} expression - Heading-content to search
  *   for.
  * @param {number} maxDepth - Maximum-depth to include.
- * @return {Object}
+ * @return {Object} - Results.
  */
 function search(root, expression, maxDepth) {
     var index = -1;
@@ -131,7 +135,7 @@ function search(root, expression, maxDepth) {
 /**
  * Create a list.
  *
- * @return {Object}
+ * @return {Object} - List node.
  */
 function list() {
     return {
@@ -144,7 +148,7 @@ function list() {
 /**
  * Create a list item.
  *
- * @return {Object}
+ * @return {Object} - List-item node.
  */
 function listItem() {
     return {
@@ -219,7 +223,7 @@ function insert(node, parent, tight) {
         parent.loose = tight ? false : children.length > 1;
     } else {
         if (tight) {
-            isLoose = false
+            isLoose = false;
         } else {
             index = -1;
 
@@ -245,7 +249,7 @@ function insert(node, parent, tight) {
  *
  * @param {Array.<Object>} map - Heading-map to insert.
  * @param {boolean?} [tight] - Prefer tight list-items.
- * @return {Object}
+ * @return {Object} - List node.
  */
 function contents(map, tight) {
     var minDepth = Infinity;
@@ -295,7 +299,9 @@ function contents(map, tight) {
 /**
  * Attacher.
  *
- * @return {function(node)}
+ * @param {Remark} remark - Processor.
+ * @param {Object} options - Configuration.
+ * @return {function(node)} - Transformmer.
  */
 function attacher(remark, options) {
     var settings = options || {};
