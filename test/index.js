@@ -8,17 +8,17 @@
 
 'use strict';
 
-/* eslint-env mocha */
+/* eslint-env node */
 
 /*
  * Dependencies.
  */
 
-var toc = require('..');
-var remark = require('remark');
-var assert = require('assert');
+var test = require('tape');
 var fs = require('fs');
 var path = require('path');
+var remark = require('remark');
+var toc = require('..');
 
 /*
  * Methods.
@@ -27,7 +27,6 @@ var path = require('path');
 var read = fs.readFileSync;
 var exists = fs.existsSync;
 var join = path.join;
-var equal = assert.strictEqual;
 
 /*
  * Constants.
@@ -56,25 +55,24 @@ function process(value, config) {
  * Tests.
  */
 
-describe('remark-toc()', function () {
-    it('should be a function', function () {
-        assert(typeof toc === 'function');
-    });
+test('remark-toc()', function (t) {
+    t.equal(typeof toc, 'function', 'should be a function');
 
-    it('should not throw if not passed options', function () {
-        assert.doesNotThrow(function () {
-            toc(remark);
-        });
-    });
+    t.doesNotThrow(function () {
+        toc(remark);
+    }, 'should not throw if not passed options');
+
+    t.end();
 });
 
-/**
- * Describe a fixtures.
- *
- * @param {string} fixture - Directory name.
+/*
+ * Fixtures.
  */
-function describeFixture(fixture) {
-    it('should work on `' + fixture + '`', function () {
+
+test('Fixtures', function (t) {
+    fixtures.filter(function (filepath) {
+        return filepath.indexOf('.') !== 0;
+    }).forEach(function (fixture) {
         var filepath = join(ROOT, fixture);
         var output = read(join(filepath, 'output.md'), 'utf-8');
         var input = read(join(filepath, 'input.md'), 'utf-8');
@@ -84,18 +82,8 @@ function describeFixture(fixture) {
         config = exists(config) ? JSON.parse(read(config, 'utf-8')) : {};
         result = process(input, config);
 
-        equal(result, output);
+        t.equal(result, output, 'should work on `' + fixture + '`');
     });
-}
 
-/*
- * Gather fixtures.
- */
-
-fixtures = fixtures.filter(function (filepath) {
-    return filepath.indexOf('.') !== 0;
-});
-
-describe('Fixtures', function () {
-    fixtures.forEach(describeFixture);
+    t.end();
 });
