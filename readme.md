@@ -36,10 +36,10 @@ var remark = require('remark').use(toc);
 var readme = fs.readFileSync('readme.md', 'utf-8');
 ```
 
-Parse markdown (this TOC is the 14th child).
+Parse markdown (this TOC is the 7th child).
 
 ```javascript
-var contents = remark.run(remark.parse(readme)).children[14];
+var contents = remark.run(remark.parse(readme)).children[7];
 ```
 
 Stringify:
