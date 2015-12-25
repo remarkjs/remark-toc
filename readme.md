@@ -11,27 +11,9 @@ files with [remark](https://github.com/wooorm/remark).
 npm install remark-toc
 ```
 
-[Component.js](https://github.com/componentjs/component):
-
-```bash
-component install wooorm/remark-toc
-```
-
-[Duo](http://duojs.org/#getting-started):
-
-```javascript
-var toc = require('wooorm/remark-toc');
-```
-
-UMD (globals/AMD/CommonJS) ([uncompressed](remark-toc.js) and [compressed](remark-toc.min.js)):
-
-```html
-<script src="path/to/remark.js"></script>
-<script src="path/to/remark-toc.js"></script>
-<script>
-  remark.use(remarkTOC);
-</script>
-```
+**remark-toc** is also available for [duo](http://duojs.org/#getting-started),
+and as an AMD, CommonJS, and globals module, [uncompressed and
+compressed](https://github.com/wooorm/remark-toc/releases).
 
 ## Table of Contents
 
