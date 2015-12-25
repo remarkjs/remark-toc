@@ -15,7 +15,7 @@
  */
 
 var toc = require('..');
-var mdast = require('mdast');
+var remark = require('remark');
 var assert = require('assert');
 var fs = require('fs');
 var path = require('path');
@@ -49,7 +49,7 @@ var fixtures = fs.readdirSync(ROOT);
  * @return {string}
  */
 function process(value, config) {
-    return mdast().use(toc, config).process(value);
+    return remark().use(toc, config).process(value);
 }
 
 /*
@@ -63,7 +63,7 @@ describe('remark-toc()', function () {
 
     it('should not throw if not passed options', function () {
         assert.doesNotThrow(function () {
-            toc(mdast);
+            toc(remark);
         });
     });
 });

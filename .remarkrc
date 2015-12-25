@@ -5,6 +5,7 @@
     "lint",
     "github",
     "./",
+    "usage",
     "validate-links"
   ],
   "settings": {
