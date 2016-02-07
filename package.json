@@ -17,7 +17,7 @@
     "remark"
   ],
   "dependencies": {
-    "remark-slug": "^3.0.0",
+    "remark-slug": "^4.0.0",
     "mdast-util-to-string": "^1.0.0"
   },
   "repository": "wooorm/remark-toc",
@@ -26,7 +26,7 @@
     "index.js"
   ],
   "devDependencies": {
-    "browserify": "^12.0.0",
+    "browserify": "^13.0.0",
     "eslint": "^1.0.0",
     "esmangle": "^1.0.0",
     "istanbul": "^0.4.0",
@@ -34,7 +34,7 @@
     "jscs-jsdoc": "^1.0.0",
     "remark": "^3.0.0",
     "remark-comment-config": "^2.0.0",
-    "remark-github": "^2.0.0",
+    "remark-github": "^4.0.1",
     "remark-lint": "^2.0.0",
     "remark-usage": "^2.0.0",
     "remark-validate-links": "^2.0.0",

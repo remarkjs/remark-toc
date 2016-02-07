@@ -17,7 +17,7 @@
     "remark"
   ],
   "dependencies": {
-    "wooorm/remark-slug": "^2.0.0",
+    "wooorm/remark-slug": "^4.0.0",
     "wooorm/mdast-util-to-string": "^1.0.0"
   },
   "repository": "wooorm/remark-toc",
