@@ -181,7 +181,7 @@ function insert(node, parent, tight) {
                 {
                     'type': LINK,
                     'title': null,
-                    'href': '#' + node.id,
+                    'url': '#' + node.id,
                     'children': [
                         {
                             'type': TEXT,
