@@ -1,14 +1,20 @@
-// Require/read dependencies:
+// Dependencies:
+var remark = require('remark');
 var toc = require('./index.js');
-var fs = require('fs');
-var remark = require('remark').use(toc);
-var readme = fs.readFileSync('readme.md', 'utf-8');
 
-// Parse markdown (this TOC is the 7th child).
-var contents = remark.run(remark.parse(readme)).children[7];
-
-// Stringify:
-var doc = remark.stringify(contents);
+// Process:
+var doc = remark().use(toc).process([
+    '# Alpha',
+    '',
+    '## Table of Contents',
+    '',
+    '## Bravo',
+    '',
+    '### Charlie',
+    '',
+    '## Delta',
+    ''
+].join('\n'));
 
 // Yields:
 console.log('markdown', doc);
