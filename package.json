@@ -20,8 +20,18 @@
     "remark-slug": "^4.0.0",
     "mdast-util-to-string": "^1.0.0"
   },
-  "repository": "wooorm/remark-toc",
-  "author": "Titus Wormer <tituswormer@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wooorm/remark-toc.git"
+  },
+  "bugs": "https://github.com/wooorm/remark-toc/issues",
+  "author": "Titus Wormer <tituswormer@gmail.com> (http://wooorm.com)",
+  "contributors": [
+    "Titus Wormer <tituswormer@gmail.com> (http://wooorm.com)"
+  ],
+  "engines": {
+    "node": ">=0.10.0"
+  },
   "files": [
     "index.js"
   ],
