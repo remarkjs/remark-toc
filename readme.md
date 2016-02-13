@@ -1,4 +1,4 @@
-# remark-toc [![Build Status][travis-badge]][travis] [![Coverage Status][codecov-badge]][codecov]
+# remark-toc [![Build Status][travis-badge]][travis] [![Coverage Status][codecov-badge]][codecov] [![remark][remark-badge]][remark]
 
 Generate a Table of Contents in [**remark**][remark].
 
@@ -116,3 +116,5 @@ Add a Table of Contents to a Markdown document.
 [remark]: https://github.com/wooorm/remark
 
 [remark-slug]: https://github.com/wooorm/remark-slug
+
+[remark-badge]: https://img.shields.io/badge/remark-4.0.0-brightgreen.svg
