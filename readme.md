@@ -1,12 +1,12 @@
-# remark-toc [![Build Status][travis-badge]][travis] [![Coverage Status][codecov-badge]][codecov] [![remark][remark-badge]][remark]
+# remark-toc [![Build Status][build-badge]][build-status] [![Coverage Status][coverage-badge]][coverage-status] [![Chat][chat-badge]][chat]
 
-<!--lint disable list-item-spacing-->
+<!--lint disable list-item-spacing heading-increment-->
 
 Generate a Table of Contents in [**remark**][remark].
 
 ## Installation
 
-[npm][npm-install]:
+[npm][]:
 
 ```bash
 npm install remark-toc
@@ -74,7 +74,7 @@ Add a Table of Contents to a Markdown document.
 *   Inserts a list representation of the hierarchy of following headings;
 *   Adds links to following headings, using the same slugs as GitHub.
 
-**Options** (`Object`, optional):
+###### `options`
 
 *   `heading` (`string?`, default: `"toc|table[ -]of[ -]contents?"`)
     — Heading to look for, wrapped in `new RegExp('^(' + value + ')$', 'i');`;
@@ -91,15 +91,17 @@ Add a Table of Contents to a Markdown document.
 
 <!-- Definitions -->
 
-[travis-badge]: https://img.shields.io/travis/wooorm/remark-toc.svg
+[build-badge]: https://img.shields.io/travis/wooorm/remark-toc.svg
 
-[travis]: https://travis-ci.org/wooorm/remark-toc
+[build-status]: https://travis-ci.org/wooorm/remark-toc
 
-[codecov-badge]: https://img.shields.io/codecov/c/github/wooorm/remark-toc.svg
+[coverage-badge]: https://img.shields.io/codecov/c/github/wooorm/remark-toc.svg
 
-[codecov]: https://codecov.io/github/wooorm/remark-toc
+[coverage-status]: https://codecov.io/github/wooorm/remark-toc
 
-[npm-install]: https://docs.npmjs.com/cli/install
+[chat-badge]: https://img.shields.io/gitter/room/wooorm/remark.svg
+
+[chat]: https://gitter.im/wooorm/remark
 
 [releases]: https://github.com/wooorm/remark-toc/releases
 
@@ -107,6 +109,6 @@ Add a Table of Contents to a Markdown document.
 
 [author]: http://wooorm.com
 
-[remark]: https://github.com/wooorm/remark
+[npm]: https://docs.npmjs.com/cli/install
 
-[remark-badge]: https://img.shields.io/badge/remark-4.0.0-brightgreen.svg
+[remark]: https://github.com/wooorm/remark
