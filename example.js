@@ -3,7 +3,7 @@ var remark = require('remark');
 var toc = require('./index.js');
 
 // Process:
-var doc = remark().use(toc).process([
+var file = remark().use(toc).process([
     '# Alpha',
     '',
     '## Table of Contents',
@@ -17,4 +17,4 @@ var doc = remark().use(toc).process([
 ].join('\n'));
 
 // Yields:
-console.log('markdown', doc);
+console.log('markdown', String(file));

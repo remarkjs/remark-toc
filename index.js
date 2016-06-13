@@ -298,17 +298,17 @@ function contents(map, tight) {
 /**
  * Attacher.
  *
- * @param {Remark} remark - Processor.
+ * @param {Unified} processor - Processor.
  * @param {Object} options - Configuration.
  * @return {function(node)} - Transformmer.
  */
-function attacher(remark, options) {
+function attacher(processor, options) {
     var settings = options || {};
     var heading = toExpression(settings.heading || DEFAULT_HEADING);
     var depth = settings.maxDepth || 6;
     var tight = settings.tight;
 
-    remark.use(slug, settings.slug);
+    processor.use(slug);
 
     /**
      * Adds an example section based on a valid example

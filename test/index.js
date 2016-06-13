@@ -48,7 +48,7 @@ var fixtures = fs.readdirSync(ROOT);
  * @return {string} - Processed `value`.
  */
 function process(value, config) {
-    return remark().use(toc, config).process(value);
+    return remark().use(toc, config).process(value).toString();
 }
 
 /*
@@ -59,7 +59,7 @@ test('remark-toc()', function (t) {
     t.equal(typeof toc, 'function', 'should be a function');
 
     t.doesNotThrow(function () {
-        toc(remark);
+        toc(remark());
     }, 'should not throw if not passed options');
 
     t.end();
