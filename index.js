@@ -296,49 +296,63 @@ function contents(map, tight) {
 }
 
 /**
- * Attacher.
+ * Attacher wrapper.
  *
- * @param {Unified} processor - Processor.
- * @param {Object} options - Configuration.
- * @return {function(node)} - Transformmer.
+ * @param {Formatter} format - Formatter.
+ * @return {function(processor, options)} - Attacher.
  */
-function attacher(processor, options) {
-    var settings = options || {};
-    var heading = toExpression(settings.heading || DEFAULT_HEADING);
-    var depth = settings.maxDepth || 6;
-    var tight = settings.tight;
-
-    processor.use(slug);
-
+function attacher(format) {
     /**
-     * Adds an example section based on a valid example
-     * JavaScript document to a `Usage` section.
+     * Attacher.
      *
-     * @param {Node} node - Root to search in.
+     * @param {Unified} processor - Processor.
+     * @param {Object} options - Configuration.
+     * @return {function(node)} - Transformer.
      */
-    function transformer(node) {
-        var result = search(node, heading, depth);
+    return function (processor, options) {
+        var settings = options || {};
+        var heading = toExpression(settings.heading || DEFAULT_HEADING);
+        var depth = settings.maxDepth || 6;
+        var tight = settings.tight;
 
-        if (result.index === null || !result.map.length) {
-            return;
+        processor.use(slug);
+
+        /**
+         * Adds an example section based on a valid example
+         * JavaScript document to a `Usage` section.
+         *
+         * @param {Node} node - Root to search in.
+         */
+        function transformer(node) {
+            var result = search(node, heading, depth);
+
+            /*
+             * Add markdown.
+             */
+
+            format(node, result, tight);
         }
 
-        /*
-         * Add markdown.
-         */
-
-        node.children = [].concat(
-            node.children.slice(0, result.index),
-            contents(result.map, tight),
-            node.children.slice(result.index)
-        );
+        return transformer;
     }
-
-    return transformer;
 }
 
 /*
  * Expose.
  */
 
-module.exports = attacher;
+module.exports = attacher(function (node, result, tight) {
+    if (result.index === null || !result.map.length) {
+        return;
+    }
+
+    node.children = [].concat(
+        node.children.slice(0, result.index),
+        contents(result.map, tight),
+        node.children.slice(result.index)
+    );
+});
+
+module.exports.light = attacher(function (node, result, tight) {
+    node.children = [contents(result.map, tight)];
+});
