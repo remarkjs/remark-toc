@@ -18,7 +18,7 @@
   ],
   "dependencies": {
     "remark-slug": "^4.0.0",
-    "mdast-util-to-string": "^1.0.0"
+    "mdast-util-toc": "^2.0.0"
   },
   "repository": {
     "type": "git",
