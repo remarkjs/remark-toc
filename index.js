@@ -8,19 +8,14 @@
 
 'use strict';
 
-/* eslint-env commonjs */
-
-/*
- * Dependencies.
- */
-
+/* Dependencies. */
 var slug = require('remark-slug');
 var toc = require('mdast-util-toc');
 
-/*
- * Constants.
- */
+/* Expose. */
+module.exports = attacher;
 
+/* Constants. */
 var DEFAULT_HEADING = 'toc|table[ -]of[ -]contents?';
 
 /**
@@ -31,46 +26,37 @@ var DEFAULT_HEADING = 'toc|table[ -]of[ -]contents?';
  * @return {function(node)} - Transformmer.
  */
 function attacher(processor, options) {
-    var settings = options || {};
-    var heading = settings.heading || DEFAULT_HEADING;
-    var depth = settings.maxDepth || 6;
-    var tight = settings.tight;
+  var settings = options || {};
+  var heading = settings.heading || DEFAULT_HEADING;
+  var depth = settings.maxDepth || 6;
+  var tight = settings.tight;
 
-    processor.use(slug);
+  processor.use(slug);
 
-    /**
-     * Adds an example section based on a valid example
-     * JavaScript document to a `Usage` section.
-     *
-     * @param {Node} node - Root to search in.
-     */
-    function transformer(node) {
-        var result = toc(node, {
-            'heading': heading,
-            'maxDepth': depth,
-            'tight': tight
-        });
+  return transformer;
 
-        if (result.index === null || result.index === -1 || !result.map) {
-            return;
-        }
+  /**
+   * Adds an example section based on a valid example
+   * JavaScript document to a `Usage` section.
+   *
+   * @param {Node} node - Root to search in.
+   */
+  function transformer(node) {
+    var result = toc(node, {
+      heading: heading,
+      maxDepth: depth,
+      tight: tight
+    });
 
-        /*
-         * Add markdown.
-         */
-
-        node.children = [].concat(
-            node.children.slice(0, result.index),
-            result.map,
-            node.children.slice(result.endIndex)
-        );
+    if (result.index === null || result.index === -1 || !result.map) {
+      return;
     }
 
-    return transformer;
+    /* Replace markdown. */
+    node.children = [].concat(
+      node.children.slice(0, result.index),
+      result.map,
+      node.children.slice(result.endIndex)
+    );
+  }
 }
-
-/*
- * Expose.
- */
-
-module.exports = attacher;

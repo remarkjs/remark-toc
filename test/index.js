@@ -8,36 +8,22 @@
 
 'use strict';
 
-/* eslint-env node */
-
-/*
- * Dependencies.
- */
-
+/* Dependencies. */
 var test = require('tape');
 var fs = require('fs');
 var path = require('path');
 var remark = require('remark');
 var toc = require('..');
 
-/*
- * Methods.
- */
-
+/* Methods. */
 var read = fs.readFileSync;
 var exists = fs.existsSync;
 var join = path.join;
 
-/*
- * Constants.
- */
-
+/* Constants. */
 var ROOT = join(__dirname, 'fixtures');
 
-/*
- * Fixtures.
- */
-
+/* Fixtures. */
 var fixtures = fs.readdirSync(ROOT);
 
 /**
@@ -48,7 +34,7 @@ var fixtures = fs.readdirSync(ROOT);
  * @return {string} - Processed `value`.
  */
 function process(value, config) {
-    return remark().use(toc, config).process(value).toString();
+  return remark().use(toc, config).process(value).toString();
 }
 
 /*
@@ -56,34 +42,34 @@ function process(value, config) {
  */
 
 test('remark-toc()', function (t) {
-    t.equal(typeof toc, 'function', 'should be a function');
+  t.equal(typeof toc, 'function', 'should be a function');
 
-    t.doesNotThrow(function () {
-        toc(remark());
-    }, 'should not throw if not passed options');
+  t.doesNotThrow(function () {
+    toc(remark());
+  }, 'should not throw if not passed options');
 
-    t.end();
+  t.end();
 });
 
 /*
- * Fixtures.
- */
+* Fixtures.
+*/
 
 test('Fixtures', function (t) {
-    fixtures.filter(function (filepath) {
-        return filepath.indexOf('.') !== 0;
-    }).forEach(function (fixture) {
-        var filepath = join(ROOT, fixture);
-        var output = read(join(filepath, 'output.md'), 'utf-8');
-        var input = read(join(filepath, 'input.md'), 'utf-8');
-        var config = join(filepath, 'config.json');
-        var result;
+  fixtures.filter(function (filepath) {
+    return filepath.indexOf('.') !== 0;
+  }).forEach(function (fixture) {
+    var filepath = join(ROOT, fixture);
+    var output = read(join(filepath, 'output.md'), 'utf-8');
+    var input = read(join(filepath, 'input.md'), 'utf-8');
+    var config = join(filepath, 'config.json');
+    var result;
 
-        config = exists(config) ? JSON.parse(read(config, 'utf-8')) : {};
-        result = process(input, config);
+    config = exists(config) ? JSON.parse(read(config, 'utf-8')) : {};
+    result = process(input, config);
 
-        t.equal(result, output, 'should work on `' + fixture + '`');
-    });
+    t.equal(result, output, 'should work on `' + fixture + '`');
+  });
 
-    t.end();
+  t.end();
 });

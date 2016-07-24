@@ -28,16 +28,16 @@ Process:
 
 ```javascript
 var file = remark().use(toc).process([
-    '# Alpha',
-    '',
-    '## Table of Contents',
-    '',
-    '## Bravo',
-    '',
-    '### Charlie',
-    '',
-    '## Delta',
-    ''
+  '# Alpha',
+  '',
+  '## Table of Contents',
+  '',
+  '## Bravo',
+  '',
+  '### Charlie',
+  '',
+  '## Delta',
+  ''
 ].join('\n'));
 ```
 
@@ -63,7 +63,7 @@ Yields:
 
 ## API
 
-### `remark.use(toc[, options])`
+### `remark().use(toc[, options])`
 
 Add a Table of Contents to a Markdown document.
 
