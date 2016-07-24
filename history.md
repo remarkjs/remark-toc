@@ -2,6 +2,12 @@
 
 <!--lint disable no-multiple-toplevel-headings-->
 
+3.1.0 / 2016-07-24
+==================
+
+*   Refactor code-style to use `xo` ([`6e23fd1`](https://github.com/wooorm/remark-toc/commit/6e23fd1))
+*   Refactor to externalise toc generation to `mdast-util-toc` ([`dd6bf14`](https://github.com/wooorm/remark-toc/commit/dd6bf14))
+
 3.0.1 / 2016-06-13
 ==================
 
