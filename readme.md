@@ -1,7 +1,5 @@
 # remark-toc [![Build Status][build-badge]][build-status] [![Coverage Status][coverage-badge]][coverage-status] [![Chat][chat-badge]][chat]
 
-<!--lint disable list-item-spacing heading-increment-->
-
 Generate a Table of Contents in [**remark**][remark].
 
 ## Installation
@@ -12,21 +10,12 @@ Generate a Table of Contents in [**remark**][remark].
 npm install remark-toc
 ```
 
-**remark-toc** is also available as an AMD, CommonJS, and globals
-module, [uncompressed and compressed][releases].
-
 ## Usage
-
-Dependencies:
 
 ```javascript
 var remark = require('remark');
 var toc = require('remark-toc');
-```
 
-Process:
-
-```javascript
 var file = remark().use(toc).process([
   '# Alpha',
   '',
@@ -39,6 +28,8 @@ var file = remark().use(toc).process([
   '## Delta',
   ''
 ].join('\n'));
+
+console.log(String(file));
 ```
 
 Yields:
@@ -102,8 +93,6 @@ Add a Table of Contents to a Markdown document.
 [chat-badge]: https://img.shields.io/gitter/room/wooorm/remark.svg
 
 [chat]: https://gitter.im/wooorm/remark
-
-[releases]: https://github.com/wooorm/remark-toc/releases
 
 [license]: LICENSE
 
