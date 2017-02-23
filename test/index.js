@@ -17,14 +17,14 @@ var ROOT = join(__dirname, 'fixtures');
 var fixtures = fs.readdirSync(ROOT);
 
 function process(value, config) {
-  return remark().use(toc, config).process(value).toString();
+  return remark().use(toc, config).processSync(value).toString();
 }
 
 test('remark-toc()', function (t) {
   t.equal(typeof toc, 'function', 'should be a function');
 
   t.doesNotThrow(function () {
-    toc(remark());
+    toc.call(remark());
   }, 'should not throw if not passed options');
 
   t.end();

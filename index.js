@@ -7,13 +7,13 @@ module.exports = toc;
 
 var DEFAULT_HEADING = 'toc|table[ -]of[ -]contents?';
 
-function toc(processor, options) {
+function toc(options) {
   var settings = options || {};
   var heading = settings.heading || DEFAULT_HEADING;
   var depth = settings.maxDepth || 6;
   var tight = settings.tight;
 
-  processor.use(slug);
+  this.use(slug);
 
   return transformer;
 

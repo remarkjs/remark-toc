@@ -16,7 +16,7 @@ npm install remark-toc
 var remark = require('remark');
 var toc = require('remark-toc');
 
-var file = remark().use(toc).process([
+var file = remark().use(toc).processSync([
   '# Alpha',
   '',
   '## Table of Contents',
