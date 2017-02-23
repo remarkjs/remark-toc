@@ -42,13 +42,13 @@
     "negate": "^1.0.0",
     "nyc": "^10.0.0",
     "remark": "^7.0.0",
-    "remark-cli": "^2.0.0",
-    "remark-preset-wooorm": "^1.0.0",
+    "remark-cli": "^3.0.0",
+    "remark-preset-wooorm": "^2.0.0",
     "tape": "^4.0.0",
     "xo": "^0.17.1"
   },
   "scripts": {
-    "build-md": "remark *.md --quiet --frail",
+    "build-md": "remark *.md -qfo",
     "build-bundle": "browserify index.js --no-builtins -s remarkTOC > remark-toc.js",
     "build-mangle": "esmangle remark-toc.js > remark-toc.min.js",
     "build": "npm run build-md && npm run build-bundle && npm run build-mangle",
@@ -64,7 +64,6 @@
     ]
   },
   "remarkConfig": {
-    "output": true,
-    "presets": "wooorm"
+    "plugins": ["preset-wooorm"]
   }
 }
