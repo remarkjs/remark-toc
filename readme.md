@@ -69,21 +69,21 @@ Add a Table of Contents to a Markdown document.
 
 *   Looks for the first heading containing `"Table of Contents"`, `"toc"`,
     or `table-of-contents` (case insensitive, supports alt/title attributes
-    for links and images too);
-*   Removes all following contents until an equal or higher heading is found;
-*   Inserts a list representation of the hierarchy of following headings;
-*   Adds links to following headings, using the same slugs as GitHub.
+    for links and images too)
+*   Removes all following contents until an equal or higher heading is found
+*   Inserts a list representation of the hierarchy of following headings
+*   Adds links to following headings, using the same slugs as GitHub
 
 ###### `options`
 
 *   `heading` (`string?`, default: `"toc|table[ -]of[ -]contents?"`)
-    — Heading to look for, wrapped in `new RegExp('^(' + value + ')$', 'i');`;
+    — Heading to look for, wrapped in `new RegExp('^(' + value + ')$', 'i');`
 *   `maxDepth` (`number?`, default: `6`)
     — Maximum heading depth to include in the table of contents,
     This is inclusive, thus, when set to `3`, level three headings,
-    are included (those with three hashes, `###`);
+    are included (those with three hashes, `###`)
 *   `tight` (`boolean?`, default: `false`)
-    — Whether to compile list-items tightly.
+    — Whether to compile list-items tightly
 
 ## License
 
