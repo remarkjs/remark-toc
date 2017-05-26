@@ -85,6 +85,18 @@ Add a Table of Contents to a Markdown document.
 *   `tight` (`boolean?`, default: `false`)
     — Whether to compile list-items tightly
 
+## Related
+
+*   [`remark-collapse`](https://github.com/Rokt33r/remark-collapse)
+    – Make a section collapsible
+*   [`remark-normalize-headings`](https://github.com/eush77/remark-normalize-headings)
+    — Make sure there is no more than a single top-level heading in the document
+    and rewrite the rest accordingly
+*   [`remark-rewrite-headers`](https://github.com/strugee/remark-rewrite-headers)
+    — Change header levels
+*   [`mdast-util-toc`](https://github.com/barrythepenguin/mdast-util-toc)
+    — Core functionality of this plugin
+
 ## License
 
 [MIT][license] © [Titus Wormer][author]
