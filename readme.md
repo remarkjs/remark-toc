@@ -12,27 +12,36 @@ npm install remark-toc
 
 ## Usage
 
+Say we have the following file, `example.md`:
+
+```markdown
+# Alpha
+
+## Table of Contents
+
+## Bravo
+
+### Charlie
+
+## Delta
+```
+
+And our script, `example.js`, looks as follows:
+
 ```javascript
+var vfile = require('to-vfile');
 var remark = require('remark');
 var toc = require('remark-toc');
 
-var file = remark().use(toc).processSync([
-  '# Alpha',
-  '',
-  '## Table of Contents',
-  '',
-  '## Bravo',
-  '',
-  '### Charlie',
-  '',
-  '## Delta',
-  ''
-].join('\n'));
-
-console.log(String(file));
+remark()
+  .use(toc)
+  .process(vfile.readSync('example.md'), function (err, file) {
+    if (err) throw err;
+    console.log(String(file));
+  });
 ```
 
-Yields:
+Now, running `node example` yields:
 
 ```markdown
 # Alpha
