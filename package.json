@@ -16,10 +16,6 @@
     "generation",
     "remark"
   ],
-  "dependencies": {
-    "remark-slug": "^4.0.0",
-    "mdast-util-toc": "^2.0.0"
-  },
   "repository": "wooorm/remark-toc",
   "bugs": "https://github.com/wooorm/remark-toc/issues",
   "author": "Titus Wormer <tituswormer@gmail.com> (http://wooorm.com)",
@@ -29,6 +25,10 @@
   "files": [
     "index.js"
   ],
+  "dependencies": {
+    "remark-slug": "^4.0.0",
+    "mdast-util-toc": "^2.0.0"
+  },
   "devDependencies": {
     "browserify": "^14.0.0",
     "esmangle": "^1.0.0",
@@ -47,7 +47,7 @@
     "build-mangle": "esmangle remark-toc.js > remark-toc.min.js",
     "build": "npm run build-md && npm run build-bundle && npm run build-mangle",
     "lint": "xo",
-    "test-api": "node test/index.js",
+    "test-api": "node test",
     "test-coverage": "nyc --reporter lcov tape test/index.js",
     "test": "npm run build && npm run lint && npm run test-coverage"
   },
