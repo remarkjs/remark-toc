@@ -35,8 +35,8 @@
     "is-hidden": "^1.1.0",
     "negate": "^1.0.0",
     "nyc": "^11.0.0",
-    "remark": "^7.0.0",
-    "remark-cli": "^3.0.0",
+    "remark": "^8.0.0",
+    "remark-cli": "^4.0.0",
     "remark-preset-wooorm": "^3.0.0",
     "tape": "^4.0.0",
     "xo": "^0.18.0"
