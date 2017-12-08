@@ -5,6 +5,7 @@ node_js:
 after_script: bash <(curl -s https://codecov.io/bash)
 deploy:
   - provider: npm
+    skip_cleanup: true
     email: tituswormer@gmail.com
     api_key:
       secure: KDKwvBgWuimRB105GFjaSKGMvuPkqb7NDv+NIlKWbxTlywt/NZCy/WmK4G9NDLn6HF+qCXmP9CqIw3BsMygDrUB1PQXCjISQJnct0ibk3HFzG3oc8HAl07jMEg/hetQCeMcky5SN+LM446okMZRp27vOuchR3PwddKRTQ84ERbE=
@@ -12,6 +13,7 @@ deploy:
       tags: true
       node: '9.0'
   - provider: releases
+    skip_cleanup: true
     api_key:
       secure: SHufUrKqQGHul65JBr+P65InlzbR1MIvvUC9LaEiHwKzJ0NhzqbgNfVyJC3nV03i0WjrM6ZL0E/ppUY+gRiHDxwhIfrP+V84WIHA9xVxW5PPnvLconbI3e5+P5WCqzSpm+bKg+70uo6LNmv3WM09QWsZZXVzkeXDfrRL0o7U5sI=
     file:
