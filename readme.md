@@ -97,6 +97,13 @@ Add a Table of Contents to a Markdown document.
 *   [`mdast-util-toc`](https://github.com/barrythepenguin/mdast-util-toc)
     — Core functionality of this plugin
 
+## Contribute
+
+See [`contribute.md` in `remarkjs/remarkj`][contribute] for ways to get started.
+
+This organisation has a [Code of Conduct][coc].  By interacting with this
+repository, organisation, or community you agree to abide by its terms.
+
 ## License
 
 [MIT][license] © [Titus Wormer][author]
@@ -122,3 +129,7 @@ Add a Table of Contents to a Markdown document.
 [npm]: https://docs.npmjs.com/cli/install
 
 [remark]: https://github.com/remarkjs/remark
+
+[contribute]: https://github.com/remarkjs/remark/blob/master/contributing.md
+
+[coc]: https://github.com/remarkjs/remark/blob/master/code-of-conduct.md
