@@ -16,8 +16,8 @@
     "generation",
     "remark"
   ],
-  "repository": "wooorm/remark-toc",
-  "bugs": "https://github.com/wooorm/remark-toc/issues",
+  "repository": "remarkjs/remark-toc",
+  "bugs": "https://github.com/remarkjs/remark-toc/issues",
   "author": "Titus Wormer <tituswormer@gmail.com> (http://wooorm.com)",
   "contributors": [
     "Titus Wormer <tituswormer@gmail.com> (http://wooorm.com)"
