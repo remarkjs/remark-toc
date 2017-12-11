@@ -1,6 +1,6 @@
 {
   "name": "remark-toc",
-  "version": "4.0.1",
+  "version": "5.0.0",
   "description": "Generate a Table of Contents (TOC) for Markdown files",
   "license": "MIT",
   "keywords": [
