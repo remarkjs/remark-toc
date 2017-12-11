@@ -67,8 +67,8 @@ Now, running `node example` yields:
 
 Add a Table of Contents to a Markdown document.
 
-*   Looks for the first heading containing `"Table of Contents"`, `"toc"`,
-    or `table-of-contents` (case insensitive, supports alt/title attributes
+*   Looks for the first heading containing `'Table of Contents'`, `'toc'`,
+    or `'table-of-contents'` (case insensitive, supports alt/title attributes
     for links and images too)
 *   Removes all following contents until an equal or higher heading is found
 *   Inserts a list representation of the hierarchy of following headings
@@ -78,7 +78,7 @@ Add a Table of Contents to a Markdown document.
 
 ###### `heading`
 
-`string?`, default: `"toc|table[ -]of[ -]contents?"` — Heading to look for,
+`string?`, default: `'toc|table[ -]of[ -]contents?'` — Heading to look for,
 wrapped in `new RegExp('^(' + value + ')$', 'i')`.
 
 ###### `maxDepth`
