@@ -74,16 +74,22 @@ Add a Table of Contents to a Markdown document.
 *   Inserts a list representation of the hierarchy of following headings
 *   Adds links to following headings, using the same slugs as GitHub
 
-###### `options`
+##### Options
 
-*   `heading` (`string?`, default: `"toc|table[ -]of[ -]contents?"`)
-    — Heading to look for, wrapped in `new RegExp('^(' + value + ')$', 'i');`
-*   `maxDepth` (`number?`, default: `6`)
-    — Maximum heading depth to include in the table of contents,
-    This is inclusive, thus, when set to `3`, level three headings,
-    are included (those with three hashes, `###`)
-*   `tight` (`boolean?`, default: `false`)
-    — Whether to compile list-items tightly
+###### `heading`
+
+`string?`, default: `"toc|table[ -]of[ -]contents?"` — Heading to look for,
+wrapped in `new RegExp('^(' + value + ')$', 'i')`.
+
+###### `maxDepth`
+
+`number?`, default: `6` — Maximum heading depth to include in the table of
+contents, This is inclusive, thus, when set to `3`, level three headings,
+are included (those with three hashes, `###`).
+
+###### `tight`
+
+`boolean?`, default: `false` — Whether to compile list-items tightly.
 
 ## Related
 
@@ -99,7 +105,7 @@ Add a Table of Contents to a Markdown document.
 
 ## Contribute
 
-See [`contribute.md` in `remarkjs/remarkj`][contribute] for ways to get started.
+See [`contribute.md` in `remarkjs/remark`][contribute] for ways to get started.
 
 This organisation has a [Code of Conduct][coc].  By interacting with this
 repository, organisation, or community you agree to abide by its terms.
