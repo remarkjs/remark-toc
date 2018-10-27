@@ -27,7 +27,7 @@
   ],
   "dependencies": {
     "remark-slug": "^5.0.0",
-    "mdast-util-toc": "^2.0.0"
+    "mdast-util-toc": "^3.0.0"
   },
   "devDependencies": {
     "browserify": "^16.0.0",
