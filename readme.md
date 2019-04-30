@@ -105,6 +105,8 @@ are included (those with three hashes, `###`).
 *   [`remark-normalize-headings`](https://github.com/eush77/remark-normalize-headings)
     — Make sure there is no more than a single top-level heading in the document
     and rewrite the rest accordingly
+*   [`remark-behead`](https://github.com/mrzmmr/remark-behead)
+    — Recommended instead of `remark-rewrite-headers`
 *   [`remark-rewrite-headers`](https://github.com/strugee/remark-rewrite-headers)
     — Change header levels
 *   [`mdast-util-toc`](https://github.com/barrythepenguin/mdast-util-toc)
