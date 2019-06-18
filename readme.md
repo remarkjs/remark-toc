@@ -3,21 +3,22 @@
 [![Build][build-badge]][build]
 [![Coverage][coverage-badge]][coverage]
 [![Downloads][downloads-badge]][downloads]
-[![Chat][chat-badge]][chat]
+[![Size][size-badge]][size]
 [![Sponsors][sponsors-badge]][collective]
 [![Backers][backers-badge]][collective]
+[![Chat][chat-badge]][chat]
 
-Generate a Table of Contents in [**remark**][remark].
+[**remark**][remark] plugin to generate a Table of Contents.
 
-## Installation
+## Install
 
 [npm][]:
 
-```bash
+```sh
 npm install remark-toc
 ```
 
-## Usage
+## Use
 
 Say we have the following file, `example.md`:
 
@@ -35,7 +36,7 @@ Say we have the following file, `example.md`:
 
 And our script, `example.js`, looks as follows:
 
-```javascript
+```js
 var vfile = require('to-vfile')
 var remark = require('remark')
 var toc = require('remark-toc')
@@ -72,7 +73,7 @@ Now, running `node example` yields:
 
 ### `remark().use(toc[, options])`
 
-Add a Table of Contents to a Markdown document.
+Generate a Table of Contents.
 
 *   Looks for the first heading containing `'Table of Contents'`, `'toc'`,
     or `'table-of-contents'` (case insensitive, supports alt/title attributes
@@ -81,20 +82,20 @@ Add a Table of Contents to a Markdown document.
 *   Inserts a list representation of the hierarchy of following headings
 *   Adds links to following headings, using the same slugs as GitHub
 
-##### Options
+##### `options`
 
-###### `heading`
+###### `options.heading`
 
 `string?`, default: `'toc|table[ -]of[ -]contents?'` — Heading to look for,
 wrapped in `new RegExp('^(' + value + ')$', 'i')`.
 
-###### `maxDepth`
+###### `options.maxDepth`
 
 `number?`, default: `6` — Maximum heading depth to include in the table of
 contents, This is inclusive, thus, when set to `3`, level three headings,
 are included (those with three hashes, `###`).
 
-###### `tight`
+###### `options.tight`
 
 `boolean?`, default: `false` — Whether to compile list-items tightly.
 
@@ -112,11 +113,13 @@ are included (those with three hashes, `###`).
 
 ## Contribute
 
-See [`contributing.md` in `remarkjs/remark`][contributing] for ways to get
-started.
+See [`contributing.md`][contributing] in [`remarkjs/.github`][health] for ways
+to get started.
+See [`support.md`][support] for ways to get help.
 
-This organisation has a [Code of Conduct][coc].  By interacting with this
-repository, organisation, or community you agree to abide by its terms.
+This project has a [Code of Conduct][coc].
+By interacting with this repository, organisation, or community you agree to
+abide by its terms.
 
 ## License
 
@@ -124,7 +127,7 @@ repository, organisation, or community you agree to abide by its terms.
 
 <!-- Definitions -->
 
-[build-badge]: https://img.shields.io/travis/remarkjs/remark-toc.svg
+[build-badge]: https://img.shields.io/travis/remarkjs/remark-toc/master.svg
 
 [build]: https://travis-ci.org/remarkjs/remark-toc
 
@@ -136,9 +139,9 @@ repository, organisation, or community you agree to abide by its terms.
 
 [downloads]: https://www.npmjs.com/package/remark-toc
 
-[chat-badge]: https://img.shields.io/badge/join%20the%20community-on%20spectrum-7b16ff.svg
+[size-badge]: https://img.shields.io/bundlephobia/minzip/remark-toc.svg
 
-[chat]: https://spectrum.chat/unified/remark
+[size]: https://bundlephobia.com/result?p=remark-toc
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 
@@ -146,14 +149,22 @@ repository, organisation, or community you agree to abide by its terms.
 
 [collective]: https://opencollective.com/unified
 
+[chat-badge]: https://img.shields.io/badge/join%20the%20community-on%20spectrum-7b16ff.svg
+
+[chat]: https://spectrum.chat/unified/remark
+
+[npm]: https://docs.npmjs.com/cli/install
+
+[health]: https://github.com/remarkjs/.github
+
+[contributing]: https://github.com/remarkjs/.github/blob/master/contributing.md
+
+[support]: https://github.com/remarkjs/.github/blob/master/support.md
+
+[coc]: https://github.com/remarkjs/.github/blob/master/code-of-conduct.md
+
 [license]: license
 
 [author]: https://wooorm.com
 
-[npm]: https://docs.npmjs.com/cli/install
-
 [remark]: https://github.com/remarkjs/remark
-
-[contributing]: https://github.com/remarkjs/remark/blob/master/contributing.md
-
-[coc]: https://github.com/remarkjs/remark/blob/master/code-of-conduct.md
