@@ -5,11 +5,11 @@ var util = require('mdast-util-toc')
 
 module.exports = toc
 
-var DEFAULT_HEADING = 'toc|table[ -]of[ -]contents?'
+var defaultHeading = 'toc|table[ -]of[ -]contents?'
 
 function toc(options) {
   var settings = options || {}
-  var heading = settings.heading || DEFAULT_HEADING
+  var heading = settings.heading || defaultHeading
   var depth = settings.maxDepth || 6
   var tight = settings.tight
 

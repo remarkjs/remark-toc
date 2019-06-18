@@ -11,9 +11,9 @@ var toc = require('..')
 var read = fs.readFileSync
 var join = path.join
 
-var ROOT = join(__dirname, 'fixtures')
+var root = join(__dirname, 'fixtures')
 
-var fixtures = fs.readdirSync(ROOT)
+var fixtures = fs.readdirSync(root)
 
 function process(value, config) {
   return remark()
@@ -34,7 +34,7 @@ test('remark-toc()', function(t) {
 
 test('Fixtures', function(t) {
   fixtures.filter(negate(hidden)).forEach(function(fixture) {
-    var filepath = join(ROOT, fixture)
+    var filepath = join(root, fixture)
     var output = read(join(filepath, 'output.md'), 'utf-8')
     var input = read(join(filepath, 'input.md'), 'utf-8')
     var config
