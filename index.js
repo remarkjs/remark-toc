@@ -17,8 +17,6 @@ function toc(options) {
 
   return transformer
 
-  /* Adds an example section based on a valid example
-   * JavaScript document to a `Usage` section. */
   function transformer(node) {
     var result = util(node, {
       heading: heading,
@@ -30,7 +28,6 @@ function toc(options) {
       return
     }
 
-    /* Replace markdown. */
     node.children = [].concat(
       node.children.slice(0, result.index),
       result.map,
