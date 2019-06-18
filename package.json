@@ -32,7 +32,7 @@
     "index.js"
   ],
   "dependencies": {
-    "mdast-util-toc": "^3.0.0"
+    "mdast-util-toc": "^4.0.0"
   },
   "devDependencies": {
     "browserify": "^16.0.0",
