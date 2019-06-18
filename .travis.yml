@@ -1,7 +1,7 @@
 language: node_js
 node_js:
-- lts/boron
-- node
+  - lts/dubnium
+  - node
 after_script: bash <(curl -s https://codecov.io/bash)
 deploy:
   provider: releases
@@ -9,7 +9,7 @@ deploy:
   api_key:
     secure: SHufUrKqQGHul65JBr+P65InlzbR1MIvvUC9LaEiHwKzJ0NhzqbgNfVyJC3nV03i0WjrM6ZL0E/ppUY+gRiHDxwhIfrP+V84WIHA9xVxW5PPnvLconbI3e5+P5WCqzSpm+bKg+70uo6LNmv3WM09QWsZZXVzkeXDfrRL0o7U5sI=
   file:
-    - "remark-toc.js"
-    - "remark-toc.min.js"
+    - 'remark-toc.js'
+    - 'remark-toc.min.js'
   on:
     tags: true
