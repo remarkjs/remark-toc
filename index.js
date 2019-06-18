@@ -1,6 +1,5 @@
 'use strict'
 
-var slug = require('remark-slug')
 var util = require('mdast-util-toc')
 
 module.exports = toc
@@ -12,8 +11,6 @@ function toc(options) {
   var heading = settings.heading || defaultHeading
   var depth = settings.maxDepth || 6
   var tight = settings.tight
-
-  this.use(slug)
 
   return transformer
 

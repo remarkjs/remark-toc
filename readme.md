@@ -80,7 +80,13 @@ Generate a Table of Contents.
     for links and images too)
 *   Removes all following contents until an equal or higher heading is found
 *   Inserts a list representation of the hierarchy of following headings
-*   Adds links to following headings, using the same slugs as GitHub
+*   Links from the table of contents to following headings, using the same slugs
+    as GitHub
+
+> **Note**: if you’re later compiling to HTML, you still need to add anchors to
+> headings.
+> Previously that was done by this plugin as well, but now you must
+> [`.use(slug)` to include `remark-slug`][slug] explicitly.
 
 ##### `options`
 
@@ -101,14 +107,16 @@ are included (those with three hashes, `###`).
 
 ## Related
 
+*   [`remark-slug`][slug]
+    – Add anchors to headings using GitHub’s algorithm
 *   [`remark-collapse`](https://github.com/Rokt33r/remark-collapse)
     – Make a section collapsible
-*   [`remark-normalize-headings`](https://github.com/eush77/remark-normalize-headings)
+*   [`remark-normalize-headings`](https://github.com/remarkjs/remark-normalize-headings)
     — Make sure there is no more than a single top-level heading in the document
     and rewrite the rest accordingly
 *   [`remark-behead`](https://github.com/mrzmmr/remark-behead)
     — Change header levels
-*   [`mdast-util-toc`](https://github.com/barrythepenguin/mdast-util-toc)
+*   [`mdast-util-toc`](https://github.com/syntax-tree/mdast-util-toc)
     — Core functionality of this plugin
 
 ## Contribute
@@ -168,3 +176,5 @@ abide by its terms.
 [author]: https://wooorm.com
 
 [remark]: https://github.com/remarkjs/remark
+
+[slug]: https://github.com/remarkjs/remark-slug

@@ -32,7 +32,6 @@
     "index.js"
   ],
   "dependencies": {
-    "remark-slug": "^5.0.0",
     "mdast-util-toc": "^3.0.0"
   },
   "devDependencies": {
