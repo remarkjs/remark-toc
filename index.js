@@ -11,6 +11,7 @@ function toc(options) {
   var heading = settings.heading || defaultHeading
   var depth = settings.maxDepth || 6
   var tight = settings.tight
+  var skip = settings.skip
 
   return transformer
 
@@ -18,7 +19,8 @@ function toc(options) {
     var result = util(node, {
       heading: heading,
       maxDepth: depth,
-      tight: tight
+      tight: tight,
+      skip: skip
     })
 
     if (result.index === null || result.index === -1 || !result.map) {

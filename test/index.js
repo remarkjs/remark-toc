@@ -1,8 +1,8 @@
 'use strict'
 
-var test = require('tape')
 var fs = require('fs')
 var path = require('path')
+var test = require('tape')
 var remark = require('remark')
 var negate = require('negate')
 var hidden = require('is-hidden')
