@@ -105,7 +105,7 @@ are included (those with three hashes, `###`).
 
 `boolean?`, default: `false` — Whether to compile list-items tightly.
 
-##### `options.skip`
+###### `options.skip`
 
 `string?` — Headings to skip, wrapped in `new RegExp('^(' + value + ')$', 'i')`.
 Any heading matching this expression will not be present in the table of
