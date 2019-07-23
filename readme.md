@@ -111,6 +111,41 @@ are included (those with three hashes, `###`).
 Any heading matching this expression will not be present in the table of
 contents.
 
+## Security
+
+Use of `remark-toc` involves user content and changes the tree, so it can open
+you up for a [cross-site scripting (XSS)][xss] attack.
+
+Existing nodes are copied into the table of contents.
+The following example shows how an existing script is copied into the table of
+contents.
+
+The following Markdown:
+
+```markdown
+# Table of Contents
+
+## Bravo<script>alert(1)</script>
+
+## Charlie
+```
+
+Yields:
+
+```markdown
+# Table of Contents
+
+-   [Bravo<script>alert(1)</script>](#bravoscriptalert1script)
+-   [Charlie](#charlie)
+
+## Bravo<script>alert(1)</script>
+
+## Charlie
+```
+
+This may become a problem if the Markdown is later transformed to
+[**rehype**][rehype] ([**hast**][hast]) or opened in an unsafe Markdown viewer.
+
 ## Related
 
 *   [`remark-slug`][slug]
@@ -184,3 +219,9 @@ abide by its terms.
 [remark]: https://github.com/remarkjs/remark
 
 [slug]: https://github.com/remarkjs/remark-slug
+
+[xss]: https://en.wikipedia.org/wiki/Cross-site_scripting
+
+[rehype]: https://github.com/rehypejs/rehype
+
+[hast]: https://github.com/syntax-tree/hast
