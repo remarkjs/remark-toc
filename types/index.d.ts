@@ -1,8 +1,6 @@
 // Minimum TypeScript Version: 3.2
 
 import {Node} from 'unist'
-import {Plugin, Transformer}	from 'unified'
-import {Heading} from 'mdast'
 import {TOCOptions} from 'mdast-util-toc'
 
 declare namespace remarkToc {
