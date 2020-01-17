@@ -28,23 +28,28 @@
     "Jonathan Haines <jonno.haines@gmail.com>",
     "Robin Millette <robin@millette.info>"
   ],
+  "types": "types/index.d.ts",
   "files": [
+    "types/index.d.ts",
     "index.js"
   ],
   "dependencies": {
-    "mdast-util-toc": "^4.0.0"
+    "mdast-util-toc": "^5.0.0",
+    "@types/mdast": "^3.0.3"
   },
   "devDependencies": {
     "browserify": "^16.0.0",
+    "dtslint": "^2.0.5",
     "is-hidden": "^1.1.0",
     "negate": "^1.0.0",
     "nyc": "^14.0.0",
-    "prettier": "^1.0.0",
-    "remark": "^11.0.0",
-    "remark-cli": "^7.0.0",
+    "prettier": "^1.19.1",
+    "remark": "^11.0.2",
+    "remark-cli": "^7.0.1",
     "remark-preset-wooorm": "^6.0.0",
-    "tape": "^4.0.0",
+    "tape": "^4.13.0",
     "tinyify": "^2.0.0",
+    "typescript": "^3.7.5",
     "xo": "^0.24.0"
   },
   "scripts": {
@@ -54,7 +59,8 @@
     "build": "npm run build-bundle && npm run build-mangle",
     "test-api": "node test",
     "test-coverage": "nyc --reporter lcov tape test/index.js",
-    "test": "npm run format && npm run build && npm run test-coverage"
+    "test-types": "dtslint types",
+    "test": "npm run format && npm run build && npm run test-coverage && npm run test-types"
   },
   "prettier": {
     "tabWidth": 2,
