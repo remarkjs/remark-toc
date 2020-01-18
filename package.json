@@ -39,17 +39,17 @@
   },
   "devDependencies": {
     "browserify": "^16.0.0",
-    "dtslint": "^2.0.5",
+    "dtslint": "^2.0.0",
     "is-hidden": "^1.1.0",
     "negate": "^1.0.0",
     "nyc": "^14.0.0",
-    "prettier": "^1.19.1",
-    "remark": "^11.0.2",
-    "remark-cli": "^7.0.1",
+    "prettier": "^1.0.0",
+    "remark": "^11.0.0",
+    "remark-cli": "^7.0.0",
     "remark-preset-wooorm": "^6.0.0",
-    "tape": "^4.13.0",
+    "tape": "^4.0.0",
     "tinyify": "^2.0.0",
-    "xo": "^0.25.3"
+    "xo": "^0.25.0"
   },
   "scripts": {
     "format": "remark *.md -qfo && prettier --write \"**/*.js\" && xo --fix",
