@@ -49,7 +49,6 @@
     "remark-preset-wooorm": "^6.0.0",
     "tape": "^4.13.0",
     "tinyify": "^2.0.0",
-    "typescript": "^3.7.5",
     "xo": "^0.25.3"
   },
   "scripts": {
