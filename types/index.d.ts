@@ -7,6 +7,11 @@ declare namespace remarkToc {
   type TOCSettings = Pick<TOCOptions, 'heading' | 'maxDepth' | 'tight' | 'skip'>;
 }
 
+/**
+ * Generate a Table of Contents.
+ *
+ * @param  settings configuration for generating the table of contents
+ */
 declare function remarkToc(
   settings?: remarkToc.TOCSettings
 ): (node: Node) => void
