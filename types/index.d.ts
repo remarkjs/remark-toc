@@ -4,7 +4,7 @@ import {Node} from 'unist'
 import {TOCOptions} from 'mdast-util-toc'
 
 declare namespace remarkToc {
-  type TOCSettings = Pick<TOCOptions, 'heading' | 'maxDepth' | 'tight' | 'skip'>;
+  type TOCSettings = Pick<TOCOptions, 'heading' | 'maxDepth' | 'tight' | 'skip'>
 }
 
 /**

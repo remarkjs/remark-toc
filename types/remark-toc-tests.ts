@@ -15,9 +15,9 @@ remark().use(toc, {
 })
 
 remark().use(toc, {
-   tight: true
+  tight: true
 })
 
 remark().use(toc, {
-   skip: 'skip-heading'
+  skip: 'skip-heading'
 })

@@ -16,24 +16,21 @@ var root = join(__dirname, 'fixtures')
 var fixtures = fs.readdirSync(root)
 
 function process(value, config) {
-  return remark()
-    .use(toc, config)
-    .processSync(value)
-    .toString()
+  return remark().use(toc, config).processSync(value).toString()
 }
 
-test('remark-toc()', function(t) {
+test('remark-toc()', function (t) {
   t.equal(typeof toc, 'function', 'should be a function')
 
-  t.doesNotThrow(function() {
+  t.doesNotThrow(function () {
     toc.call(remark())
   }, 'should not throw if not passed options')
 
   t.end()
 })
 
-test('Fixtures', function(t) {
-  fixtures.filter(negate(hidden)).forEach(function(fixture) {
+test('Fixtures', function (t) {
+  fixtures.filter(negate(hidden)).forEach(function (fixture) {
     var filepath = join(root, fixture)
     var output = read(join(filepath, 'output.md'), 'utf-8')
     var input = read(join(filepath, 'input.md'), 'utf-8')
