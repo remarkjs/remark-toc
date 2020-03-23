@@ -8,7 +8,7 @@
 [![Backers][backers-badge]][collective]
 [![Chat][chat-badge]][chat]
 
-[**remark**][remark] plugin to generate a Table of Contents.
+[**remark**][remark] plugin to generate a table of contents.
 
 ## Install
 
@@ -73,7 +73,7 @@ Now, running `node example` yields:
 
 ### `remark().use(toc[, options])`
 
-Generate a Table of Contents.
+Generate a table of contents.
 
 *   Looks for the first heading containing `'Table of Contents'`, `'toc'`,
     or `'table-of-contents'` (case insensitive, supports alt/title attributes
@@ -166,8 +166,8 @@ See [`contributing.md`][contributing] in [`remarkjs/.github`][health] for ways
 to get started.
 See [`support.md`][support] for ways to get help.
 
-This project has a [Code of Conduct][coc].
-By interacting with this repository, organisation, or community you agree to
+This project has a [code of conduct][coc].
+By interacting with this repository, organization, or community you agree to
 abide by its terms.
 
 ## License
