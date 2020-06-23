@@ -1,3 +1,5 @@
 coverage/
 remark-toc.js
 remark-toc.min.js
+*.json
+*.md
