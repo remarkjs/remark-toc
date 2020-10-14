@@ -2,6 +2,6 @@
 
 ## Table of Contents
 
-## 
+##
 
 ## ![](an-image.svg)

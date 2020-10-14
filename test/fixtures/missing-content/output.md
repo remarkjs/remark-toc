@@ -2,4 +2,4 @@
 
 ## Table of Contents
 
-* * *
+***

@@ -16,7 +16,11 @@ var root = join(__dirname, 'fixtures')
 var fixtures = fs.readdirSync(root)
 
 function process(value, config) {
-  return remark().use(toc, config).processSync(value).toString()
+  return remark()
+    .use({settings: {bullet: '-'}})
+    .use(toc, config)
+    .processSync(value)
+    .toString()
 }
 
 test('remark-toc()', function (t) {
