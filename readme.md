@@ -90,26 +90,8 @@ Generate a table of contents.
 
 ##### `options`
 
-###### `options.heading`
-
-`string?`, default: `'toc|table[ -]of[ -]contents?'` — Heading to look for,
-wrapped in `new RegExp('^(' + value + ')$', 'i')`.
-
-###### `options.maxDepth`
-
-`number?`, default: `6` — Maximum heading depth to include in the table of
-contents, This is inclusive, thus, when set to `3`, level three headings,
-are included (those with three hashes, `###`).
-
-###### `options.tight`
-
-`boolean?`, default: `false` — Whether to compile list-items tightly.
-
-###### `options.skip`
-
-`string?` — Headings to skip, wrapped in `new RegExp('^(' + value + ')$', 'i')`.
-Any heading matching this expression will not be present in the table of
-contents.
+All options are passed to [`mdast-util-toc`][util], with the exception that
+`heading` defaults to `'toc|table[ -]of[ -]contents?'`.
 
 ## Security
 
@@ -225,3 +207,5 @@ abide by its terms.
 [rehype]: https://github.com/rehypejs/rehype
 
 [hast]: https://github.com/syntax-tree/hast
+
+[util]: https://github.com/syntax-tree/mdast-util-toc#options
