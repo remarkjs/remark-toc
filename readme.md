@@ -176,9 +176,9 @@ abide by its terms.
 
 <!-- Definitions -->
 
-[build-badge]: https://img.shields.io/travis/remarkjs/remark-toc/main.svg
+[build-badge]: https://github.com/remarkjs/remark-toc/workflows/main/badge.svg
 
-[build]: https://travis-ci.org/remarkjs/remark-toc
+[build]: https://github.com/remarkjs/remark-toc/actions
 
 [coverage-badge]: https://img.shields.io/codecov/c/github/remarkjs/remark-toc.svg
 
