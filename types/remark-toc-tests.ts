@@ -21,3 +21,11 @@ remark().use(toc, {
 remark().use(toc, {
   skip: 'skip-heading'
 })
+
+remark().use(toc, {
+  prefix: 'prefix-'
+})
+
+remark().use(toc, {
+  parents: ['root', 'blockquote']
+})
