@@ -69,6 +69,12 @@ Now, running `node example` yields:
 ## Delta
 ```
 
+**Note**: this example also uses `to-vfile` and `remark`, to run the example ensure all dependencies are installed:
+
+```sh
+npm install to-vfile remark remark-toc
+```
+
 ## API
 
 ### `remark().use(toc[, options])`
