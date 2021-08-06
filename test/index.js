@@ -1,9 +1,9 @@
 import fs from 'fs'
 import path from 'path'
 import test from 'tape'
-import remark from 'remark'
-import hidden from 'is-hidden'
-import toc from '../index.js'
+import {remark} from 'remark'
+import {isHidden} from 'is-hidden'
+import remarkToc from '../index.js'
 
 test('Fixtures', function (t) {
   var root = path.join('test', 'fixtures')
@@ -15,7 +15,7 @@ test('Fixtures', function (t) {
   while (++index < fixtures.length) {
     fixture = fixtures[index]
 
-    if (hidden(fixture)) {
+    if (isHidden(fixture)) {
       continue
     }
 
@@ -30,7 +30,7 @@ test('Fixtures', function (t) {
     t.equal(
       remark()
         .use({settings: {bullet: '-'}})
-        .use(toc, config)
+        .use(remarkToc, config)
         .processSync(fs.readFileSync(path.join(root, fixture, 'input.md')))
         .toString(),
       String(fs.readFileSync(path.join(root, fixture, 'output.md'))),
