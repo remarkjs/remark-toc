@@ -1,10 +1,8 @@
 import {toc} from 'mdast-util-toc'
 
 export default function remarkToc(options = {}) {
-  return transformer
-
-  function transformer(node) {
-    var result = toc(
+  return (node) => {
+    const result = toc(
       node,
       Object.assign({}, options, {
         heading: options.heading || 'toc|table[ -]of[ -]contents?'
@@ -15,10 +13,10 @@ export default function remarkToc(options = {}) {
       return
     }
 
-    node.children = [].concat(
-      node.children.slice(0, result.index),
+    node.children = [
+      ...node.children.slice(0, result.index),
       result.map,
-      node.children.slice(result.endIndex)
-    )
+      ...node.children.slice(result.endIndex)
+    ]
   }
 }

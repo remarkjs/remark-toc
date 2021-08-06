@@ -5,25 +5,25 @@ import {remark} from 'remark'
 import {isHidden} from 'is-hidden'
 import remarkToc from '../index.js'
 
-test('Fixtures', function (t) {
-  var root = path.join('test', 'fixtures')
-  var fixtures = fs.readdirSync(root)
-  var index = -1
-  var fixture
-  var config
+test('Fixtures', (t) => {
+  const root = path.join('test', 'fixtures')
+  const fixtures = fs.readdirSync(root)
+  let index = -1
 
   while (++index < fixtures.length) {
-    fixture = fixtures[index]
+    const fixture = fixtures[index]
 
     if (isHidden(fixture)) {
       continue
     }
 
+    let config
+
     try {
       config = JSON.parse(
         fs.readFileSync(path.join(root, fixture, 'config.json'))
       )
-    } catch (_) {
+    } catch {
       config = {}
     }
 
