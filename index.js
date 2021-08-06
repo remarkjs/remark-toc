@@ -4,16 +4,14 @@ var util = require('mdast-util-toc')
 
 module.exports = toc
 
-function toc(options) {
-  var settings = options || {}
-
+function toc(options = {}) {
   return transformer
 
   function transformer(node) {
     var result = util(
       node,
-      Object.assign({}, settings, {
-        heading: settings.heading || 'toc|table[ -]of[ -]contents?'
+      Object.assign({}, options, {
+        heading: options.heading || 'toc|table[ -]of[ -]contents?'
       })
     )
 
