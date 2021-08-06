@@ -12,6 +12,9 @@
 
 ## Install
 
+This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c):
+Node 12+ is needed to use it and it must be `import`ed instead of `require`d.
+
 [npm][]:
 
 ```sh
@@ -34,17 +37,20 @@ Say we have the following file, `example.md`:
 ## Delta
 ```
 
-And our script, `example.js`, looks as follows:
+And our module, `example.js`, looks as follows (**note**: install all these
+dependencies!):
 
 ```js
-var vfile = require('to-vfile')
-var remark = require('remark')
-var toc = require('remark-toc')
+import {readSync} from 'to-vfile'
+import {remark} from 'remark'
+import remarkToc from 'remark-toc'
+
+const file = readSync('example.md')
 
 remark()
-  .use(toc)
-  .process(vfile.readSync('example.md'), function(err, file) {
-    if (err) throw err
+  .use(remarkToc)
+  .process(file)
+  .then((file) => {
     console.log(String(file))
   })
 ```
@@ -69,16 +75,12 @@ Now, running `node example` yields:
 ## Delta
 ```
 
-**Note**: this example also uses `to-vfile` and `remark`, to run the example
-ensure all dependencies are installed:
-
-```sh
-npm install to-vfile remark remark-toc
-```
-
 ## API
 
-### `remark().use(toc[, options])`
+This package exports no identifiers.
+The default export is `remarkToc`.
+
+### `unified().use(remarkToc[, options])`
 
 Generate a table of contents.
 
