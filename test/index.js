@@ -1,3 +1,7 @@
+/**
+ * @typedef {import('../index.js').Options} Options
+ */
+
 import fs from 'fs'
 import path from 'path'
 import test from 'tape'
@@ -17,15 +21,14 @@ test('Fixtures', (t) => {
       continue
     }
 
-    let config
+    /** @type {Options} */
+    let config = {}
 
     try {
       config = JSON.parse(
-        fs.readFileSync(path.join(root, fixture, 'config.json'))
+        String(fs.readFileSync(path.join(root, fixture, 'config.json')))
       )
-    } catch {
-      config = {}
-    }
+    } catch {}
 
     t.equal(
       remark()
