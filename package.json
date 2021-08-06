@@ -43,7 +43,6 @@
     "mdast-util-toc": "^5.0.0"
   },
   "devDependencies": {
-    "browserify": "^17.0.0",
     "dtslint": "^4.0.0",
     "is-hidden": "^1.0.0",
     "nyc": "^15.0.0",
@@ -52,18 +51,13 @@
     "remark-cli": "^9.0.0",
     "remark-preset-wooorm": "^8.0.0",
     "tape": "^5.0.0",
-    "tinyify": "^3.0.0",
     "xo": "^0.38.0"
   },
   "scripts": {
     "format": "remark . -qfo --ignore-pattern test/ && prettier . -w --loglevel warn && xo --fix",
-    "build-bundle": "browserify . -s remarkToc > remark-toc.js",
-    "build-mangle": "browserify . -s remarkToc -p tinyify > remark-toc.min.js",
-    "build": "npm run build-bundle && npm run build-mangle",
     "test-api": "node test",
     "test-coverage": "nyc --reporter lcov tape test/index.js",
-    "test-types": "dtslint types",
-    "test": "npm run format && npm run build && npm run test-coverage && npm run test-types"
+    "test": "npm run format && npm run test-coverage && npm run test-types"
   },
   "prettier": {
     "tabWidth": 2,
@@ -81,8 +75,7 @@
       "unicorn/prefer-optional-catch-binding": "off"
     },
     "ignores": [
-      "types/",
-      "remark-toc.js"
+      "types/"
     ]
   },
   "remarkConfig": {

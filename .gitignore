@@ -3,6 +3,4 @@
 .nyc_output/
 coverage/
 node_modules/
-remark-toc.js
-remark-toc.min.js
 yarn.lock
