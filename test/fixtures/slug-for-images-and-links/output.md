@@ -4,10 +4,10 @@
 
 -   [Something if](#something-if)
 
-    -   [![Something else](an-image.svg)](#something-else)
-    -   [![](an-alt.jpeg "Something elsefi")](#something-elsefi)
+    -   [![Something else](an-image.svg)](#)
+    -   [![](an-alt.jpeg "Something elsefi")](#-1)
 
--   [![Something iffi](a-link.png "a title")](#another-title)
+-   [![Something iffi](a-link.png "a title")](#-2)
 
 # [Something if](http://a-link.com)
 

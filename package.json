@@ -40,8 +40,8 @@
     "index.js"
   ],
   "dependencies": {
-    "@types/unist": "^2.0.3",
-    "mdast-util-toc": "^5.0.0"
+    "@types/unist": "^2.0.0",
+    "mdast-util-toc": "^6.0.0"
   },
   "devDependencies": {
     "c8": "^7.0.0",

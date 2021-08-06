@@ -1,10 +1,10 @@
-import util from 'mdast-util-toc'
+import {toc} from 'mdast-util-toc'
 
 export default function remarkToc(options = {}) {
   return transformer
 
   function transformer(node) {
-    var result = util(
+    var result = toc(
       node,
       Object.assign({}, options, {
         heading: options.heading || 'toc|table[ -]of[ -]contents?'
