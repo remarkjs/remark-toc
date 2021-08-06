@@ -1,10 +1,6 @@
-'use strict'
+import util from 'mdast-util-toc'
 
-var util = require('mdast-util-toc')
-
-module.exports = toc
-
-function toc(options = {}) {
+export default function remarkToc(options = {}) {
   return transformer
 
   function transformer(node) {

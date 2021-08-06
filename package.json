@@ -33,9 +33,10 @@
     "Jonathan Haines <jonno.haines@gmail.com>",
     "Robin Millette <robin@millette.info>"
   ],
-  "types": "types/index.d.ts",
+  "sideEffects": false,
+  "type": "module",
+  "main": "index.js",
   "files": [
-    "types/index.d.ts",
     "index.js"
   ],
   "dependencies": {

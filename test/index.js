@@ -1,14 +1,12 @@
-'use strict'
-
-var fs = require('fs')
-var path = require('path')
-var test = require('tape')
-var remark = require('remark')
-var hidden = require('is-hidden')
-var toc = require('..')
+import fs from 'fs'
+import path from 'path'
+import test from 'tape'
+import remark from 'remark'
+import hidden from 'is-hidden'
+import toc from '../index.js'
 
 test('Fixtures', function (t) {
-  var root = path.join(__dirname, 'fixtures')
+  var root = path.join('test', 'fixtures')
   var fixtures = fs.readdirSync(root)
   var index = -1
   var fixture
