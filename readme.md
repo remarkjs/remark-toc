@@ -325,7 +325,7 @@ Existing nodes are copied into the table of contents.
 The following example shows how an existing script is copied into the table of
 contents.
 
-The following Markdown:
+The following markdown:
 
 ```markdown
 # Table of Contents
