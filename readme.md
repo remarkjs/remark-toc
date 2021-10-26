@@ -60,8 +60,8 @@ Then it’s possible to use the rehype plugins [`rehype-slug`][rehype-slug] (for
 IDs on headings) and [`rehype-autolink-headings`][rehype-autolink-headings] (for
 anchors that link-to-self).
 
-This plugin does generate a table of contents for the whole document or expose
-it to other plugins.
+This plugin does not generate a table of contents for the *whole* document or
+expose it to other plugins.
 You can use the underlying mdast utility [`mdast-util-toc`][mdast-util-toc] and
 [create a plugin][create-a-plugin] yourself to do that and more.
 
