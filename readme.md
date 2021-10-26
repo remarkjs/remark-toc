@@ -167,7 +167,8 @@ case-insensitive and matches the whole heading text.
 
 ##### `options.skip`
 
-Pattern text of headings to exclude from the generated list (`string`, optional).
+Pattern text of headings to exclude from the generated list (`string`,
+optional).
 Wrapped in `new RegExp('^(' + options.skip + ')$', 'i')`, so it’s
 case-insensitive and matches whole heading texts.
 
