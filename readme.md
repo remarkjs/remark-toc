@@ -35,11 +35,11 @@
 This package is a [unified][] ([remark][]) plugin to generate a table of
 contents of the document such as the one above.
 
-unified is an AST (abstract syntax tree) based transform project.
-**remark** is everything unified that relates to markdown.
-The layer under remark is called mdast, which is only concerned with syntax
-trees.
-This plugin transforms the AST.
+**unified** is a project that transforms content with abstract syntax trees
+(ASTs).
+**remark** adds support for markdown to unified.
+**mdast** is the markdown AST that remark uses.
+This is a remark plugin that transforms mdast.
 
 ## When should I use this?
 
