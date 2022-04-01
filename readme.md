@@ -74,17 +74,17 @@ In Node.js (version 12.20+, 14.14+, or 16.0+), install with [npm][]:
 npm install remark-toc
 ```
 
-In Deno with [Skypack][]:
+In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import remarkToc from 'https://cdn.skypack.dev/remark-toc@8?dts'
+import remarkToc from 'https://esm.sh/remark-toc@8'
 ```
 
-In browsers with [Skypack][]:
+In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import remarkToc from 'https://cdn.skypack.dev/remark-toc@8?min'
+  import remarkToc from 'https://esm.sh/remark-toc@8?bundle'
 </script>
 ```
 
@@ -411,7 +411,7 @@ abide by its terms.
 
 [npm]: https://docs.npmjs.com/cli/install
 
-[skypack]: https://www.skypack.dev
+[esmsh]: https://esm.sh
 
 [health]: https://github.com/remarkjs/.github
 
