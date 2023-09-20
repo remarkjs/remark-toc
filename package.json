@@ -39,16 +39,16 @@
     "index.js"
   ],
   "dependencies": {
-    "@types/mdast": "^3.0.0",
-    "mdast-util-toc": "^6.0.0",
-    "unified": "^10.0.0"
+    "@types/mdast": "^4.0.0",
+    "mdast-util-toc": "^7.0.0",
+    "unified": "^11.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
     "c8": "^8.0.0",
     "is-hidden": "^2.0.0",
     "prettier": "^3.0.0",
-    "remark": "^14.0.0",
+    "remark": "^15.0.0",
     "remark-cli": "^11.0.0",
     "remark-preset-wooorm": "^9.0.0",
     "type-coverage": "^2.0.0",

@@ -39,8 +39,6 @@ test('remarkToc', async function (t) {
       } catch {}
 
       const proc = remark()
-        // To do: use defaults.
-        .use({settings: {bullet: '-'}})
         // @ts-expect-error: to do: fix type.
         .use(remarkToc, config)
 

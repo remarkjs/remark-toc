@@ -2,13 +2,13 @@
 
 ## Table of Contents
 
--   -   [Something if](#something-if)
+* * [Something if](#something-if)
 
--   [Something else](#something-else)
+* [Something else](#something-else)
 
-    -   [Something elsefi](#something-elsefi)
+  * [Something elsefi](#something-elsefi)
 
--   [Something iffi](#something-iffi)
+* [Something iffi](#something-iffi)
 
 ## Something if
 

@@ -2,11 +2,11 @@
 
 # Table of Contents
 
--   [Alpha](#alpha)
+* [Alpha](#alpha)
 
-    -   [Bravo](#bravo)
+  * [Bravo](#bravo)
 
-        -   [Charlie](#charlie)
+    * [Charlie](#charlie)
 
 # Alpha
 

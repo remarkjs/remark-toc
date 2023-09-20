@@ -2,19 +2,19 @@
 
 ## Table of Contents
 
--   [Alpha](#alpha)
+* [Alpha](#alpha)
 
--   [Bravo](#bravo)
+* [Bravo](#bravo)
 
--   [Charlie](#charlie)
+* [Charlie](#charlie)
 
--   [Delta](#delta)
+* [Delta](#delta)
 
-    -   [Examples](#examples)
+  * [Examples](#examples)
 
--   [Echo](#echo)
+* [Echo](#echo)
 
--   [Foxtrot](#foxtrot)
+* [Foxtrot](#foxtrot)
 
 ## Alpha
 

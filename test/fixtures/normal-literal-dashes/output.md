@@ -2,11 +2,11 @@
 
 ## Table-of-contents
 
--   [Rules](#rules)
+* [Rules](#rules)
 
-    -   [Foo-bar-baz](#foo-bar-baz)
+  * [Foo-bar-baz](#foo-bar-baz)
 
--   [Alpha-bravo-charlie](#alpha-bravo-charlie)
+* [Alpha-bravo-charlie](#alpha-bravo-charlie)
 
 ## Rules
 

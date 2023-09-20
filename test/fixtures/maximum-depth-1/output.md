@@ -2,7 +2,7 @@
 
 # Table of Contents
 
--   [Alpha](#alpha)
+* [Alpha](#alpha)
 
 # Alpha
 
