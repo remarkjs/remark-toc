@@ -71,14 +71,14 @@ npm install remark-toc
 In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import remarkToc from 'https://esm.sh/remark-toc@8'
+import remarkToc from 'https://esm.sh/remark-toc@9'
 ```
 
 In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import remarkToc from 'https://esm.sh/remark-toc@8?bundle'
+  import remarkToc from 'https://esm.sh/remark-toc@9?bundle'
 </script>
 ```
 

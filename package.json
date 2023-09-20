@@ -1,6 +1,6 @@
 {
   "name": "remark-toc",
-  "version": "8.0.1",
+  "version": "9.0.0",
   "description": "remark plugin to generate a table of contents (TOC)",
   "license": "MIT",
   "keywords": [
