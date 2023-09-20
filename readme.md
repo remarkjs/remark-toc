@@ -122,7 +122,7 @@ import remarkToc from 'remark-toc'
 import {read} from 'to-vfile'
 
 const file = await remark()
-  .use(remarkToc, {heading: 'contents'})
+  .use(remarkToc)
   .process(await read('example.md'))
 
 console.error(String(file))
@@ -193,7 +193,7 @@ Configuration (TypeScript type).
 
 ###### Fields
 
-*   `heading` (`string`, default: `'toc|table[ -]of[ -]contents?'`)
+*   `heading` (`string`, default: `'(table[ -]of[ -])?contents?|toc'`)
     — heading to look for, wrapped in `new RegExp('^(' + value + ')$', 'i')`
 *   `maxDepth` (`number`, default: `6`)
     — max heading depth to include in the table of contents; this is inclusive:
@@ -262,9 +262,7 @@ so:
 1. [History](#history)
 
    1. [Discovery](#discovery)
-
    2. [Name and symbol](#name-and-symbol)
-
    3. [Planet X disproved](#planet-x-disproved)
 
 2. [Orbit](#orbit)
