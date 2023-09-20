@@ -2,44 +2,62 @@
  * @typedef {import('../index.js').Options} Options
  */
 
-import fs from 'node:fs'
-import path from 'node:path'
-import test from 'tape'
+import assert from 'node:assert/strict'
+import fs from 'node:fs/promises'
+import process from 'node:process'
+import test from 'node:test'
 import {remark} from 'remark'
 import {isHidden} from 'is-hidden'
 import remarkToc from '../index.js'
 
-test('Fixtures', (t) => {
-  const root = path.join('test', 'fixtures')
-  const fixtures = fs.readdirSync(root)
+test('remarkToc', async function (t) {
+  const base = new URL('fixtures/', import.meta.url)
+  const folders = await fs.readdir(base)
+
   let index = -1
 
-  while (++index < fixtures.length) {
-    const fixture = fixtures[index]
+  while (++index < folders.length) {
+    const folder = folders[index]
 
-    if (isHidden(fixture)) {
-      continue
-    }
+    if (isHidden(folder)) continue
 
-    /** @type {Options} */
-    let config = {}
+    await t.test(folder, async function () {
+      const folderUrl = new URL(folder + '/', base)
+      const inputUrl = new URL('input.md', folderUrl)
+      const outputUrl = new URL('output.md', folderUrl)
+      const configUrl = new URL('config.json', folderUrl)
 
-    try {
-      config = JSON.parse(
-        String(fs.readFileSync(path.join(root, fixture, 'config.json')))
-      )
-    } catch {}
+      const input = String(await fs.readFile(inputUrl))
 
-    t.equal(
-      remark()
+      /** @type {Options | undefined} */
+      let config
+      /** @type {string} */
+      let output
+
+      try {
+        config = JSON.parse(String(await fs.readFile(configUrl)))
+      } catch {}
+
+      const proc = remark()
+        // To do: use defaults.
         .use({settings: {bullet: '-'}})
+        // @ts-expect-error: to do: fix type.
         .use(remarkToc, config)
-        .processSync(fs.readFileSync(path.join(root, fixture, 'input.md')))
-        .toString(),
-      String(fs.readFileSync(path.join(root, fixture, 'output.md'))),
-      'should work on `' + fixture + '`'
-    )
-  }
 
-  t.end()
+      const actual = String(await proc.process(input))
+
+      try {
+        if ('UPDATE' in process.env) {
+          throw new Error('Updating…')
+        }
+
+        output = String(await fs.readFile(outputUrl))
+      } catch {
+        output = actual
+        await fs.writeFile(outputUrl, actual)
+      }
+
+      assert.equal(actual, String(output))
+    })
+  }
 })
