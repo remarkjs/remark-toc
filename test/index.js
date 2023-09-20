@@ -6,11 +6,19 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
 import process from 'node:process'
 import test from 'node:test'
-import {remark} from 'remark'
 import {isHidden} from 'is-hidden'
+import {remark} from 'remark'
 import remarkToc from '../index.js'
 
 test('remarkToc', async function (t) {
+  await t.test('should expose the public api', async function () {
+    assert.deepEqual(Object.keys(await import('../index.js')).sort(), [
+      'default'
+    ])
+  })
+})
+
+test('fixtures', async function (t) {
   const base = new URL('fixtures/', import.meta.url)
   const folders = await fs.readdir(base)
 
@@ -38,9 +46,7 @@ test('remarkToc', async function (t) {
         config = JSON.parse(String(await fs.readFile(configUrl)))
       } catch {}
 
-      const proc = remark()
-        // @ts-expect-error: to do: fix type.
-        .use(remarkToc, config)
+      const proc = remark().use(remarkToc, config)
 
       const actual = String(await proc.process(input))
 

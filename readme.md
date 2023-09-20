@@ -238,7 +238,7 @@ so:
  async function main() {
    const file = await remark()
 -    .use(remarkToc)
-+    .use(remarkToc, {tight: true, ordered: true})
++    .use(remarkToc, {ordered: true, tight: true})
      .process(await read('example.md'))
 
    console.log(String(file))
@@ -265,7 +265,7 @@ so:
  async function main() {
    const file = await remark()
 -    .use(remarkToc)
-+    .use(remarkToc, {maxDepth: 3, skip: 'delta', parents: ['root', 'listItem']})
++    .use(remarkToc, {maxDepth: 3, parents: ['listItem', 'root'], skip: 'delta'})
      .process(await read('example.md'))
 
    console.log(String(file))
