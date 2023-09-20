@@ -8,7 +8,7 @@
 [![Backers][backers-badge]][collective]
 [![Chat][chat-badge]][chat]
 
-[**remark**][remark] plugin to generate a table of contents.
+**[remark][]** plugin to generate a table of contents.
 
 ## Contents
 
@@ -18,9 +18,10 @@
 *   [Use](#use)
 *   [API](#api)
     *   [`unified().use(remarkToc[, options])`](#unifieduseremarktoc-options)
+    *   [`Options`](#options)
 *   [Examples](#examples)
     *   [Example: a different heading](#example-a-different-heading)
-    *   [Example: ordered, tight list](#example-ordered-tight-list)
+    *   [Example: ordered, loose list](#example-ordered-loose-list)
     *   [Example: including and excluding headings](#example-including-and-excluding-headings)
     *   [Example: adding a prefix](#example-adding-a-prefix)
 *   [Types](#types)
@@ -35,17 +36,10 @@
 This package is a [unified][] ([remark][]) plugin to generate a table of
 contents of the document such as the one above.
 
-**unified** is a project that transforms content with abstract syntax trees
-(ASTs).
-**remark** adds support for markdown to unified.
-**mdast** is the markdown AST that remark uses.
-This is a remark plugin that transforms mdast.
-
 ## When should I use this?
 
 This project is useful when authors are writing docs in markdown that are
-sometimes quite long and hence would benefit from automated overviews inside
-them.
+sometimes quite long and so would benefit from automated overviews inside them.
 It is assumed that headings define the structure of documents and that they can
 be linked to.
 When this plugin is used, authors can add a certain heading (say, `## Contents`)
@@ -63,12 +57,12 @@ anchors that link-to-self).
 This plugin does not generate a table of contents for the *whole* document or
 expose it to other plugins.
 You can use the underlying mdast utility [`mdast-util-toc`][mdast-util-toc] and
-[create a plugin][create-a-plugin] yourself to do that and more.
+[create a plugin][unified-create-a-plugin] yourself to do that and more.
 
 ## Install
 
-This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c).
-In Node.js (version 12.20+, 14.14+, or 16.0+), install with [npm][]:
+This package is [ESM only][esm].
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install remark-toc
@@ -90,120 +84,138 @@ In browsers with [`esm.sh`][esmsh]:
 
 ## Use
 
-Say we have the following file, `example.md`:
+Say we have the following file `example.md`:
 
 ```markdown
-# Alpha
+# Pluto
 
-## Table of contents
+Pluto is a dwarf planet in the Kuiper belt.
 
-## Bravo
+## Contents
 
-### Charlie
+## History
 
-## Delta
+### Discovery
+
+In the 1840s, Urbain Le Verrier used Newtonian mechanics to predict the
+position of…
+
+### Name and symbol
+
+The name Pluto is for the Roman god of the underworld, from a Greek epithet for
+Hades…
+
+### Planet X disproved
+
+Once Pluto was found, its faintness and lack of a viewable disc cast doubt…
+
+## Orbit
+
+Pluto’s orbital period is about 248 years…
 ```
 
-And our module, `example.js`, looks as follows:
+…and a module `example.js`:
 
 ```js
-import {read} from 'to-vfile'
 import {remark} from 'remark'
 import remarkToc from 'remark-toc'
+import {read} from 'to-vfile'
 
-main()
+const file = await remark()
+  .use(remarkToc, {heading: 'contents', tight: true})
+  .process(await read('example.md'))
 
-async function main() {
-  const file = await remark()
-    .use(remarkToc)
-    .process(await read('example.md'))
-
-  console.log(String(file))
-}
+console.error(String(file))
 ```
 
-Now, running `node example` yields:
+…then running `node example.js` yields:
 
 ```markdown
-# Alpha
+# Pluto
 
-## Table of contents
+Pluto is a dwarf planet in the Kuiper belt.
 
-*   [Bravo](#bravo)
+## Contents
 
-    *   [Charlie](#charlie)
+* [History](#history)
+  * [Discovery](#discovery)
+  * [Name and symbol](#name-and-symbol)
+  * [Planet X disproved](#planet-x-disproved)
+* [Orbit](#orbit)
 
-*   [Delta](#delta)
+## History
 
-## Bravo
+### Discovery
 
-### Charlie
+In the 1840s, Urbain Le Verrier used Newtonian mechanics to predict the
+position of…
 
-## Delta
+### Name and symbol
+
+The name Pluto is for the Roman god of the underworld, from a Greek epithet for
+Hades…
+
+### Planet X disproved
+
+Once Pluto was found, its faintness and lack of a viewable disc cast doubt…
+
+## Orbit
+
+Pluto’s orbital period is about 248 years…
 ```
 
 ## API
 
 This package exports no identifiers.
-The default export is `remarkToc`.
+The default export is [`remarkToc`][api-remark-toc].
 
 ### `unified().use(remarkToc[, options])`
 
-Generate a table of contents.
-Looks for a certain heading, removes everything between it and an equal or
-higher heading, and replaces that with a list representing the document
-structure, linking to all further headings.
+Generate a table of contents (TOC).
 
-##### `options`
+Looks for the first heading matching `options.heading` (case insensitive),
+removes everything between it and an equal or higher next heading, and replaces
+that with a list representing the rest of the document structure, linking to
+all further headings.
 
-Configuration (optional).
+###### Parameters
 
-##### `options.heading`
+*   `options` ([`Options`][api-options], optional)
+    — configuration
 
-Pattern text of heading to look for (`string`, default:
-`'toc|table[ -]of[ -]contents?'`).
-Wrapped in `new RegExp('^(' + options.heading + ')$', 'i')`, so it’s
-case-insensitive and matches the whole heading text.
+###### Returns
 
-##### `options.skip`
+Transform ([`Transformer`][unified-transformer]).
 
-Pattern text of headings to exclude from the generated list (`string`,
-optional).
-Wrapped in `new RegExp('^(' + options.skip + ')$', 'i')`, so it’s
-case-insensitive and matches whole heading texts.
+### `Options`
 
-###### `options.maxDepth`
+Configuration (TypeScript type).
 
-Maximum heading depth to include in the generated list (`number?`, default:
-`6`).
-This is inclusive: when set to `3`, headings with a rank of 3 are included
-(those with three hashes: `###`).
+###### Fields
 
-###### `options.tight`
-
-Whether to compile list items tightly (`boolean?`, default: `false`).
-The default is to add space around items.
-
-###### `options.ordered`
-
-Whether to compile list items as an ordered list (`boolean?`, default: `false`).
-The default is to use an unordered list.
-
-###### `options.prefix`
-
-String to prepend before links to headings (`string?`, default: `null`, example:
-`'user-content-'`).
-This is useful when combining remark with [rehype][] through
-[`remark-rehype`][remark-rehype] after this plugin, and using
-[`rehype-sanitize`][rehype-sanitize] to prevent DOM clobbering of user generated
-markdown.
-
-###### `options.parents`
-
-Parents (such as block quotes and lists) of headings to include in the generated
-list ([`is`-compatible][is] test, default: the root node).
-By default only top level headings are used.
-Pass `['root', 'blockquote']` to also link to headings in block quotes.
+*   `heading` (`string`, default: `'toc|table[ -]of[ -]contents?'`)
+    — heading to look for, wrapped in `new RegExp('^(' + value + ')$', 'i')`
+*   `maxDepth` (`number`, default: `6`)
+    — max heading depth to include in the table of contents; this is inclusive:
+    when set to `3`, level three headings are included (those with three hashes,
+    `###`)
+*   `skip` (`string`, optional)
+    — headings to skip, wrapped in `new RegExp('^(' + value + ')$', 'i')`;
+    any heading matching this expression will not be present in the table of
+    contents
+*   `parents` ([`Test` from `unist-util-is`][unist-util-is-test], default:
+    `tree`)
+    — allow headings to be children of certain node types
+*   `tight` (`boolean`, default: `false`)
+    — whether to compile list items tightly, otherwise space is added around
+    items
+*   `ordered` (`boolean`, default: `false`)
+    — whether to compile list items as an ordered list, otherwise they are
+    unordered
+*   `prefix` (`string`, optional, example: `'user-content-'`)
+    — add a prefix to links to headings in the table of contents;
+    useful for example when later going from markdown to HTML and sanitizing
+    with [`rehype-sanitize`][rehype-sanitize]
 
 ## Examples
 
@@ -213,113 +225,113 @@ The option `heading` can be set to search for a different heading.
 The example from before can be changed to search for different headings like so:
 
 ```diff
-@@ -6,7 +6,7 @@ main()
+@@ -3,7 +3,7 @@ import remarkToc from 'remark-toc'
+ import {read} from 'to-vfile'
 
- async function main() {
-   const file = await remark()
--    .use(remarkToc)
-+    .use(remarkToc, {heading: 'contents'})
-     .process(await read('example.md'))
+ const file = await remark()
+-  .use(remarkToc)
++  .use(remarkToc, {heading: 'structure'})
+   .process(await read('example.md'))
 
-   console.log(String(file))
+ console.error(String(file))
 ```
 
-…that would search for `Contents` (case-insensitive) headings.
+…that would search for `structure` (case-insensitive) headings.
 
-### Example: ordered, tight list
+### Example: ordered, loose list
 
-The options `ordered` and `tight` can be turned on to change the list.
+The options `ordered` and `tight` can be toggled to change the list.
 The example from before can be changed to generate a tight, ordered list like
 so:
 
 ```diff
-@@ -6,7 +6,10 @@ main()
+@@ -3,7 +3,7 @@ import remarkToc from 'remark-toc'
+ import {read} from 'to-vfile'
 
- async function main() {
-   const file = await remark()
--    .use(remarkToc)
-+    .use(remarkToc, {ordered: true, tight: true})
-     .process(await read('example.md'))
+ const file = await remark()
+-  .use(remarkToc)
++  .use(remarkToc, {ordered: true, tight: false})
+   .process(await read('example.md'))
 
-   console.log(String(file))
+ console.error(String(file))
 ```
 
 …that would generate the following list:
 
 ```markdown
-1.  [Bravo](#bravo)
-    1.  [Charlie](#charlie)
-2.  [Delta](#delta)
+1. [Bravo](#bravo)
+
+   1. [Charlie](#charlie)
+
+2. [Delta](#delta)
 ```
 
 ### Example: including and excluding headings
 
-The options `maxDepth`, `skip`, and `parents` can be used to include and exclude
-certain headings from list.
-The example from before can be changed to generate a tight, ordered list like
-so:
+The options `maxDepth`, `parents`, and `skip` can be used to include and
+exclude certain headings from list.
+The example from before can be changed to only include level 1, 2, and 3
+headings, to include headings directly in list items, and to exclude headings
+with the text `delta` (case-insensitive, full match):
 
 ```diff
-@@ -6,7 +6,10 @@ main()
+@@ -3,7 +3,7 @@ import remarkToc from 'remark-toc'
+ import {read} from 'to-vfile'
 
- async function main() {
-   const file = await remark()
--    .use(remarkToc)
-+    .use(remarkToc, {maxDepth: 3, parents: ['listItem', 'root'], skip: 'delta'})
-     .process(await read('example.md'))
+ const file = await remark()
+-  .use(remarkToc)
++  .use(remarkToc, {maxDepth: 3, parents: ['listItem', 'root'], skip: 'delta'})
+   .process(await read('example.md'))
 
-   console.log(String(file))
+ console.error(String(file))
 ```
-
-…that would exclude level 4, 5, and 6 headings, exclude headings of `delta`
-(case-insensitive, full match), and include headings directly in a list item.
 
 ### Example: adding a prefix
 
-The option `prefix` can set to prepend a string to all links to headings in the
+The `prefix` option can set to prepend a string to all links to headings in the
 generated list:
 
 ```diff
-@@ -6,7 +6,10 @@ main()
+@@ -3,7 +3,7 @@ import remarkToc from 'remark-toc'
+ import {read} from 'to-vfile'
 
- async function main() {
-   const file = await remark()
--    .use(remarkToc)
-+    .use(remarkToc, {prefix: 'user-content-'})
-     .process(await read('example.md'))
+ const file = await remark()
+-  .use(remarkToc)
++  .use(remarkToc, {prefix: 'user-content-'})
+   .process(await read('example.md'))
 
-   console.log(String(file))
+ console.error(String(file))
 ```
 
 …that would generate the following list:
 
 ```markdown
-*   [Bravo](#user-content-bravo)
-
-    *   [Charlie](#user-content-charlie)
-
-*   [Delta](#user-content-delta)
+* [Bravo](#user-content-bravo)
+  * [Charlie](#user-content-charlie)
+* [Delta](#user-content-delta)
 ```
 
 ## Types
 
 This package is fully typed with [TypeScript][].
-It exports an `Options` type, which specifies the interface of the accepted
-options.
+It exports the additional type [`Options`][api-options].
 
 ## Compatibility
 
-Projects maintained by the unified collective are compatible with all maintained
+Projects maintained by the unified collective are compatible with maintained
 versions of Node.js.
-As of now, that is Node.js 12.20+, 14.14+, and 16.0+.
-Our projects sometimes work with older versions, but this is not guaranteed.
+
+When we cut a new major release, we drop support for unmaintained versions of
+Node.
+This means we try to keep the current release line, `remark-toc@^8`, compatible
+with Node.js 12.
 
 This plugin works with `unified` version 3+ and `remark` version 4+.
 
 ## Security
 
 Use of `remark-toc` involves user content and changes the tree, so it can open
-you up for a [cross-site scripting (XSS)][xss] attack.
+you up for a [cross-site scripting (XSS)][wiki-xss] attack.
 
 Existing nodes are copied into the table of contents.
 The following example shows how an existing script is copied into the table of
@@ -328,7 +340,7 @@ contents.
 The following markdown:
 
 ```markdown
-# Table of Contents
+# Contents
 
 ## Bravo<script>alert(1)</script>
 
@@ -338,7 +350,7 @@ The following markdown:
 Yields:
 
 ```markdown
-# Table of Contents
+# Contents
 
 -   [Bravo<script>alert(1)</script>](#bravoscriptalert1script)
 -   [Charlie](#charlie)
@@ -349,7 +361,7 @@ Yields:
 ```
 
 This may become a problem if the markdown is later transformed to
-[**rehype**][rehype] ([**hast**][hast]) or opened in an unsafe markdown viewer.
+**[rehype][]** (**[hast][]**) or opened in an unsafe markdown viewer.
 
 ## Related
 
@@ -395,9 +407,9 @@ abide by its terms.
 
 [downloads]: https://www.npmjs.com/package/remark-toc
 
-[size-badge]: https://img.shields.io/bundlephobia/minzip/remark-toc.svg
+[size-badge]: https://img.shields.io/bundlejs/size/remark-toc
 
-[size]: https://bundlephobia.com/result?p=remark-toc
+[size]: https://bundlejs.com/?q=remark-toc
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 
@@ -411,42 +423,50 @@ abide by its terms.
 
 [npm]: https://docs.npmjs.com/cli/install
 
+[esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
+
 [esmsh]: https://esm.sh
 
 [health]: https://github.com/remarkjs/.github
 
-[contributing]: https://github.com/remarkjs/.github/blob/HEAD/contributing.md
+[contributing]: https://github.com/remarkjs/.github/blob/main/contributing.md
 
-[support]: https://github.com/remarkjs/.github/blob/HEAD/support.md
+[support]: https://github.com/remarkjs/.github/blob/main/support.md
 
-[coc]: https://github.com/remarkjs/.github/blob/HEAD/code-of-conduct.md
+[coc]: https://github.com/remarkjs/.github/blob/main/code-of-conduct.md
 
 [license]: license
 
 [author]: https://wooorm.com
 
-[remark]: https://github.com/remarkjs/remark
-
-[unified]: https://github.com/unifiedjs/unified
-
-[xss]: https://en.wikipedia.org/wiki/Cross-site_scripting
-
-[typescript]: https://www.typescriptlang.org
-
-[rehype]: https://github.com/rehypejs/rehype
-
 [hast]: https://github.com/syntax-tree/hast
 
-[remark-rehype]: https://github.com/remarkjs/remark-rehype
+[mdast-util-toc]: https://github.com/syntax-tree/mdast-util-toc
 
-[rehype-slug]: https://github.com/rehypejs/rehype-slug
+[rehype]: https://github.com/rehypejs/rehype
 
 [rehype-autolink-headings]: https://github.com/rehypejs/rehype-autolink-headings
 
 [rehype-sanitize]: https://github.com/rehypejs/rehype-sanitize
 
-[mdast-util-toc]: https://github.com/syntax-tree/mdast-util-toc
+[rehype-slug]: https://github.com/rehypejs/rehype-slug
 
-[create-a-plugin]: https://unifiedjs.com/learn/guide/create-a-plugin/
+[remark]: https://github.com/remarkjs/remark
 
-[is]: https://github.com/syntax-tree/unist-util-is#api
+[remark-rehype]: https://github.com/remarkjs/remark-rehype
+
+[typescript]: https://www.typescriptlang.org
+
+[unified]: https://github.com/unifiedjs/unified
+
+[unified-transformer]: https://github.com/unifiedjs/unified#transformer
+
+[unified-create-a-plugin]: https://unifiedjs.com/learn/guide/create-a-plugin/
+
+[unist-util-is-test]: https://github.com/syntax-tree/unist-util-is#test
+
+[wiki-xss]: https://en.wikipedia.org/wiki/Cross-site_scripting
+
+[api-options]: #options
+
+[api-remark-toc]: #unifieduseremarktoc-options
