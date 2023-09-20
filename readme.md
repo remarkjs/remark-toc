@@ -122,7 +122,7 @@ import remarkToc from 'remark-toc'
 import {read} from 'to-vfile'
 
 const file = await remark()
-  .use(remarkToc, {heading: 'contents', tight: true})
+  .use(remarkToc, {heading: 'contents'})
   .process(await read('example.md'))
 
 console.error(String(file))
@@ -206,7 +206,7 @@ Configuration (TypeScript type).
 *   `parents` ([`Test` from `unist-util-is`][unist-util-is-test], default:
     `tree`)
     — allow headings to be children of certain node types
-*   `tight` (`boolean`, default: `false`)
+*   `tight` (`boolean`, default: `true`)
     — whether to compile list items tightly, otherwise space is added around
     items
 *   `ordered` (`boolean`, default: `false`)
@@ -259,11 +259,15 @@ so:
 …that would generate the following list:
 
 ```markdown
-1. [Bravo](#bravo)
+1. [History](#history)
 
-   1. [Charlie](#charlie)
+   1. [Discovery](#discovery)
 
-2. [Delta](#delta)
+   2. [Name and symbol](#name-and-symbol)
+
+   3. [Planet X disproved](#planet-x-disproved)
+
+2. [Orbit](#orbit)
 ```
 
 ### Example: including and excluding headings
@@ -306,9 +310,11 @@ generated list:
 …that would generate the following list:
 
 ```markdown
-* [Bravo](#user-content-bravo)
-  * [Charlie](#user-content-charlie)
-* [Delta](#user-content-delta)
+* [History](#user-content-history)
+  * [Discovery](#user-content-discovery)
+  * [Name and symbol](#user-content-name-and-symbol)
+  * [Planet X disproved](#user-content-planet-x-disproved)
+* [Orbit](#user-content-orbit)
 ```
 
 ## Types

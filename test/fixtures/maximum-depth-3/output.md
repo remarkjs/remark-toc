@@ -3,9 +3,7 @@
 # Table of Contents
 
 * [Alpha](#alpha)
-
   * [Bravo](#bravo)
-
     * [Charlie](#charlie)
 
 # Alpha
